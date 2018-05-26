@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>nl.hypothermic.tekkit</groupId>
+  <artifactId>xrp2-mcpc-ht</artifactId>
+  <version>rc2-STABLE</version>
+  <name>X-RP2</name>
+  <description>Optimized RedPower2 for Tekkit Classic.</description>
+  <url>https://github.com/hypothermic/X-RP2</url>
+  <issueManagement>
+    <url>https://github.com/hypothermic/X-RP2/issues</url>
+    <system>GitHub Issues</system>
+  </issueManagement>
+  <developers>
+    <developer>
+      <email>admin@hypothermic.nl</email>
+      <name>hypothermic</name>
+      <url>https://github.com/hypothermic</url>
+      <id>hypothermic</id>
+    </developer>
+  </developers>
+  <dependencies>
+    <!-- Build against BTCS++, should work with vanilla TC server fine. -->
+    <dependency>
+      <groupId>btcspp</groupId>
+      <artifactId>nl.hypothermic</artifactId>
+      <version>1.10-master-45725f4-1.2.5-B5.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/resources/redist/btcspp-1.10-master-45725f4-1.2.5-B5.1.jar</systemPath>
+    </dependency>
+  </dependencies>
+  <build>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                  <source>1.7</source>
+                  <target>1.7</target>
+              </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.4</version>
+            <configuration>
+               <descriptorRefs>
+                   <descriptorRef>jar-with-dependencies</descriptorRef>
+               </descriptorRefs>
+            </configuration>
+          </plugin>
+      </plugins>
+  </build>
+</project>
