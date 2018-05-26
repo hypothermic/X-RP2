@@ -6,6 +6,9 @@
   <name>X-RP2</name>
   <description>Optimized RedPower2 for Tekkit Classic.</description>
   <url>https://github.com/hypothermic/X-RP2</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <issueManagement>
     <url>https://github.com/hypothermic/X-RP2/issues</url>
     <system>GitHub Issues</system>
@@ -30,6 +33,7 @@
   </dependencies>
   <build>
       <plugins>
+          <!-- goal: "clean package" -->
           <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-compiler-plugin</artifactId>
