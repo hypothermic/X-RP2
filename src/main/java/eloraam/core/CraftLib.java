@@ -17,9 +17,9 @@ public class CraftLib {
         alloyRecipes.add(Arrays.asList(new Object[]{arritemStack, itemStack}));
     }
 
-    public static ItemStack getAlloyResult(ItemStack[] arritemStack, int n, int n2, boolean bl) {
+    /*public static ItemStack getAlloyResult(ItemStack[] arritemStack, int n, int n2, boolean bl) {
         block0:
-        for (ItemStack[] arritemStack2 : (List<ItemStack[]>) alloyRecipes) { // X-RP2: cast alloyRecipes
+        for (ItemStack[] arritemStack2 : (List<List<>>) alloyRecipes) { // X-RP2: cast alloyRecipes
             ItemStack[] arritemStack3;
             int n3;
             Object[] arrobject = arritemStack2;
@@ -58,6 +58,58 @@ public class CraftLib {
                 }
             }
             return (ItemStack) arrobject[1];
+        }
+        return null;
+    }*/
+
+    public static ItemStack getAlloyResult(final ItemStack[] array, final int n, final int n2, final boolean b) {
+        final Iterator<List> iterator = (Iterator<List>)CraftLib.alloyRecipes.iterator();
+        Label_0010:
+        while (iterator.hasNext()) {
+            final Object[] array2 = iterator.next().toArray();
+            final ItemStack[] array4;
+            final ItemStack[] array3 = array4 = (ItemStack[])array2[0];
+            for (final ItemStack itemStack : array4) {
+                int count = itemStack.count;
+                for (int j = n; j < n2; ++j) {
+                    if (array[j] != null) {
+                        if (array[j].doMaterialsMatch(itemStack)) {
+                            count -= array[j].count;
+                        }
+                        if (count <= 0) {
+                            break;
+                        }
+                    }
+                }
+                if (count > 0) {
+                    continue Label_0010;
+                }
+            }
+            if (b) {
+                for (final ItemStack itemStack2 : array3) {
+                    int count2 = itemStack2.count;
+                    for (int l = n; l < n2; ++l) {
+                        if (array[l] != null) {
+                            if (array[l].doMaterialsMatch(itemStack2)) {
+                                count2 -= array[l].count;
+                                if (count2 < 0) {
+                                    array[l].count = -count2;
+                                }
+                                else if (array[l].getItem().k()) {
+                                    array[l] = new ItemStack(array[l].getItem().j());
+                                }
+                                else {
+                                    array[l] = null;
+                                }
+                                if (count2 <= 0) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return (ItemStack)array2[1];
         }
         return null;
     }
