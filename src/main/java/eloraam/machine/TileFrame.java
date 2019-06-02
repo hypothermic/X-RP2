@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Block
  *  net.minecraft.server.EntityHuman
@@ -12,35 +12,18 @@
  */
 package eloraam.machine;
 
-import eloraam.core.BlockMultipart;
-import eloraam.core.CoreLib;
-import eloraam.core.CoverLib;
-import eloraam.core.IFrameLink;
-import eloraam.core.IFrameSupport;
-import eloraam.core.IHandlePackets;
-import eloraam.core.Packet211TileDesc;
-import eloraam.core.TileCoverable;
-import eloraam.core.WorldCoord;
-import eloraam.machine.BlockFrame;
-import eloraam.machine.BlockMachine;
-import java.io.ByteArrayOutputStream;
+import eloraam.core.*;
+import net.minecraft.server.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import net.minecraft.server.Block;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.Packet;
-import net.minecraft.server.RedPowerMachine;
-import net.minecraft.server.World;
 
 public class TileFrame
-extends TileCoverable
-implements IHandlePackets,
-IFrameLink,
-IFrameSupport {
+        extends TileCoverable
+        implements IHandlePackets,
+        IFrameLink,
+        IFrameSupport {
     public int CoverSides = 0;
     public int StickySides = 63;
     public short[] Covers = new short[6];
@@ -98,7 +81,7 @@ IFrameSupport {
     public void onHarvestPart(EntityHuman entityHuman, int n) {
         boolean bl = false;
         if (n == 29) {
-            CoreLib.dropItem(this.world, this.x, this.y, this.z, new ItemStack((Block)RedPowerMachine.blockFrame, 1));
+            CoreLib.dropItem(this.world, this.x, this.y, this.z, new ItemStack((Block) RedPowerMachine.blockFrame, 1));
             if (this.CoverSides > 0) {
                 this.replaceWithCovers();
                 this.updateBlockChange();
@@ -114,14 +97,14 @@ IFrameSupport {
     @Override
     public void addHarvestContents(ArrayList arrayList) {
         super.addHarvestContents(arrayList);
-        arrayList.add(new ItemStack((Block)RedPowerMachine.blockFrame, 1));
+        arrayList.add(new ItemStack((Block) RedPowerMachine.blockFrame, 1));
     }
 
     @Override
     public float getPartStrength(EntityHuman entityHuman, int n) {
         BlockMachine blockMachine = RedPowerMachine.blockMachine;
         if (n == 29) {
-            return entityHuman.getCurrentPlayerStrVsBlock((Block)blockMachine, 0) / (blockMachine.m() * 30.0f);
+            return entityHuman.getCurrentPlayerStrVsBlock((Block) blockMachine, 0) / (blockMachine.m() * 30.0f);
         }
         return super.getPartStrength(entityHuman, n);
     }
@@ -168,7 +151,7 @@ IFrameSupport {
             return false;
         }
         this.CoverSides |= 1 << n;
-        this.Covers[n] = (short)n2;
+        this.Covers[n] = (short) n2;
         this.rebuildSticky();
         this.updateBlockChange();
         return true;
@@ -179,7 +162,7 @@ IFrameSupport {
         if ((this.CoverSides & 1 << n) == 0) {
             return -1;
         }
-        this.CoverSides &= ~ (1 << n);
+        this.CoverSides &= ~(1 << n);
         short s = this.Covers[n];
         this.Covers[n] = 0;
         this.rebuildSticky();
@@ -243,7 +226,7 @@ IFrameSupport {
             int n2 = 0;
             for (int i = 0; i < 6; ++i) {
                 if ((n & 1 << i) == 0) continue;
-                this.Covers[i] = (short)((arrby[n2] & 255) + ((arrby[n2 + 1] & 255) << 8));
+                this.Covers[i] = (short) ((arrby[n2] & 255) + ((arrby[n2 + 1] & 255) << 8));
                 n2 += 2;
             }
         }
@@ -258,8 +241,8 @@ IFrameSupport {
         int n = 0;
         for (int i = 0; i < 6; ++i) {
             if ((this.CoverSides & 1 << i) == 0) continue;
-            arrby[n] = (byte)(this.Covers[i] & 255);
-            arrby[n + 1] = (byte)(this.Covers[i] >> 8);
+            arrby[n] = (byte) (this.Covers[i] & 255);
+            arrby[n + 1] = (byte) (this.Covers[i] >> 8);
             n += 2;
         }
         nBTTagCompound.setByteArray("cvs", arrby);
@@ -269,10 +252,10 @@ IFrameSupport {
         if (packet211TileDesc.subId != 9) {
             return;
         }
-        this.CoverSides = (int)packet211TileDesc.getUVLC();
+        this.CoverSides = (int) packet211TileDesc.getUVLC();
         for (int i = 0; i < 6; ++i) {
             if ((this.CoverSides & 1 << i) <= 0) continue;
-            this.Covers[i] = (short)packet211TileDesc.getUVLC();
+            this.Covers[i] = (short) packet211TileDesc.getUVLC();
         }
         this.rebuildSticky();
     }
@@ -300,8 +283,7 @@ IFrameSupport {
     public void handlePacket(Packet211TileDesc packet211TileDesc) {
         try {
             this.readFromPacket(packet211TileDesc);
-        }
-        catch (IOException iOException) {
+        } catch (IOException iOException) {
             // empty catch block
         }
         this.world.notify(this.x, this.y, this.z);

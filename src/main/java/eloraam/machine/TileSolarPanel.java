@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.IBlockAccess
  *  net.minecraft.server.NBTTagCompound
@@ -10,26 +10,19 @@
  */
 package eloraam.machine;
 
-import eloraam.core.BlockMultipart;
-import eloraam.core.BluePowerConductor;
-import eloraam.core.CoreProxy;
-import eloraam.core.IBluePowerConnectable;
-import eloraam.core.RedPowerLib;
-import eloraam.machine.TileMachinePanel;
+import eloraam.core.*;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
-import net.minecraft.server.WorldProvider;
 
 public class TileSolarPanel
-extends TileMachinePanel
-implements IBluePowerConnectable {
+        extends TileMachinePanel
+        implements IBluePowerConnectable {
     BluePowerConductor cond;
     public int ConMask;
 
     public TileSolarPanel() {
-        this.cond = new BluePowerConductor(){
+        this.cond = new BluePowerConductor() {
 
             @Override
             public TileEntity getParent() {
@@ -84,7 +77,7 @@ implements IBluePowerConnectable {
             return;
         }
         if (this.ConMask < 0) {
-            this.ConMask = RedPowerLib.getConnections((IBlockAccess)this.world, this, this.x, this.y, this.z);
+            this.ConMask = RedPowerLib.getConnections((IBlockAccess) this.world, this, this.x, this.y, this.z);
             this.cond.recache(this.ConMask, 0);
         }
         this.cond.iterate();

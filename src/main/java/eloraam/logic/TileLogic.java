@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Block
  *  net.minecraft.server.EntityHuman
@@ -12,36 +12,18 @@
  */
 package eloraam.logic;
 
-import eloraam.core.BlockMultipart;
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.CoverLib;
-import eloraam.core.IFrameSupport;
-import eloraam.core.IHandlePackets;
-import eloraam.core.IRedPowerConnectable;
-import eloraam.core.IRotatable;
-import eloraam.core.Packet211TileDesc;
-import eloraam.core.RedPowerLib;
-import eloraam.core.TileCoverable;
-import eloraam.logic.BlockLogic;
-import java.io.ByteArrayOutputStream;
+import eloraam.core.*;
+import net.minecraft.server.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import net.minecraft.server.Block;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.Packet;
-import net.minecraft.server.RedPowerLogic;
-import net.minecraft.server.World;
 
 public class TileLogic
-extends TileCoverable
-implements IHandlePackets,
-IRedPowerConnectable,
-IRotatable,
-IFrameSupport {
+        extends TileCoverable
+        implements IHandlePackets,
+        IRedPowerConnectable,
+        IRotatable,
+        IFrameSupport {
     public int SubId = 0;
     public int Rotation = 0;
     public boolean Powered = false;
@@ -176,7 +158,7 @@ IFrameSupport {
     private void replaceWithCovers() {
         if (this.Cover != 255) {
             short[] arrs = new short[26];
-            arrs[this.Rotation >> 2 ^ 1] = (short)this.Cover;
+            arrs[this.Rotation >> 2 ^ 1] = (short) this.Cover;
             CoverLib.replaceWithCovers(this.world, this.x, this.y, this.z, 1 << (this.Rotation >> 2 ^ 1), arrs);
             CoreLib.dropItem(this.world, this.x, this.y, this.z, new ItemStack(this.getBlockID(), 1, this.getExtendedID() * 256 + this.SubId));
         } else {
@@ -186,7 +168,7 @@ IFrameSupport {
     }
 
     public boolean tryDropBlock() {
-        if (RedPowerLib.canSupportWire((IBlockAccess)this.world, this.x, this.y, this.z, this.Rotation >> 2)) {
+        if (RedPowerLib.canSupportWire((IBlockAccess) this.world, this.x, this.y, this.z, this.Rotation >> 2)) {
             return false;
         }
         this.replaceWithCovers();
@@ -287,7 +269,7 @@ IFrameSupport {
         if (!bl && !RedPowerLogic.EnableSounds) {
             return;
         }
-        this.world.makeSound((double)((float)this.x + 0.5f), (double)((float)this.y + 0.5f), (double)((float)this.z + 0.5f), string, f, f2);
+        this.world.makeSound((double) ((float) this.x + 0.5f), (double) ((float) this.y + 0.5f), (double) ((float) this.z + 0.5f), string, f, f2);
     }
 
     public void initSubType(int n) {
@@ -349,12 +331,12 @@ IFrameSupport {
     @Override
     public void b(NBTTagCompound nBTTagCompound) {
         super.b(nBTTagCompound);
-        nBTTagCompound.setByte("sid", (byte)this.SubId);
-        nBTTagCompound.setByte("rot", (byte)this.Rotation);
+        nBTTagCompound.setByte("sid", (byte) this.SubId);
+        nBTTagCompound.setByte("rot", (byte) this.Rotation);
         int n = this.PowerState | (this.Powered ? 16 : 0) | (this.Disabled ? 32 : 0) | (this.Active ? 64 : 0);
-        nBTTagCompound.setByte("ps", (byte)n);
-        nBTTagCompound.setByte("dm", (byte)this.Deadmap);
-        nBTTagCompound.setByte("cov", (byte)this.Cover);
+        nBTTagCompound.setByte("ps", (byte) n);
+        nBTTagCompound.setByte("dm", (byte) this.Deadmap);
+        nBTTagCompound.setByte("cov", (byte) this.Cover);
     }
 
     protected void readFromPacket(Packet211TileDesc packet211TileDesc) throws IOException {
@@ -397,8 +379,7 @@ IFrameSupport {
     public void handlePacket(Packet211TileDesc packet211TileDesc) {
         try {
             this.readFromPacket(packet211TileDesc);
-        }
-        catch (IOException iOException) {
+        } catch (IOException iOException) {
             // empty catch block
         }
         this.world.notify(this.x, this.y, this.z);

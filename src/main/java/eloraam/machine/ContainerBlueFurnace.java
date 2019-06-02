@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Container
  *  net.minecraft.server.EntityHuman
@@ -13,20 +13,10 @@
  */
 package eloraam.machine;
 
-import eloraam.core.BluePowerEndpoint;
-import eloraam.machine.TileBlueFurnace;
-import java.util.List;
-import net.minecraft.server.Container;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.ICrafting;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.Slot;
-import net.minecraft.server.SlotResult2;
+import net.minecraft.server.*;
 
 public class ContainerBlueFurnace
-extends Container {
+        extends Container {
     public int cooktime = 0;
     private TileBlueFurnace tileFurnace;
     public int charge = 0;
@@ -35,15 +25,15 @@ extends Container {
     public ContainerBlueFurnace(PlayerInventory playerInventory, TileBlueFurnace tileBlueFurnace) {
         int n;
         this.tileFurnace = tileBlueFurnace;
-        this.a(new Slot((IInventory)tileBlueFurnace, 0, 62, 35));
-        this.a((Slot)new SlotResult2(playerInventory.player, (IInventory)tileBlueFurnace, 1, 126, 35));
+        this.a(new Slot((IInventory) tileBlueFurnace, 0, 62, 35));
+        this.a((Slot) new SlotResult2(playerInventory.player, (IInventory) tileBlueFurnace, 1, 126, 35));
         for (n = 0; n < 3; ++n) {
             for (int i = 0; i < 9; ++i) {
-                this.a(new Slot((IInventory)playerInventory, i + n * 9 + 9, 8 + i * 18, 84 + n * 18));
+                this.a(new Slot((IInventory) playerInventory, i + n * 9 + 9, 8 + i * 18, 84 + n * 18));
             }
         }
         for (n = 0; n < 9; ++n) {
-            this.a(new Slot((IInventory)playerInventory, n, 8 + n * 18, 142));
+            this.a(new Slot((IInventory) playerInventory, n, 8 + n * 18, 142));
         }
         this.setPlayer(playerInventory.player);
     }
@@ -58,7 +48,7 @@ extends Container {
 
     public ItemStack a(int n) {
         ItemStack itemStack = null;
-        Slot slot = (Slot)this.e.get(n);
+        Slot slot = (Slot) this.e.get(n);
         if (slot != null && slot.c()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.cloneItemStack();
@@ -82,16 +72,16 @@ extends Container {
     public void a() {
         super.a();
         for (int i = 0; i < this.listeners.size(); ++i) {
-            ICrafting iCrafting = (ICrafting)this.listeners.get(i);
+            ICrafting iCrafting = (ICrafting) this.listeners.get(i);
             if (this.cooktime != this.tileFurnace.cooktime) {
-                iCrafting.setContainerData((Container)this, 0, this.tileFurnace.cooktime);
+                iCrafting.setContainerData((Container) this, 0, this.tileFurnace.cooktime);
             }
             if (this.charge != this.tileFurnace.cond.Charge) {
-                iCrafting.setContainerData((Container)this, 1, this.tileFurnace.cond.Charge);
+                iCrafting.setContainerData((Container) this, 1, this.tileFurnace.cond.Charge);
             }
             if (this.flow == this.tileFurnace.cond.Flow) continue;
-            iCrafting.setContainerData((Container)this, 2, this.tileFurnace.cond.Flow & 65535);
-            iCrafting.setContainerData((Container)this, 3, this.tileFurnace.cond.Flow >> 16 & 65535);
+            iCrafting.setContainerData((Container) this, 2, this.tileFurnace.cond.Flow & 65535);
+            iCrafting.setContainerData((Container) this, 3, this.tileFurnace.cond.Flow >> 16 & 65535);
         }
         this.cooktime = this.tileFurnace.cooktime;
         this.charge = this.tileFurnace.cond.Charge;

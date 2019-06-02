@@ -1,7 +1,6 @@
 /* X-RP - decompiled with CFR */
 package eloraam.core;
 
-import eloraam.core.BluePowerConductor;
 import net.minecraft.server.NBTTagCompound;
 
 public abstract class BluePowerEndpoint extends BluePowerConductor {
@@ -11,37 +10,37 @@ public abstract class BluePowerEndpoint extends BluePowerConductor {
 
     @Override
     public double getInvCap() {
-	return 0.25;
+        return 0.25;
     }
 
     @Override
     public int getChargeScaled(int n) {
-	return Math.min(n, n * this.Charge / 1000);
+        return Math.min(n, n * this.Charge / 1000);
     }
 
     @Override
     public int getFlowScaled(int n) {
-	return Integer.bitCount(this.Flow) * n / 32;
+        return Integer.bitCount(this.Flow) * n / 32;
     }
 
     @Override
     public void iterate() {
-	super.iterate();
-	this.Charge = (int) (this.getVoltage() * 10.0);
-	this.Flow = this.Flow << 1 | (this.Charge < 600 ? 0 : 1);
+        super.iterate();
+        this.Charge = (int) (this.getVoltage() * 10.0);
+        this.Flow = this.Flow << 1 | (this.Charge < 600 ? 0 : 1);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nBTTagCompound) {
-	super.readFromNBT(nBTTagCompound);
-	this.Charge = nBTTagCompound.getShort("chg");
-	this.Flow = nBTTagCompound.getInt("flw");
+        super.readFromNBT(nBTTagCompound);
+        this.Charge = nBTTagCompound.getShort("chg");
+        this.Flow = nBTTagCompound.getInt("flw");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nBTTagCompound) {
-	super.writeToNBT(nBTTagCompound);
-	nBTTagCompound.setShort("chg", (short) this.Charge);
-	nBTTagCompound.setInt("flw", this.Flow);
+        super.writeToNBT(nBTTagCompound);
+        nBTTagCompound.setShort("chg", (short) this.Charge);
+        nBTTagCompound.setInt("flw", this.Flow);
     }
 }

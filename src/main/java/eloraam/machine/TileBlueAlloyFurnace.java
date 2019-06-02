@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  forge.ISidedInventory
  *  net.minecraft.server.BaseMod
@@ -20,36 +20,20 @@
 package eloraam.machine;
 
 import eloraam.base.TileAppliance;
-import eloraam.core.BluePowerConductor;
-import eloraam.core.BluePowerEndpoint;
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.CraftLib;
-import eloraam.core.IBluePowerConnectable;
-import eloraam.core.RedPowerLib;
+import eloraam.core.*;
 import forge.ISidedInventory;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.server.BaseMod;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
-import net.minecraft.server.mod_RedPowerMachine;
+import net.minecraft.server.*;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TileBlueAlloyFurnace
-extends TileAppliance
-implements IInventory,
-ISidedInventory,
-IBluePowerConnectable {
+        extends TileAppliance
+        implements IInventory,
+        ISidedInventory,
+        IBluePowerConnectable {
     BluePowerEndpoint cond;
     private ItemStack[] contents;
     public int cooktime;
@@ -57,7 +41,7 @@ IBluePowerConnectable {
     public List<HumanEntity> transaction = new ArrayList<HumanEntity>();
 
     public TileBlueAlloyFurnace() {
-        this.cond = new BluePowerEndpoint(){
+        this.cond = new BluePowerEndpoint() {
 
             @Override
             public TileEntity getParent() {
@@ -70,11 +54,11 @@ IBluePowerConnectable {
     }
 
     public void onOpen(CraftHumanEntity craftHumanEntity) {
-        this.transaction.add((HumanEntity)craftHumanEntity);
+        this.transaction.add((HumanEntity) craftHumanEntity);
     }
 
     public void onClose(CraftHumanEntity craftHumanEntity) {
-        this.transaction.remove((Object)craftHumanEntity);
+        this.transaction.remove((Object) craftHumanEntity);
     }
 
     public List<HumanEntity> getViewers() {
@@ -124,7 +108,7 @@ IBluePowerConnectable {
             return;
         }
         if (this.ConMask < 0) {
-            this.ConMask = RedPowerLib.getConnections((IBlockAccess)this.world, this, this.x, this.y, this.z);
+            this.ConMask = RedPowerLib.getConnections((IBlockAccess) this.world, this, this.x, this.y, this.z);
             this.cond.recache(this.ConMask, 0);
         }
         this.cond.iterate();
@@ -200,13 +184,13 @@ IBluePowerConnectable {
         if (CoreProxy.isClient(this.world)) {
             return true;
         }
-        entityHuman.openGui((BaseMod)mod_RedPowerMachine.instance, 10, this.world, this.x, this.y, this.z);
+        entityHuman.openGui((BaseMod) mod_RedPowerMachine.instance, 10, this.world, this.x, this.y, this.z);
         return true;
     }
 
     @Override
     public void onBlockPlacedBy(EntityLiving entityLiving) {
-        this.Rotation = (int)Math.floor((double)(entityLiving.yaw * 4.0f / 360.0f) + 0.5) & 3;
+        this.Rotation = (int) Math.floor((double) (entityLiving.yaw * 4.0f / 360.0f) + 0.5) & 3;
     }
 
     @Override
@@ -278,7 +262,7 @@ IBluePowerConnectable {
         if (this.world.getTileEntity(this.x, this.y, this.z) != this) {
             return false;
         }
-        return entityHuman.e((double)this.x + 0.5, (double)this.y + 0.5, (double)this.z + 0.5) <= 64.0;
+        return entityHuman.e((double) this.x + 0.5, (double) this.y + 0.5, (double) this.z + 0.5) <= 64.0;
     }
 
     public void g() {
@@ -309,10 +293,10 @@ IBluePowerConnectable {
         NBTTagList nBTTagList = nBTTagCompound.getList("Items");
         this.contents = new ItemStack[this.getSize()];
         for (int i = 0; i < nBTTagList.size(); ++i) {
-            NBTTagCompound nBTTagCompound2 = (NBTTagCompound)nBTTagList.get(i);
+            NBTTagCompound nBTTagCompound2 = (NBTTagCompound) nBTTagList.get(i);
             int n = nBTTagCompound2.getByte("Slot") & 255;
             if (n < 0 || n >= this.contents.length) continue;
-            this.contents[n] = ItemStack.a((NBTTagCompound)nBTTagCompound2);
+            this.contents[n] = ItemStack.a((NBTTagCompound) nBTTagCompound2);
         }
         this.cooktime = nBTTagCompound.getShort("CookTime");
         this.cond.readFromNBT(nBTTagCompound);
@@ -325,12 +309,12 @@ IBluePowerConnectable {
         for (int i = 0; i < this.contents.length; ++i) {
             if (this.contents[i] == null) continue;
             NBTTagCompound nBTTagCompound2 = new NBTTagCompound();
-            nBTTagCompound2.setByte("Slot", (byte)i);
+            nBTTagCompound2.setByte("Slot", (byte) i);
             this.contents[i].save(nBTTagCompound2);
-            nBTTagList.add((NBTBase)nBTTagCompound2);
+            nBTTagList.add((NBTBase) nBTTagCompound2);
         }
-        nBTTagCompound.set("Items", (NBTBase)nBTTagList);
-        nBTTagCompound.setShort("CookTime", (short)this.cooktime);
+        nBTTagCompound.set("Items", (NBTBase) nBTTagList);
+        nBTTagCompound.setShort("CookTime", (short) this.cooktime);
         this.cond.writeToNBT(nBTTagCompound);
     }
 

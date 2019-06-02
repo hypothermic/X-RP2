@@ -1,44 +1,22 @@
 /* X-RP - decompiled with CFR */
 package eloraam.machine;
 
-import eloraam.core.BluePowerConductor;
-import eloraam.core.BluePowerEndpoint;
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.IBluePowerConnectable;
-import eloraam.core.ITubeConnectable;
-import eloraam.core.MachineLib;
-import eloraam.core.RedPowerLib;
-import eloraam.core.TubeBuffer;
-import eloraam.core.TubeItem;
-import eloraam.core.TubeLib;
-import eloraam.core.WorldCoord;
-import eloraam.machine.TileFilter;
-import eloraam.machine.TileTube;
+import eloraam.core.*;
 import forge.ISidedInventory;
+import net.minecraft.server.*;
+
 import java.util.List;
-import net.minecraft.server.AxisAlignedBB;
-import net.minecraft.server.BaseMod;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityMinecart;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
-import net.minecraft.server.mod_RedPowerMachine;
 
 public class TileRetriever
-extends TileFilter
-implements IBluePowerConnectable {
+        extends TileFilter
+        implements IBluePowerConnectable {
     BluePowerEndpoint cond;
     public int ConMask;
     public byte select;
     public byte mode;
 
     public TileRetriever() {
-        this.cond = new BluePowerEndpoint(){
+        this.cond = new BluePowerEndpoint() {
 
             @Override
             public TileEntity getParent() {
@@ -118,7 +96,7 @@ implements IBluePowerConnectable {
     private void stepSelect() {
         for (int i = 0; i < 9; ++i) {
             ItemStack itemStack;
-            this.select = (byte)(this.select + 1);
+            this.select = (byte) (this.select + 1);
             if (this.select > 8) {
                 this.select = 0;
             }
@@ -133,7 +111,7 @@ implements IBluePowerConnectable {
     protected boolean handleExtract(WorldCoord worldCoord) {
         Object object;
         int n;
-        ITubeConnectable iTubeConnectable = (ITubeConnectable)CoreLib.getTileEntity((IBlockAccess)this.world, worldCoord, ITubeConnectable.class);
+        ITubeConnectable iTubeConnectable = (ITubeConnectable) CoreLib.getTileEntity((IBlockAccess) this.world, worldCoord, ITubeConnectable.class);
         if (iTubeConnectable == null || !iTubeConnectable.canRouteItems()) {
             return super.handleExtract(worldCoord);
         }
@@ -159,12 +137,12 @@ implements IBluePowerConnectable {
         int n3 = 0;
         int n4 = iInventory.getSize();
         if (iInventory instanceof ISidedInventory) {
-            object = (ISidedInventory)iInventory;
+            object = (ISidedInventory) iInventory;
             n3 = ((ISidedInventory) object).getStartInventorySide(n2);
             n4 = ((ISidedInventory) object).getSizeInventorySide(n2);
         }
         worldCoord2.step(n2);
-        object = (TileTube)CoreLib.getTileEntity((IBlockAccess)this.world, worldCoord2, TileTube.class);
+        object = (TileTube) CoreLib.getTileEntity((IBlockAccess) this.world, worldCoord2, TileTube.class);
         if (object == null) {
             return false;
         }
@@ -189,7 +167,7 @@ implements IBluePowerConnectable {
             return;
         }
         if (this.ConMask < 0) {
-            this.ConMask = RedPowerLib.getConnections((IBlockAccess)this.world, this, this.x, this.y, this.z);
+            this.ConMask = RedPowerLib.getConnections((IBlockAccess) this.world, this, this.x, this.y, this.z);
             this.cond.recache(this.ConMask, 0);
         }
         this.cond.iterate();
@@ -247,7 +225,7 @@ implements IBluePowerConnectable {
             if (this.filterMap == null) {
                 this.regenFilterMap();
             }
-            if (!MachineLib.emptyInventory((IInventory)(entityMinecart = (EntityMinecart)object), 0, entityMinecart.getSize())) {
+            if (!MachineLib.emptyInventory((IInventory) (entityMinecart = (EntityMinecart) object), 0, entityMinecart.getSize())) {
                 return super.suckEntity(object);
             }
             List<ItemStack> list = entityMinecart.getItemsDropped(); // X-RP: added type decl
@@ -269,7 +247,7 @@ implements IBluePowerConnectable {
         if (CoreProxy.isClient(this.world)) {
             return true;
         }
-        entityHuman.openGui((BaseMod)mod_RedPowerMachine.instance, 7, this.world, this.x, this.y, this.z);
+        entityHuman.openGui((BaseMod) mod_RedPowerMachine.instance, 7, this.world, this.x, this.y, this.z);
         return true;
     }
 

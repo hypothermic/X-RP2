@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Block
  *  net.minecraft.server.BlockDeadBush
@@ -18,21 +18,14 @@
 package eloraam.machine;
 
 import eloraam.core.ItemExtended;
-import net.minecraft.server.Block;
-import net.minecraft.server.BlockDeadBush;
-import net.minecraft.server.BlockLongGrass;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.StepSound;
-import net.minecraft.server.World;
+import net.minecraft.server.*;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.block.CraftBlockState;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 public class ItemMachinePanel
-extends ItemExtended {
+        extends ItemExtended {
     public ItemMachinePanel(int n) {
         super(n);
     }
@@ -88,10 +81,10 @@ extends ItemExtended {
             return false;
         }
         Block block = Block.byId[n9];
-        CraftBlockState craftBlockState = CraftBlockState.getBlockState((World)world, (int)n, (int)n2, (int)n3);
+        CraftBlockState craftBlockState = CraftBlockState.getBlockState((World) world, (int) n, (int) n2, (int) n3);
         world.suppressPhysics = true;
         world.setTypeIdAndData(n, n2, n3, n9, this.filterData(itemStack.getData()));
-        BlockPlaceEvent blockPlaceEvent = CraftEventFactory.callBlockPlaceEvent((World)world, (EntityHuman)entityHuman, (BlockState)craftBlockState, (int)n5, (int)n6, (int)n7);
+        BlockPlaceEvent blockPlaceEvent = CraftEventFactory.callBlockPlaceEvent((World) world, (EntityHuman) entityHuman, (BlockState) craftBlockState, (int) n5, (int) n6, (int) n7);
         craftBlockState.update(true);
         world.suppressPhysics = false;
         if (blockPlaceEvent.isCancelled() || !blockPlaceEvent.canBuild()) {
@@ -100,9 +93,9 @@ extends ItemExtended {
         if (world.setTypeIdAndData(n, n2, n3, n9, this.filterData(itemStack.getData()))) {
             if (world.getTypeId(n, n2, n3) == n9) {
                 Block.byId[n9].postPlace(world, n, n2, n3, n4);
-                Block.byId[n9].postPlace(world, n, n2, n3, (EntityLiving)entityHuman);
+                Block.byId[n9].postPlace(world, n, n2, n3, (EntityLiving) entityHuman);
             }
-            world.makeSound((double)((float)n + 0.5f), (double)((float)n2 + 0.5f), (double)((float)n3 + 0.5f), block.stepSound.getName(), (block.stepSound.getVolume1() + 1.0f) / 2.0f, block.stepSound.getVolume2() * 0.8f);
+            world.makeSound((double) ((float) n + 0.5f), (double) ((float) n2 + 0.5f), (double) ((float) n3 + 0.5f), block.stepSound.getName(), (block.stepSound.getVolume1() + 1.0f) / 2.0f, block.stepSound.getVolume2() * 0.8f);
             --itemStack.count;
         }
         return true;

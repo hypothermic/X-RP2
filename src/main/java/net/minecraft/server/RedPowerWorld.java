@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  forge.IBonemealHandler
  *  forge.IOreHandler
@@ -19,56 +19,13 @@
 package net.minecraft.server;
 
 import eloraam.base.ItemHandsaw;
-import eloraam.core.Config;
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.CoverLib;
-import eloraam.core.CraftLib;
-import eloraam.core.ItemTextured;
-import eloraam.world.BlockBrickMossifier;
-import eloraam.world.BlockCobbleMossifier;
-import eloraam.world.BlockCustomCrops;
-import eloraam.world.BlockCustomFlower;
-import eloraam.world.BlockCustomLeaves;
-import eloraam.world.BlockCustomLog;
-import eloraam.world.BlockCustomOre;
-import eloraam.world.BlockCustomStone;
-import eloraam.world.BlockStorage;
-import eloraam.world.EnchantmentDisjunction;
-import eloraam.world.ItemAthame;
-import eloraam.world.ItemCustomAxe;
-import eloraam.world.ItemCustomFlower;
-import eloraam.world.ItemCustomHoe;
-import eloraam.world.ItemCustomOre;
-import eloraam.world.ItemCustomPickaxe;
-import eloraam.world.ItemCustomSeeds;
-import eloraam.world.ItemCustomShovel;
-import eloraam.world.ItemCustomStone;
-import eloraam.world.ItemCustomSword;
-import eloraam.world.ItemPaintBrush;
-import eloraam.world.ItemPaintCan;
-import eloraam.world.ItemSickle;
-import eloraam.world.ItemStorage;
-import eloraam.world.ItemWoolCard;
-import eloraam.world.WorldGenCustomOre;
-import eloraam.world.WorldGenMarble;
-import eloraam.world.WorldGenRubberTree;
-import eloraam.world.WorldGenVolcano;
+import eloraam.core.*;
+import eloraam.world.*;
 import forge.IBonemealHandler;
 import forge.IOreHandler;
 import forge.MinecraftForge;
+
 import java.util.Random;
-import net.minecraft.server.BiomeBase;
-import net.minecraft.server.Block;
-import net.minecraft.server.Enchantment;
-import net.minecraft.server.FurnaceRecipes;
-import net.minecraft.server.Item;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.ModLoader;
-import net.minecraft.server.RedPowerBase;
-import net.minecraft.server.World;
-import net.minecraft.server.WorldChunkManager;
-import net.minecraft.server.WorldGenFlowers;
 
 public class RedPowerWorld {
     private static boolean initialized = false;
@@ -121,7 +78,7 @@ public class RedPowerWorld {
     public static final String itemTextureFile = "/eloraam/world/worlditems1.png";
 
     public static void setupBonemealHandler() {
-        MinecraftForge.registerBonemealHandler((IBonemealHandler)new IBonemealHandler(){
+        MinecraftForge.registerBonemealHandler((IBonemealHandler) new IBonemealHandler() {
 
             public boolean onUseBonemeal(World world, int n, int n2, int n3, int n4) {
                 if (n == RedPowerWorld.blockCrops.id) {
@@ -140,14 +97,14 @@ public class RedPowerWorld {
     }
 
     public static void initOreDictionary() {
-        MinecraftForge.registerOreHandler((IOreHandler)new IOreHandler(){
+        MinecraftForge.registerOreHandler((IOreHandler) new IOreHandler() {
 
             public void registerOre(String string, ItemStack itemStack) {
                 if (string.equals("dyeBlue")) {
-                    ModLoader.addShapelessRecipe((ItemStack)new ItemStack(RedPowerWorld.itemPaintCanPaint[11]), (Object[])new Object[]{RedPowerWorld.itemPaintCanEmpty, itemStack, new ItemStack((Item)RedPowerWorld.itemSeeds, 1, 0), new ItemStack((Item)RedPowerWorld.itemSeeds, 1, 0)});
+                    ModLoader.addShapelessRecipe((ItemStack) new ItemStack(RedPowerWorld.itemPaintCanPaint[11]), (Object[]) new Object[]{RedPowerWorld.itemPaintCanEmpty, itemStack, new ItemStack((Item) RedPowerWorld.itemSeeds, 1, 0), new ItemStack((Item) RedPowerWorld.itemSeeds, 1, 0)});
                 }
                 if (string.equals("ingotSilver")) {
-                    ModLoader.addRecipe((ItemStack)new ItemStack((Item)RedPowerWorld.itemAthame, 1), (Object[])new Object[]{"S", "W", Character.valueOf('S'), itemStack, Character.valueOf('W'), Item.STICK});
+                    ModLoader.addRecipe((ItemStack) new ItemStack((Item) RedPowerWorld.itemAthame, 1), (Object[]) new Object[]{"S", "W", Character.valueOf('S'), itemStack, Character.valueOf('W'), Item.STICK});
                 }
             }
         });
@@ -162,13 +119,13 @@ public class RedPowerWorld {
         RedPowerWorld.setupBonemealHandler();
         blockPlants = new BlockCustomFlower(Config.getBlockID("blocks.world.plants.id"), 1);
         blockPlants.a("indigo");
-        ModLoader.registerBlock((Block)blockPlants, ItemCustomFlower.class);
-        MinecraftForge.addGrassPlant((int)RedPowerWorld.blockPlants.id, (int)0, (int)10);
-        ModLoader.addShapelessRecipe((ItemStack)new ItemStack(RedPowerBase.itemDyeIndigo, 2, 0), (Object[])new Object[]{blockPlants});
+        ModLoader.registerBlock((Block) blockPlants, ItemCustomFlower.class);
+        MinecraftForge.addGrassPlant((int) RedPowerWorld.blockPlants.id, (int) 0, (int) 10);
+        ModLoader.addShapelessRecipe((ItemStack) new ItemStack(RedPowerBase.itemDyeIndigo, 2, 0), (Object[]) new Object[]{blockPlants});
         itemSeeds = new ItemCustomSeeds(Config.getItemID("items.world.seeds.id"));
-        MinecraftForge.addGrassSeed((int)RedPowerWorld.itemSeeds.id, (int)0, (int)1, (int)5);
+        MinecraftForge.addGrassSeed((int) RedPowerWorld.itemSeeds.id, (int) 0, (int) 1, (int) 5);
         blockCrops = new BlockCustomCrops(Config.getBlockID("blocks.world.crops.id"));
-        ModLoader.registerBlock((Block)blockCrops);
+        ModLoader.registerBlock((Block) blockCrops);
         itemPickaxeRuby = new ItemCustomPickaxe(Config.getItemID("items.world.pickaxeRuby.id"));
         itemPickaxeRuby.a("pickaxeRuby");
         itemPickaxeRuby.a(0, 4);
@@ -184,12 +141,12 @@ public class RedPowerWorld {
         itemPickaxeSapphire.a(2, 4);
         itemPickaxeSapphire.setMaxDurability(500);
         RedPowerWorld.itemPickaxeSapphire.a = 8.0f;
-        MinecraftForge.setToolClass((Item)itemPickaxeRuby, (String)"pickaxe", (int)2);
-        MinecraftForge.setToolClass((Item)itemPickaxeEmerald, (String)"pickaxe", (int)2);
-        MinecraftForge.setToolClass((Item)itemPickaxeSapphire, (String)"pickaxe", (int)2);
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemPickaxeRuby, 1), (Object[])new Object[]{"GGG", " W ", " W ", Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemPickaxeEmerald, 1), (Object[])new Object[]{"GGG", " W ", " W ", Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemPickaxeSapphire, 1), (Object[])new Object[]{"GGG", " W ", " W ", Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
+        MinecraftForge.setToolClass((Item) itemPickaxeRuby, (String) "pickaxe", (int) 2);
+        MinecraftForge.setToolClass((Item) itemPickaxeEmerald, (String) "pickaxe", (int) 2);
+        MinecraftForge.setToolClass((Item) itemPickaxeSapphire, (String) "pickaxe", (int) 2);
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemPickaxeRuby, 1), (Object[]) new Object[]{"GGG", " W ", " W ", Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemPickaxeEmerald, 1), (Object[]) new Object[]{"GGG", " W ", " W ", Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemPickaxeSapphire, 1), (Object[]) new Object[]{"GGG", " W ", " W ", Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
         itemShovelRuby = new ItemCustomShovel(Config.getItemID("items.world.shovelRuby.id"));
         itemShovelRuby.a("shovelRuby");
         itemShovelRuby.a(0, 3);
@@ -205,12 +162,12 @@ public class RedPowerWorld {
         itemShovelSapphire.a(2, 3);
         itemShovelSapphire.setMaxDurability(500);
         RedPowerWorld.itemShovelSapphire.a = 8.0f;
-        MinecraftForge.setToolClass((Item)itemShovelRuby, (String)"shovel", (int)2);
-        MinecraftForge.setToolClass((Item)itemShovelEmerald, (String)"shovel", (int)2);
-        MinecraftForge.setToolClass((Item)itemShovelSapphire, (String)"shovel", (int)2);
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemShovelRuby, 1), (Object[])new Object[]{"G", "W", "W", Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemShovelEmerald, 1), (Object[])new Object[]{"G", "W", "W", Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemShovelSapphire, 1), (Object[])new Object[]{"G", "W", "W", Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
+        MinecraftForge.setToolClass((Item) itemShovelRuby, (String) "shovel", (int) 2);
+        MinecraftForge.setToolClass((Item) itemShovelEmerald, (String) "shovel", (int) 2);
+        MinecraftForge.setToolClass((Item) itemShovelSapphire, (String) "shovel", (int) 2);
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemShovelRuby, 1), (Object[]) new Object[]{"G", "W", "W", Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemShovelEmerald, 1), (Object[]) new Object[]{"G", "W", "W", Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemShovelSapphire, 1), (Object[]) new Object[]{"G", "W", "W", Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
         itemAxeRuby = new ItemCustomAxe(Config.getItemID("items.world.axeRuby.id"));
         itemAxeRuby.a("axeRuby");
         itemAxeRuby.a(0, 5);
@@ -226,12 +183,12 @@ public class RedPowerWorld {
         itemAxeSapphire.a(2, 5);
         itemAxeSapphire.setMaxDurability(500);
         RedPowerWorld.itemAxeSapphire.a = 8.0f;
-        MinecraftForge.setToolClass((Item)itemAxeRuby, (String)"axe", (int)2);
-        MinecraftForge.setToolClass((Item)itemAxeEmerald, (String)"axe", (int)2);
-        MinecraftForge.setToolClass((Item)itemAxeSapphire, (String)"axe", (int)2);
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemAxeRuby, 1), (Object[])new Object[]{"GG", "GW", " W", Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemAxeEmerald, 1), (Object[])new Object[]{"GG", "GW", " W", Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemAxeSapphire, 1), (Object[])new Object[]{"GG", "GW", " W", Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
+        MinecraftForge.setToolClass((Item) itemAxeRuby, (String) "axe", (int) 2);
+        MinecraftForge.setToolClass((Item) itemAxeEmerald, (String) "axe", (int) 2);
+        MinecraftForge.setToolClass((Item) itemAxeSapphire, (String) "axe", (int) 2);
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemAxeRuby, 1), (Object[]) new Object[]{"GG", "GW", " W", Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemAxeEmerald, 1), (Object[]) new Object[]{"GG", "GW", " W", Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemAxeSapphire, 1), (Object[]) new Object[]{"GG", "GW", " W", Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
         itemSwordRuby = new ItemCustomSword(Config.getItemID("items.world.swordRuby.id"));
         itemSwordRuby.a("swordRuby");
         itemSwordRuby.a(0, 2);
@@ -246,13 +203,13 @@ public class RedPowerWorld {
         itemSwordSapphire.setMaxDurability(500);
         itemAthame = new ItemAthame(Config.getItemID("items.world.athame.id"));
         itemAthame.a("athame");
-        MinecraftForge.setToolClass((Item)itemSwordRuby, (String)"sword", (int)2);
-        MinecraftForge.setToolClass((Item)itemSwordEmerald, (String)"sword", (int)2);
-        MinecraftForge.setToolClass((Item)itemSwordSapphire, (String)"sword", (int)2);
-        MinecraftForge.setToolClass((Item)itemAthame, (String)"sword", (int)0);
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemSwordRuby, 1), (Object[])new Object[]{"G", "G", "W", Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemSwordEmerald, 1), (Object[])new Object[]{"G", "G", "W", Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemSwordSapphire, 1), (Object[])new Object[]{"G", "G", "W", Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
+        MinecraftForge.setToolClass((Item) itemSwordRuby, (String) "sword", (int) 2);
+        MinecraftForge.setToolClass((Item) itemSwordEmerald, (String) "sword", (int) 2);
+        MinecraftForge.setToolClass((Item) itemSwordSapphire, (String) "sword", (int) 2);
+        MinecraftForge.setToolClass((Item) itemAthame, (String) "sword", (int) 0);
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemSwordRuby, 1), (Object[]) new Object[]{"G", "G", "W", Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemSwordEmerald, 1), (Object[]) new Object[]{"G", "G", "W", Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemSwordSapphire, 1), (Object[]) new Object[]{"G", "G", "W", Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
         itemHoeRuby = new ItemCustomHoe(Config.getItemID("items.world.hoeRuby.id"));
         itemHoeRuby.a("hoeRuby");
         itemHoeRuby.a(0, 6);
@@ -265,12 +222,12 @@ public class RedPowerWorld {
         itemHoeSapphire.a("hoeSapphire");
         itemHoeSapphire.a(2, 6);
         itemHoeSapphire.setMaxDurability(500);
-        MinecraftForge.setToolClass((Item)itemHoeRuby, (String)"hoe", (int)2);
-        MinecraftForge.setToolClass((Item)itemHoeEmerald, (String)"hoe", (int)2);
-        MinecraftForge.setToolClass((Item)itemHoeSapphire, (String)"hoe", (int)2);
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemHoeRuby, 1), (Object[])new Object[]{"GG", " W", " W", Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemHoeEmerald, 1), (Object[])new Object[]{"GG", " W", " W", Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemHoeSapphire, 1), (Object[])new Object[]{"GG", " W", " W", Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
+        MinecraftForge.setToolClass((Item) itemHoeRuby, (String) "hoe", (int) 2);
+        MinecraftForge.setToolClass((Item) itemHoeEmerald, (String) "hoe", (int) 2);
+        MinecraftForge.setToolClass((Item) itemHoeSapphire, (String) "hoe", (int) 2);
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemHoeRuby, 1), (Object[]) new Object[]{"GG", " W", " W", Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemHoeEmerald, 1), (Object[]) new Object[]{"GG", " W", " W", Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemHoeSapphire, 1), (Object[]) new Object[]{"GG", " W", " W", Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
         itemSickleWood = new ItemSickle(Config.getItemID("items.world.sickleWood.id"));
         itemSickleWood.a("sickleWood");
         itemSickleWood.a(0, 1);
@@ -303,19 +260,19 @@ public class RedPowerWorld {
         itemSickleSapphire.a("sickleSapphire");
         itemSickleSapphire.a(7, 1);
         itemSickleSapphire.setMaxDurability(500);
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemSickleWood, 1), (Object[])new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), Block.WOOD, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemSickleStone, 1), (Object[])new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), Block.COBBLESTONE, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemSickleIron, 1), (Object[])new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemSickleDiamond, 1), (Object[])new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), Item.DIAMOND, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemSickleGold, 1), (Object[])new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), Item.GOLD_INGOT, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemSickleRuby, 1), (Object[])new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemSickleEmerald, 1), (Object[])new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemSickleSapphire, 1), (Object[])new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemSickleWood, 1), (Object[]) new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), Block.WOOD, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemSickleStone, 1), (Object[]) new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), Block.COBBLESTONE, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemSickleIron, 1), (Object[]) new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemSickleDiamond, 1), (Object[]) new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), Item.DIAMOND, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemSickleGold, 1), (Object[]) new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), Item.GOLD_INGOT, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemSickleRuby, 1), (Object[]) new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemSickleEmerald, 1), (Object[]) new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemSickleSapphire, 1), (Object[]) new Object[]{" I ", "  I", "WI ", Character.valueOf('I'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
         blockStone = new BlockCustomStone(Config.getBlockID("blocks.world.stone.id"));
         blockStone.a("rpstone");
-        ModLoader.registerBlock((Block)blockStone, ItemCustomStone.class);
-        itemMarble = new ItemStack((Block)blockStone, 0);
-        MinecraftForge.setBlockHarvestLevel((Block)blockStone, (String)"pickaxe", (int)0);
+        ModLoader.registerBlock((Block) blockStone, ItemCustomStone.class);
+        itemMarble = new ItemStack((Block) blockStone, 0);
+        MinecraftForge.setBlockHarvestLevel((Block) blockStone, (String) "pickaxe", (int) 0);
         CoverLib.addMaterial(48, 1, blockStone, 0, "marble", "Marble");
         CoverLib.addMaterial(49, 1, blockStone, 1, "basalt", "Basalt");
         CoverLib.addMaterial(50, 1, blockStone, 2, "marbleBrick", "Marble Brick");
@@ -323,24 +280,24 @@ public class RedPowerWorld {
         CoverLib.addMaterial(52, 1, blockStone, 4, "basaltBrick", "Basalt Brick");
         blockOres = new BlockCustomOre(Config.getBlockID("blocks.world.ores.id"));
         blockOres.a("rpores");
-        ModLoader.registerBlock((Block)blockOres, ItemCustomOre.class);
-        itemOreRuby = new ItemStack((Block)blockOres, 1, 0);
-        itemOreEmerald = new ItemStack((Block)blockOres, 1, 1);
-        itemOreSapphire = new ItemStack((Block)blockOres, 1, 2);
-        MinecraftForge.setBlockHarvestLevel((Block)blockOres, (int)0, (String)"pickaxe", (int)2);
-        MinecraftForge.setBlockHarvestLevel((Block)blockOres, (int)1, (String)"pickaxe", (int)2);
-        MinecraftForge.setBlockHarvestLevel((Block)blockOres, (int)2, (String)"pickaxe", (int)2);
-        MinecraftForge.setBlockHarvestLevel((Block)blockOres, (int)3, (String)"pickaxe", (int)1);
-        MinecraftForge.setBlockHarvestLevel((Block)blockOres, (int)4, (String)"pickaxe", (int)0);
-        MinecraftForge.setBlockHarvestLevel((Block)blockOres, (int)5, (String)"pickaxe", (int)0);
-        MinecraftForge.setBlockHarvestLevel((Block)blockOres, (int)6, (String)"pickaxe", (int)2);
-        MinecraftForge.setBlockHarvestLevel((Block)blockOres, (int)7, (String)"pickaxe", (int)2);
+        ModLoader.registerBlock((Block) blockOres, ItemCustomOre.class);
+        itemOreRuby = new ItemStack((Block) blockOres, 1, 0);
+        itemOreEmerald = new ItemStack((Block) blockOres, 1, 1);
+        itemOreSapphire = new ItemStack((Block) blockOres, 1, 2);
+        MinecraftForge.setBlockHarvestLevel((Block) blockOres, (int) 0, (String) "pickaxe", (int) 2);
+        MinecraftForge.setBlockHarvestLevel((Block) blockOres, (int) 1, (String) "pickaxe", (int) 2);
+        MinecraftForge.setBlockHarvestLevel((Block) blockOres, (int) 2, (String) "pickaxe", (int) 2);
+        MinecraftForge.setBlockHarvestLevel((Block) blockOres, (int) 3, (String) "pickaxe", (int) 1);
+        MinecraftForge.setBlockHarvestLevel((Block) blockOres, (int) 4, (String) "pickaxe", (int) 0);
+        MinecraftForge.setBlockHarvestLevel((Block) blockOres, (int) 5, (String) "pickaxe", (int) 0);
+        MinecraftForge.setBlockHarvestLevel((Block) blockOres, (int) 6, (String) "pickaxe", (int) 2);
+        MinecraftForge.setBlockHarvestLevel((Block) blockOres, (int) 7, (String) "pickaxe", (int) 2);
         FurnaceRecipes.getInstance().addSmelting(RedPowerWorld.blockOres.id, 3, RedPowerBase.itemIngotSilver);
         FurnaceRecipes.getInstance().addSmelting(RedPowerWorld.blockOres.id, 4, RedPowerBase.itemIngotTin);
         FurnaceRecipes.getInstance().addSmelting(RedPowerWorld.blockOres.id, 5, RedPowerBase.itemIngotCopper);
-        MinecraftForge.registerOre((String)"oreSilver", (ItemStack)new ItemStack((Block)blockOres, 1, 3));
-        MinecraftForge.registerOre((String)"oreTin", (ItemStack)new ItemStack((Block)blockOres, 1, 4));
-        MinecraftForge.registerOre((String)"oreCopper", (ItemStack)new ItemStack((Block)blockOres, 1, 5));
+        MinecraftForge.registerOre((String) "oreSilver", (ItemStack) new ItemStack((Block) blockOres, 1, 3));
+        MinecraftForge.registerOre((String) "oreTin", (ItemStack) new ItemStack((Block) blockOres, 1, 4));
+        MinecraftForge.registerOre((String) "oreCopper", (ItemStack) new ItemStack((Block) blockOres, 1, 5));
         itemHandsawRuby = new ItemHandsaw(Config.getItemID("items.world.handsawRuby.id"), 1);
         itemHandsawEmerald = new ItemHandsaw(Config.getItemID("items.world.handsawEmerald.id"), 1);
         itemHandsawSapphire = new ItemHandsaw(Config.getItemID("items.world.handsawSapphire.id"), 1);
@@ -350,9 +307,9 @@ public class RedPowerWorld {
         itemHandsawRuby.setMaxDurability(640);
         itemHandsawEmerald.setMaxDurability(640);
         itemHandsawSapphire.setMaxDurability(640);
-        ModLoader.addRecipe((ItemStack)new ItemStack(itemHandsawRuby, 1), (Object[])new Object[]{"WWW", " II", " GG", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack(itemHandsawEmerald, 1), (Object[])new Object[]{"WWW", " II", " GG", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack(itemHandsawSapphire, 1), (Object[])new Object[]{"WWW", " II", " GG", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack(itemHandsawRuby, 1), (Object[]) new Object[]{"WWW", " II", " GG", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), RedPowerBase.itemRuby, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack(itemHandsawEmerald, 1), (Object[]) new Object[]{"WWW", " II", " GG", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), RedPowerBase.itemEmerald, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack(itemHandsawSapphire, 1), (Object[]) new Object[]{"WWW", " II", " GG", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), RedPowerBase.itemSapphire, Character.valueOf('W'), Item.STICK});
         CoverLib.addSaw(itemHandsawRuby, 1);
         CoverLib.addSaw(itemHandsawEmerald, 1);
         CoverLib.addSaw(itemHandsawSapphire, 1);
@@ -360,52 +317,52 @@ public class RedPowerWorld {
         itemWoolCard.a("woolcard").d(28);
         itemWoolCard.setMaxDurability(63);
         CraftLib.addDamageOnCraft(itemWoolCard);
-        ModLoader.addRecipe((ItemStack)new ItemStack(itemWoolCard, 1), (Object[])new Object[]{"W", "P", "S", Character.valueOf('W'), RedPowerBase.itemFineIron, Character.valueOf('P'), Block.WOOD, Character.valueOf('S'), Item.STICK});
-        ModLoader.addShapelessRecipe((ItemStack)new ItemStack(Item.STRING, 4), (Object[])new Object[]{new ItemStack(itemWoolCard, 1, -1), new ItemStack(Block.WOOL, 1, -1)});
+        ModLoader.addRecipe((ItemStack) new ItemStack(itemWoolCard, 1), (Object[]) new Object[]{"W", "P", "S", Character.valueOf('W'), RedPowerBase.itemFineIron, Character.valueOf('P'), Block.WOOD, Character.valueOf('S'), Item.STICK});
+        ModLoader.addShapelessRecipe((ItemStack) new ItemStack(Item.STRING, 4), (Object[]) new Object[]{new ItemStack(itemWoolCard, 1, -1), new ItemStack(Block.WOOL, 1, -1)});
         blockLeaves = new BlockCustomLeaves(Config.getBlockID("blocks.world.leaves.id"));
         blockLeaves.a("rpleaves");
-        ModLoader.registerBlock((Block)blockLeaves);
+        ModLoader.registerBlock((Block) blockLeaves);
         blockLogs = new BlockCustomLog(Config.getBlockID("blocks.world.log.id"));
         blockLogs.a("rplog");
-        ModLoader.registerBlock((Block)blockLogs);
-        MinecraftForge.setBlockHarvestLevel((Block)blockLogs, (String)"axe", (int)0);
-        MinecraftForge.registerOre((String)"woodRubber", (ItemStack)new ItemStack((Block)blockLogs));
-        ModLoader.addRecipe((ItemStack)new ItemStack(Item.STICK, 8), (Object[])new Object[]{"W", Character.valueOf('W'), blockLogs});
+        ModLoader.registerBlock((Block) blockLogs);
+        MinecraftForge.setBlockHarvestLevel((Block) blockLogs, (String) "axe", (int) 0);
+        MinecraftForge.registerOre((String) "woodRubber", (ItemStack) new ItemStack((Block) blockLogs));
+        ModLoader.addRecipe((ItemStack) new ItemStack(Item.STICK, 8), (Object[]) new Object[]{"W", Character.valueOf('W'), blockLogs});
         FurnaceRecipes.getInstance().registerRecipe(RedPowerWorld.blockLogs.id, new ItemStack(Item.COAL, 1, 1));
         CoverLib.addMaterial(53, 0, blockLogs, 0, "rplog", "Rubberwood");
-        ModLoader.addRecipe((ItemStack)new ItemStack((Block)blockStone, 4, 2), (Object[])new Object[]{"SS", "SS", Character.valueOf('S'), new ItemStack((Block)blockStone, 1, 0)});
-        FurnaceRecipes.getInstance().addSmelting(RedPowerWorld.blockStone.id, 3, new ItemStack((Block)blockStone, 1, 1));
-        ModLoader.addRecipe((ItemStack)new ItemStack((Block)blockStone, 4, 4), (Object[])new Object[]{"SS", "SS", Character.valueOf('S'), new ItemStack((Block)blockStone, 1, 1)});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Block) blockStone, 4, 2), (Object[]) new Object[]{"SS", "SS", Character.valueOf('S'), new ItemStack((Block) blockStone, 1, 0)});
+        FurnaceRecipes.getInstance().addSmelting(RedPowerWorld.blockStone.id, 3, new ItemStack((Block) blockStone, 1, 1));
+        ModLoader.addRecipe((ItemStack) new ItemStack((Block) blockStone, 4, 4), (Object[]) new Object[]{"SS", "SS", Character.valueOf('S'), new ItemStack((Block) blockStone, 1, 1)});
         blockStorage = new BlockStorage(Config.getBlockID("blocks.world.storage.id"));
-        ModLoader.registerBlock((Block)blockStorage, ItemStorage.class);
-        ModLoader.addRecipe((ItemStack)new ItemStack((Block)blockStorage, 1, 0), (Object[])new Object[]{"GGG", "GGG", "GGG", Character.valueOf('G'), RedPowerBase.itemRuby});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Block)blockStorage, 1, 1), (Object[])new Object[]{"GGG", "GGG", "GGG", Character.valueOf('G'), RedPowerBase.itemEmerald});
-        ModLoader.addRecipe((ItemStack)new ItemStack((Block)blockStorage, 1, 2), (Object[])new Object[]{"GGG", "GGG", "GGG", Character.valueOf('G'), RedPowerBase.itemSapphire});
-        ModLoader.addRecipe((ItemStack)CoreLib.copyStack(RedPowerBase.itemRuby, 9), (Object[])new Object[]{"G", Character.valueOf('G'), new ItemStack((Block)blockStorage, 1, 0)});
-        ModLoader.addRecipe((ItemStack)CoreLib.copyStack(RedPowerBase.itemEmerald, 9), (Object[])new Object[]{"G", Character.valueOf('G'), new ItemStack((Block)blockStorage, 1, 1)});
-        ModLoader.addRecipe((ItemStack)CoreLib.copyStack(RedPowerBase.itemSapphire, 9), (Object[])new Object[]{"G", Character.valueOf('G'), new ItemStack((Block)blockStorage, 1, 2)});
-        MinecraftForge.setBlockHarvestLevel((Block)blockStorage, (int)0, (String)"pickaxe", (int)2);
-        MinecraftForge.setBlockHarvestLevel((Block)blockStorage, (int)1, (String)"pickaxe", (int)2);
-        MinecraftForge.setBlockHarvestLevel((Block)blockStorage, (int)2, (String)"pickaxe", (int)2);
+        ModLoader.registerBlock((Block) blockStorage, ItemStorage.class);
+        ModLoader.addRecipe((ItemStack) new ItemStack((Block) blockStorage, 1, 0), (Object[]) new Object[]{"GGG", "GGG", "GGG", Character.valueOf('G'), RedPowerBase.itemRuby});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Block) blockStorage, 1, 1), (Object[]) new Object[]{"GGG", "GGG", "GGG", Character.valueOf('G'), RedPowerBase.itemEmerald});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Block) blockStorage, 1, 2), (Object[]) new Object[]{"GGG", "GGG", "GGG", Character.valueOf('G'), RedPowerBase.itemSapphire});
+        ModLoader.addRecipe((ItemStack) CoreLib.copyStack(RedPowerBase.itemRuby, 9), (Object[]) new Object[]{"G", Character.valueOf('G'), new ItemStack((Block) blockStorage, 1, 0)});
+        ModLoader.addRecipe((ItemStack) CoreLib.copyStack(RedPowerBase.itemEmerald, 9), (Object[]) new Object[]{"G", Character.valueOf('G'), new ItemStack((Block) blockStorage, 1, 1)});
+        ModLoader.addRecipe((ItemStack) CoreLib.copyStack(RedPowerBase.itemSapphire, 9), (Object[]) new Object[]{"G", Character.valueOf('G'), new ItemStack((Block) blockStorage, 1, 2)});
+        MinecraftForge.setBlockHarvestLevel((Block) blockStorage, (int) 0, (String) "pickaxe", (int) 2);
+        MinecraftForge.setBlockHarvestLevel((Block) blockStorage, (int) 1, (String) "pickaxe", (int) 2);
+        MinecraftForge.setBlockHarvestLevel((Block) blockStorage, (int) 2, (String) "pickaxe", (int) 2);
         CoverLib.addMaterial(54, 2, blockStorage, 0, "rubyBlock", "Ruby Block");
         CoverLib.addMaterial(55, 2, blockStorage, 1, "emeraldBlock", "Emerald Block");
         CoverLib.addMaterial(56, 2, blockStorage, 2, "sapphireBlock", "Sapphire Block");
         itemBrushDry = new ItemTextured(Config.getItemID("items.world.paintbrush.dry.id"), 22, "/eloraam/base/items1.png");
         itemBrushDry.a("paintbrush.dry");
-        ModLoader.addRecipe((ItemStack)new ItemStack(itemBrushDry), (Object[])new Object[]{"W ", " S", Character.valueOf('S'), Item.STICK, Character.valueOf('W'), Block.WOOL});
+        ModLoader.addRecipe((ItemStack) new ItemStack(itemBrushDry), (Object[]) new Object[]{"W ", " S", Character.valueOf('S'), Item.STICK, Character.valueOf('W'), Block.WOOL});
         itemPaintCanEmpty = new ItemTextured(Config.getItemID("items.world.paintcan.empty.id"), 23, "/eloraam/base/items1.png");
         itemPaintCanEmpty.a("paintcan.empty");
-        ModLoader.addRecipe((ItemStack)new ItemStack(itemPaintCanEmpty), (Object[])new Object[]{"T T", "T T", "TTT", Character.valueOf('T'), RedPowerBase.itemTinplate});
+        ModLoader.addRecipe((ItemStack) new ItemStack(itemPaintCanEmpty), (Object[]) new Object[]{"T T", "T T", "TTT", Character.valueOf('T'), RedPowerBase.itemTinplate});
         for (n = 0; n < 16; ++n) {
             RedPowerWorld.itemPaintCanPaint[n] = new ItemPaintCan(Config.getItemID("items.world.paintcan." + CoreLib.rawColorNames[n] + ".id"), n);
             itemPaintCanPaint[n].a("paintcan." + CoreLib.rawColorNames[n]);
             Config.addName("item.paintcan." + CoreLib.rawColorNames[n] + ".name", CoreLib.enColorNames[n] + " Paint");
-            ModLoader.addShapelessRecipe((ItemStack)new ItemStack(itemPaintCanPaint[n]), (Object[])new Object[]{itemPaintCanEmpty, new ItemStack(Item.INK_SACK, 1, 15 - n), new ItemStack((Item)itemSeeds, 1, 0), new ItemStack((Item)itemSeeds, 1, 0)});
+            ModLoader.addShapelessRecipe((ItemStack) new ItemStack(itemPaintCanPaint[n]), (Object[]) new Object[]{itemPaintCanEmpty, new ItemStack(Item.INK_SACK, 1, 15 - n), new ItemStack((Item) itemSeeds, 1, 0), new ItemStack((Item) itemSeeds, 1, 0)});
             CraftLib.addDamageContainer(itemPaintCanPaint[n], itemPaintCanEmpty);
             RedPowerWorld.itemBrushPaint[n] = new ItemPaintBrush(Config.getItemID("items.world.paintbrush." + CoreLib.rawColorNames[n] + ".id"), n);
             itemBrushPaint[n].a("paintbrush." + CoreLib.rawColorNames[n]);
             Config.addName("item.paintbrush." + CoreLib.rawColorNames[n] + ".name", CoreLib.enColorNames[n] + " Paint Brush");
-            ModLoader.addShapelessRecipe((ItemStack)new ItemStack(itemBrushPaint[n]), (Object[])new Object[]{new ItemStack(itemPaintCanPaint[n], 1, -1), itemBrushDry});
+            ModLoader.addShapelessRecipe((ItemStack) new ItemStack(itemBrushPaint[n]), (Object[]) new Object[]{new ItemStack(itemPaintCanPaint[n], 1, -1), itemBrushDry});
         }
         if (Config.getInt("settings.world.tweaks.spreadmoss") > 0) {
             n = Block.MOSSY_COBBLESTONE.id;
@@ -416,7 +373,7 @@ public class RedPowerWorld {
             new BlockBrickMossifier(n);
         }
         if (Config.getInt("settings.world.tweaks.craftcircle") > 0) {
-            ModLoader.addRecipe((ItemStack)new ItemStack(Block.SMOOTH_BRICK, 4, 3), (Object[])new Object[]{"BB", "BB", Character.valueOf('B'), new ItemStack(Block.SMOOTH_BRICK, 1, 0)});
+            ModLoader.addRecipe((ItemStack) new ItemStack(Block.SMOOTH_BRICK, 4, 3), (Object[]) new Object[]{"BB", "BB", Character.valueOf('B'), new ItemStack(Block.SMOOTH_BRICK, 1, 0)});
         }
         enchantDisjunction = new EnchantmentDisjunction(Config.getInt("enchant.disjunction.id"), 10);
         RedPowerWorld.initOreDictionary();

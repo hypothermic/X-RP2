@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Block
  *  net.minecraft.server.BlockFire
@@ -13,16 +13,11 @@ package eloraam.machine;
 
 import eloraam.core.RedPowerLib;
 import eloraam.core.WorldCoord;
-import eloraam.machine.TileMachine;
 import net.minecraft.server.Block;
-import net.minecraft.server.BlockFire;
-import net.minecraft.server.BlockPortal;
 import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
 
 public class TileIgniter
-extends TileMachine {
+        extends TileMachine {
     @Override
     public int getExtendedID() {
         return 12;
@@ -45,7 +40,7 @@ extends TileMachine {
 
     @Override
     public void onBlockNeighborChange(int n) {
-        if (!RedPowerLib.isPowered((IBlockAccess)this.world, this.x, this.y, this.z, 16777215, 63)) {
+        if (!RedPowerLib.isPowered((IBlockAccess) this.world, this.x, this.y, this.z, 16777215, 63)) {
             if (!this.Powered) {
                 return;
             }

@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  forge.ISidedInventory
  *  net.minecraft.server.BaseMod
@@ -23,36 +23,27 @@ import eloraam.core.CoreLib;
 import eloraam.core.CoreProxy;
 import eloraam.core.IRotatable;
 import forge.ISidedInventory;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.server.BaseMod;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
-import net.minecraft.server.mod_RedPowerMachine;
+import net.minecraft.server.*;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TileBufferChest
-extends TileAppliance
-implements IInventory,
-ISidedInventory,
-IRotatable {
+        extends TileAppliance
+        implements IInventory,
+        ISidedInventory,
+        IRotatable {
     private ItemStack[] contents = new ItemStack[20];
     public List<HumanEntity> transaction = new ArrayList<HumanEntity>();
 
     public void onOpen(CraftHumanEntity craftHumanEntity) {
-        this.transaction.add((HumanEntity)craftHumanEntity);
+        this.transaction.add((HumanEntity) craftHumanEntity);
     }
 
     public void onClose(CraftHumanEntity craftHumanEntity) {
-        this.transaction.remove((Object)craftHumanEntity);
+        this.transaction.remove((Object) craftHumanEntity);
     }
 
     public List<HumanEntity> getViewers() {
@@ -83,14 +74,14 @@ IRotatable {
         if (CoreProxy.isClient(this.world)) {
             return true;
         }
-        entityHuman.openGui((BaseMod)mod_RedPowerMachine.instance, 4, this.world, this.x, this.y, this.z);
+        entityHuman.openGui((BaseMod) mod_RedPowerMachine.instance, 4, this.world, this.x, this.y, this.z);
         return true;
     }
 
     public int getFacing(EntityLiving entityLiving) {
-        int n = (int)Math.floor((double)(entityLiving.yaw * 4.0f / 360.0f) + 0.5) & 3;
-        if (Math.abs(entityLiving.locX - (double)this.x) < 2.0 && Math.abs(entityLiving.locZ - (double)this.z) < 2.0) {
-            double d = entityLiving.locY + 1.82 - (double)entityLiving.height - (double)this.y;
+        int n = (int) Math.floor((double) (entityLiving.yaw * 4.0f / 360.0f) + 0.5) & 3;
+        if (Math.abs(entityLiving.locX - (double) this.x) < 2.0 && Math.abs(entityLiving.locZ - (double) this.z) < 2.0) {
+            double d = entityLiving.locY + 1.82 - (double) entityLiving.height - (double) this.y;
             if (d > 2.0) {
                 return 0;
             }
@@ -203,7 +194,7 @@ IRotatable {
         if (this.world.getTileEntity(this.x, this.y, this.z) != this) {
             return false;
         }
-        return entityHuman.e((double)this.x + 0.5, (double)this.y + 0.5, (double)this.z + 0.5) <= 64.0;
+        return entityHuman.e((double) this.x + 0.5, (double) this.y + 0.5, (double) this.z + 0.5) <= 64.0;
     }
 
     public void g() {
@@ -229,10 +220,10 @@ IRotatable {
         NBTTagList nBTTagList = nBTTagCompound.getList("Items");
         this.contents = new ItemStack[this.getSize()];
         for (int i = 0; i < nBTTagList.size(); ++i) {
-            NBTTagCompound nBTTagCompound2 = (NBTTagCompound)nBTTagList.get(i);
+            NBTTagCompound nBTTagCompound2 = (NBTTagCompound) nBTTagList.get(i);
             int n = nBTTagCompound2.getByte("Slot") & 255;
             if (n < 0 || n >= this.contents.length) continue;
-            this.contents[n] = ItemStack.a((NBTTagCompound)nBTTagCompound2);
+            this.contents[n] = ItemStack.a((NBTTagCompound) nBTTagCompound2);
         }
     }
 
@@ -243,11 +234,11 @@ IRotatable {
         for (int i = 0; i < this.contents.length; ++i) {
             if (this.contents[i] == null) continue;
             NBTTagCompound nBTTagCompound2 = new NBTTagCompound();
-            nBTTagCompound2.setByte("Slot", (byte)i);
+            nBTTagCompound2.setByte("Slot", (byte) i);
             this.contents[i].save(nBTTagCompound2);
-            nBTTagList.add((NBTBase)nBTTagCompound2);
+            nBTTagList.add((NBTBase) nBTTagCompound2);
         }
-        nBTTagCompound.set("Items", (NBTBase)nBTTagList);
+        nBTTagCompound.set("Items", (NBTBase) nBTTagList);
     }
 }
 

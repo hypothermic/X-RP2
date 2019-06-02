@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Container
  *  net.minecraft.server.EntityHuman
@@ -11,17 +11,10 @@
  */
 package eloraam.machine;
 
-import eloraam.machine.TileDeploy;
-import java.util.List;
-import net.minecraft.server.Container;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.Slot;
+import net.minecraft.server.*;
 
 public class ContainerDeploy
-extends Container {
+        extends Container {
     private TileDeploy tileDeploy;
 
     public ContainerDeploy(IInventory iInventory, TileDeploy tileDeploy) {
@@ -30,7 +23,7 @@ extends Container {
         this.tileDeploy = tileDeploy;
         for (n2 = 0; n2 < 3; ++n2) {
             for (n = 0; n < 3; ++n) {
-                this.a(new Slot((IInventory)tileDeploy, n + n2 * 3, 62 + n * 18, 17 + n2 * 18));
+                this.a(new Slot((IInventory) tileDeploy, n + n2 * 3, 62 + n * 18, 17 + n2 * 18));
             }
         }
         for (n2 = 0; n2 < 3; ++n2) {
@@ -41,7 +34,7 @@ extends Container {
         for (n2 = 0; n2 < 9; ++n2) {
             this.a(new Slot(iInventory, n2, 8 + n2 * 18, 142));
         }
-        this.setPlayer(((PlayerInventory)iInventory).player);
+        this.setPlayer(((PlayerInventory) iInventory).player);
     }
 
     public IInventory getInventory() {
@@ -54,7 +47,7 @@ extends Container {
 
     public ItemStack a(int n) {
         ItemStack itemStack = null;
-        Slot slot = (Slot)this.e.get(n);
+        Slot slot = (Slot) this.e.get(n);
         if (slot != null && slot.c()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.cloneItemStack();

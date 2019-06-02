@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  forge.NetworkMod
  *  net.minecraft.server.World
@@ -8,13 +8,11 @@
 package net.minecraft.server;
 
 import forge.NetworkMod;
+
 import java.util.Random;
-import net.minecraft.server.RedPowerWorld;
-import net.minecraft.server.World;
-import net.minecraft.server.mod_RedPowerCore;
 
 public class mod_RedPowerWorld
-extends NetworkMod {
+        extends NetworkMod {
     public static mod_RedPowerWorld instance;
     private static boolean initialized;
 

@@ -4,15 +4,12 @@ import eloraam.core.BlockCoverable;
 import eloraam.core.CoreLib;
 import eloraam.core.IRedPowerConnectable;
 import eloraam.core.RedPowerLib;
-import eloraam.logic.TileLogic;
 import forge.IConnectRedstone;
-import net.minecraft.server.Block;
 import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.Material;
 
 public class BlockLogic
-extends BlockCoverable
-implements IConnectRedstone {
+        extends BlockCoverable
+        implements IConnectRedstone {
     public BlockLogic(int n) {
         super(n, CoreLib.materialRedpower);
         this.a(0.0f, 0.0f, 0.0f, 1.0f, 0.125f, 1.0f);
@@ -24,7 +21,7 @@ implements IConnectRedstone {
         if (n4 < 0) {
             return false;
         }
-        IRedPowerConnectable iRedPowerConnectable = (IRedPowerConnectable)CoreLib.getTileEntity(iBlockAccess, n, n2, n3, IRedPowerConnectable.class);
+        IRedPowerConnectable iRedPowerConnectable = (IRedPowerConnectable) CoreLib.getTileEntity(iBlockAccess, n, n2, n3, IRedPowerConnectable.class);
         if (iRedPowerConnectable == null) {
             return false;
         }
@@ -33,7 +30,7 @@ implements IConnectRedstone {
     }
 
     public int getLightValue(IBlockAccess iBlockAccess, int n, int n2, int n3) {
-        TileLogic tileLogic = (TileLogic)CoreLib.getTileEntity(iBlockAccess, n, n2, n3, TileLogic.class);
+        TileLogic tileLogic = (TileLogic) CoreLib.getTileEntity(iBlockAccess, n, n2, n3, TileLogic.class);
         if (tileLogic == null) {
             return super.getLightValue(iBlockAccess, n, n2, n3);
         }

@@ -2,16 +2,15 @@
 package eloraam.machine;
 
 import eloraam.core.BlockMultipart;
-import eloraam.machine.TileTube;
 
 public class TileMagTube
-extends TileTube {
+        extends TileTube {
     @Override
     public int getTubeConnectableSides() {
         int n = 63;
         for (int i = 0; i < 6; ++i) {
             if ((this.CoverSides & 1 << i) <= 0 || this.Covers[i] >> 8 >= 3) continue;
-            n &= ~ (1 << i);
+            n &= ~(1 << i);
         }
         return n;
     }

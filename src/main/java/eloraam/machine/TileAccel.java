@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.EntityHuman
  *  net.minecraft.server.EntityLiving
@@ -12,34 +12,16 @@
  */
 package eloraam.machine;
 
-import eloraam.core.BluePowerConductor;
-import eloraam.core.BluePowerEndpoint;
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.IBluePowerConnectable;
-import eloraam.core.ITubeConnectable;
-import eloraam.core.ITubeFlow;
-import eloraam.core.Packet211TileDesc;
-import eloraam.core.RedPowerLib;
-import eloraam.core.TubeFlow;
-import eloraam.core.TubeItem;
-import eloraam.core.WorldCoord;
-import eloraam.machine.TileMachinePanel;
+import eloraam.core.*;
+import net.minecraft.server.*;
+
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
 
 public class TileAccel
-extends TileMachinePanel
-implements IBluePowerConnectable,
-ITubeFlow {
+        extends TileMachinePanel
+        implements IBluePowerConnectable,
+        ITubeFlow {
     TubeFlow flow;
     BluePowerEndpoint cond;
     private boolean hasChanged;
@@ -47,7 +29,7 @@ ITubeFlow {
     public int conCache;
 
     public TileAccel() {
-        this.flow = new TubeFlow(){
+        this.flow = new TubeFlow() {
 
             @Override
             public TileEntity getParent() {
@@ -58,7 +40,7 @@ ITubeFlow {
             public boolean schedule(TubeItem arg0, TubeFlow.TubeScheduleContext arg1) {
                 arg0.scheduled = true;
                 arg0.progress = 0;
-                arg0.side = (byte)(arg0.side ^ 1);
+                arg0.side = (byte) (arg0.side ^ 1);
                 TileAccel.this.recache();
                 arg0.power = 0;
                 if ((arg0.side == TileAccel.this.Rotation && (TileAccel.this.conCache & 2) > 0 || arg0.side == (TileAccel.this.Rotation ^ 1) && (TileAccel.this.conCache & 8) > 0) && TileAccel.this.cond.getVoltage() >= 60.0) {
@@ -68,7 +50,7 @@ ITubeFlow {
                 return true;
             }
         };
-        this.cond = new BluePowerEndpoint(){
+        this.cond = new BluePowerEndpoint() {
 
             @Override
             public TileEntity getParent() {
@@ -89,7 +71,7 @@ ITubeFlow {
 
     @Override
     public void addTubeItem(TubeItem arg0) {
-        arg0.side = (byte)(arg0.side ^ 1);
+        arg0.side = (byte) (arg0.side ^ 1);
         this.flow.add(arg0);
         this.hasChanged = true;
         this.dirtyBlock();
@@ -189,7 +171,7 @@ ITubeFlow {
         }
         if (!CoreProxy.isClient(this.world)) {
             if (this.ConMask < 0) {
-                this.ConMask = RedPowerLib.getConnections((IBlockAccess)this.world, this, this.x, this.y, this.z);
+                this.ConMask = RedPowerLib.getConnections((IBlockAccess) this.world, this, this.x, this.y, this.z);
                 this.cond.recache(this.ConMask, 0);
             }
             this.cond.iterate();
@@ -212,7 +194,7 @@ ITubeFlow {
     protected void readFromPacket(Packet211TileDesc arg0) throws IOException {
         if (arg0.subId == 10) {
             this.flow.contents.clear();
-            int arg1 = (int)arg0.getUVLC();
+            int arg1 = (int) arg0.getUVLC();
             int arg2 = 0;
             while (arg2 < arg1) {
                 this.flow.contents.add(TubeItem.newFromPacket(arg0));
@@ -228,8 +210,8 @@ ITubeFlow {
         if (this.conCache < 0) {
             int arg3;
             WorldCoord arg0 = new WorldCoord(this);
-            ITubeConnectable arg1 = (ITubeConnectable)CoreLib.getTileEntity((IBlockAccess)this.world, arg0.coordStep(this.Rotation), ITubeConnectable.class);
-            ITubeConnectable arg2 = (ITubeConnectable)CoreLib.getTileEntity((IBlockAccess)this.world, arg0.coordStep(this.Rotation ^ 1), ITubeConnectable.class);
+            ITubeConnectable arg1 = (ITubeConnectable) CoreLib.getTileEntity((IBlockAccess) this.world, arg0.coordStep(this.Rotation), ITubeConnectable.class);
+            ITubeConnectable arg2 = (ITubeConnectable) CoreLib.getTileEntity((IBlockAccess) this.world, arg0.coordStep(this.Rotation ^ 1), ITubeConnectable.class);
             this.conCache = 0;
             if (arg1 != null) {
                 arg3 = arg1.getTubeConClass();
@@ -264,7 +246,7 @@ ITubeFlow {
         Iterator arg2 = this.flow.contents.iterator();
         int arg3 = 0;
         while (arg3 < arg1) {
-            TubeItem arg4 = (TubeItem)arg2.next();
+            TubeItem arg4 = (TubeItem) arg2.next();
             arg4.writeToPacket(arg0);
             ++arg3;
         }
@@ -288,7 +270,7 @@ ITubeFlow {
         if (arg0 != this.Rotation && arg0 != (this.Rotation ^ 1)) {
             return false;
         }
-        arg2.side = (byte)arg0;
+        arg2.side = (byte) arg0;
         this.flow.add(arg2);
         this.hasChanged = true;
         this.dirtyBlock();

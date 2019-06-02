@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Block
  *  net.minecraft.server.IBlockAccess
@@ -10,20 +10,18 @@ package eloraam.machine;
 
 import eloraam.core.BlockMultipart;
 import eloraam.core.CoreLib;
-import eloraam.machine.TileMachinePanel;
-import net.minecraft.server.Block;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.Material;
 
 public class BlockMachinePanel
-extends BlockMultipart {
+        extends BlockMultipart {
     public BlockMachinePanel(int n) {
         super(n, Material.STONE);
         this.c(2.0f);
     }
 
     public int getLightValue(IBlockAccess iBlockAccess, int n, int n2, int n3) {
-        TileMachinePanel tileMachinePanel = (TileMachinePanel)CoreLib.getTileEntity(iBlockAccess, n, n2, n3, TileMachinePanel.class);
+        TileMachinePanel tileMachinePanel = (TileMachinePanel) CoreLib.getTileEntity(iBlockAccess, n, n2, n3, TileMachinePanel.class);
         if (tileMachinePanel == null) {
             return 0;
         }

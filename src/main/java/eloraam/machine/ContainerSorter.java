@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Container
  *  net.minecraft.server.EntityHuman
@@ -12,23 +12,15 @@
  */
 package eloraam.machine;
 
-import eloraam.core.BluePowerEndpoint;
 import eloraam.core.IHandleGuiEvent;
 import eloraam.core.Packet212GuiEvent;
-import eloraam.machine.TileSorter;
+import net.minecraft.server.*;
+
 import java.io.IOException;
-import java.util.List;
-import net.minecraft.server.Container;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.ICrafting;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.Slot;
 
 public class ContainerSorter
-extends Container
-implements IHandleGuiEvent {
+        extends Container
+        implements IHandleGuiEvent {
     public byte[] colors = new byte[8];
     public int column;
     public int charge = 0;
@@ -43,7 +35,7 @@ implements IHandleGuiEvent {
         this.tileSorter = tileSorter;
         for (n2 = 0; n2 < 5; ++n2) {
             for (n = 0; n < 8; ++n) {
-                this.a(new Slot((IInventory)tileSorter, n + n2 * 8, 26 + 18 * n, 18 + 18 * n2));
+                this.a(new Slot((IInventory) tileSorter, n + n2 * 8, 26 + 18 * n, 18 + 18 * n2));
             }
         }
         for (n2 = 0; n2 < 3; ++n2) {
@@ -54,7 +46,7 @@ implements IHandleGuiEvent {
         for (n2 = 0; n2 < 9; ++n2) {
             this.a(new Slot(iInventory, n2, 8 + n2 * 18, 198));
         }
-        this.setPlayer(((PlayerInventory)iInventory).player);
+        this.setPlayer(((PlayerInventory) iInventory).player);
     }
 
     public IInventory getInventory() {
@@ -67,7 +59,7 @@ implements IHandleGuiEvent {
 
     public ItemStack a(int n) {
         ItemStack itemStack = null;
-        Slot slot = (Slot)this.e.get(n);
+        Slot slot = (Slot) this.e.get(n);
         if (slot != null && slot.c()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.cloneItemStack();
@@ -92,25 +84,25 @@ implements IHandleGuiEvent {
         int n;
         super.a();
         for (n = 0; n < this.listeners.size(); ++n) {
-            ICrafting iCrafting = (ICrafting)this.listeners.get(n);
+            ICrafting iCrafting = (ICrafting) this.listeners.get(n);
             for (int i = 0; i < 8; ++i) {
                 if (this.colors[i] == this.tileSorter.colors[i]) continue;
-                iCrafting.setContainerData((Container)this, i, (int)this.tileSorter.colors[i]);
+                iCrafting.setContainerData((Container) this, i, (int) this.tileSorter.colors[i]);
             }
             if (this.column != this.tileSorter.column) {
-                iCrafting.setContainerData((Container)this, 8, (int)this.tileSorter.column);
+                iCrafting.setContainerData((Container) this, 8, (int) this.tileSorter.column);
             }
             if (this.charge != this.tileSorter.cond.Charge) {
-                iCrafting.setContainerData((Container)this, 9, this.tileSorter.cond.Charge);
+                iCrafting.setContainerData((Container) this, 9, this.tileSorter.cond.Charge);
             }
             if (this.flow != this.tileSorter.cond.Flow) {
-                iCrafting.setContainerData((Container)this, 10, this.tileSorter.cond.Flow);
+                iCrafting.setContainerData((Container) this, 10, this.tileSorter.cond.Flow);
             }
             if (this.mode != this.tileSorter.mode) {
-                iCrafting.setContainerData((Container)this, 11, (int)this.tileSorter.mode);
+                iCrafting.setContainerData((Container) this, 11, (int) this.tileSorter.mode);
             }
             if (this.defcolor == this.tileSorter.defcolor) continue;
-            iCrafting.setContainerData((Container)this, 12, (int)this.tileSorter.defcolor);
+            iCrafting.setContainerData((Container) this, 12, (int) this.tileSorter.defcolor);
         }
         for (n = 0; n < 8; ++n) {
             this.colors[n] = this.tileSorter.colors[n];
@@ -128,11 +120,11 @@ implements IHandleGuiEvent {
 
     public void updateProgressBar(int n, int n2) {
         if (n < 8) {
-            this.tileSorter.colors[n] = (byte)n2;
+            this.tileSorter.colors[n] = (byte) n2;
         }
         switch (n) {
             case 8: {
-                this.tileSorter.column = (byte)n2;
+                this.tileSorter.column = (byte) n2;
                 break;
             }
             case 9: {
@@ -144,11 +136,11 @@ implements IHandleGuiEvent {
                 break;
             }
             case 11: {
-                this.tileSorter.mode = (byte)n2;
+                this.tileSorter.mode = (byte) n2;
                 break;
             }
             case 12: {
-                this.tileSorter.defcolor = (byte)n2;
+                this.tileSorter.defcolor = (byte) n2;
             }
         }
     }
@@ -161,26 +153,25 @@ implements IHandleGuiEvent {
                     break;
                 }
                 case 1: {
-                    this.tileSorter.mode = (byte)packet212GuiEvent.getByte();
+                    this.tileSorter.mode = (byte) packet212GuiEvent.getByte();
                     this.tileSorter.dirtyBlock();
                     break;
                 }
                 case 2: {
-                    byte by = (byte)packet212GuiEvent.getByte();
+                    byte by = (byte) packet212GuiEvent.getByte();
                     if (by >= 0 && by <= 8) {
-                        this.tileSorter.colors[by] = (byte)packet212GuiEvent.getByte();
+                        this.tileSorter.colors[by] = (byte) packet212GuiEvent.getByte();
                         this.tileSorter.dirtyBlock();
                     }
                     break;
                 }
                 case 3: {
-                    this.tileSorter.defcolor = (byte)packet212GuiEvent.getByte();
+                    this.tileSorter.defcolor = (byte) packet212GuiEvent.getByte();
                     this.tileSorter.dirtyBlock();
                     break;
                 }
             }
-        }
-        catch (IOException iOException) {
+        } catch (IOException iOException) {
             // empty catch block
         }
     }

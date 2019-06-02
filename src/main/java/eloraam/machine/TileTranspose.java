@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  forge.ISidedInventory
  *  net.minecraft.server.AxisAlignedBB
@@ -18,32 +18,15 @@
  */
 package eloraam.machine;
 
-import eloraam.core.CoreProxy;
-import eloraam.core.ITubeConnectable;
-import eloraam.core.MachineLib;
-import eloraam.core.RedPowerLib;
-import eloraam.core.TubeBuffer;
-import eloraam.core.TubeItem;
-import eloraam.core.WorldCoord;
-import eloraam.machine.TileMachine;
+import eloraam.core.*;
 import forge.ISidedInventory;
+import net.minecraft.server.*;
+
 import java.util.List;
-import net.minecraft.server.AxisAlignedBB;
-import net.minecraft.server.Block;
-import net.minecraft.server.BlockMinecartTrack;
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityItem;
-import net.minecraft.server.EntityMinecart;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
 
 public class TileTranspose
-extends TileMachine
-implements ITubeConnectable {
+        extends TileMachine
+        implements ITubeConnectable {
     protected TubeBuffer buffer;
 
     public TileTranspose() {
@@ -111,27 +94,27 @@ implements ITubeConnectable {
     }
 
     protected AxisAlignedBB getSizeBox(double arg0, double arg2, double arg4) {
-        double arg6 = (double)this.x + 0.5;
-        double arg8 = (double)this.y + 0.5;
-        double arg10 = (double)this.z + 0.5;
+        double arg6 = (double) this.x + 0.5;
+        double arg8 = (double) this.y + 0.5;
+        double arg10 = (double) this.z + 0.5;
         switch (this.Rotation) {
             case 0: {
-                return AxisAlignedBB.b((double)(arg6 - arg0), (double)((double)this.y - arg4), (double)(arg10 - arg0), (double)(arg6 + arg0), (double)((double)this.y + arg2), (double)(arg10 + arg0));
+                return AxisAlignedBB.b((double) (arg6 - arg0), (double) ((double) this.y - arg4), (double) (arg10 - arg0), (double) (arg6 + arg0), (double) ((double) this.y + arg2), (double) (arg10 + arg0));
             }
             case 1: {
-                return AxisAlignedBB.b((double)(arg6 - arg0), (double)((double)(this.y + 1) - arg2), (double)(arg10 - arg0), (double)(arg6 + arg0), (double)((double)(this.y + 1) + arg4), (double)(arg10 + arg0));
+                return AxisAlignedBB.b((double) (arg6 - arg0), (double) ((double) (this.y + 1) - arg2), (double) (arg10 - arg0), (double) (arg6 + arg0), (double) ((double) (this.y + 1) + arg4), (double) (arg10 + arg0));
             }
             case 2: {
-                return AxisAlignedBB.b((double)(arg6 - arg0), (double)(arg8 - arg0), (double)((double)this.z - arg4), (double)(arg6 + arg0), (double)(arg8 + arg0), (double)((double)this.z + arg2));
+                return AxisAlignedBB.b((double) (arg6 - arg0), (double) (arg8 - arg0), (double) ((double) this.z - arg4), (double) (arg6 + arg0), (double) (arg8 + arg0), (double) ((double) this.z + arg2));
             }
             case 3: {
-                return AxisAlignedBB.b((double)(arg6 - arg0), (double)(arg8 - arg0), (double)((double)(this.z + 1) - arg2), (double)(arg6 + arg0), (double)(arg8 + arg0), (double)((double)(this.z + 1) + arg4));
+                return AxisAlignedBB.b((double) (arg6 - arg0), (double) (arg8 - arg0), (double) ((double) (this.z + 1) - arg2), (double) (arg6 + arg0), (double) (arg8 + arg0), (double) ((double) (this.z + 1) + arg4));
             }
             case 4: {
-                return AxisAlignedBB.b((double)((double)this.x - arg4), (double)(arg8 - arg0), (double)(arg10 - arg0), (double)((double)this.x + arg2), (double)(arg8 + arg0), (double)(arg10 + arg0));
+                return AxisAlignedBB.b((double) ((double) this.x - arg4), (double) (arg8 - arg0), (double) (arg10 - arg0), (double) ((double) this.x + arg2), (double) (arg8 + arg0), (double) (arg10 + arg0));
             }
         }
-        return AxisAlignedBB.b((double)((double)(this.x + 1) - arg2), (double)(arg8 - arg0), (double)(arg10 - arg0), (double)((double)(this.x + 1) + arg4), (double)(arg8 + arg0), (double)(arg10 + arg0));
+        return AxisAlignedBB.b((double) ((double) (this.x + 1) - arg2), (double) (arg8 - arg0), (double) (arg10 - arg0), (double) ((double) (this.x + 1) + arg4), (double) (arg8 + arg0), (double) (arg10 + arg0));
     }
 
     @Override
@@ -166,7 +149,7 @@ implements ITubeConnectable {
         int arg2 = 0;
         int arg3 = arg1.getSize();
         if (arg1 instanceof ISidedInventory) {
-            ISidedInventory arg4 = (ISidedInventory)arg1;
+            ISidedInventory arg4 = (ISidedInventory) arg1;
             arg2 = arg4.getStartInventorySide(this.Rotation);
             arg3 = arg4.getSizeInventorySide(this.Rotation);
         }
@@ -175,7 +158,7 @@ implements ITubeConnectable {
 
     @Override
     public void onBlockNeighborChange(int arg0) {
-        if (RedPowerLib.isPowered((IBlockAccess)this.world, this.x, this.y, this.z, 16777215, 63)) {
+        if (RedPowerLib.isPowered((IBlockAccess) this.world, this.x, this.y, this.z, 16777215, 63)) {
             if (!this.Powered) {
                 this.Powered = true;
                 this.dirtyBlock();
@@ -239,7 +222,8 @@ implements ITubeConnectable {
         List arg3 = this.world.a(EntityMinecart.class, this.getSizeBox(0.8, 0.05, 1.05));
         for (Object arg5 : arg3) {
             EntityMinecart arg6;
-            if (!(arg5 instanceof EntityMinecart) || !MachineLib.addToInventoryCore((IInventory)(arg6 = (EntityMinecart)arg5), arg0, 0, arg6.getSize(), true)) continue;
+            if (!(arg5 instanceof EntityMinecart) || !MachineLib.addToInventoryCore((IInventory) (arg6 = (EntityMinecart) arg5), arg0, 0, arg6.getSize(), true))
+                continue;
             return true;
         }
         return false;
@@ -266,7 +250,7 @@ implements ITubeConnectable {
 
     protected int suckEntity(Object arg0) {
         if (arg0 instanceof EntityItem) {
-            EntityItem arg2 = (EntityItem)arg0;
+            EntityItem arg2 = (EntityItem) arg0;
             if (arg2.itemStack.count != 0 && !arg2.dead) {
                 if (!this.suckFilter(arg2.itemStack)) {
                     return 0;
@@ -281,8 +265,8 @@ implements ITubeConnectable {
             if (this.Active) {
                 return 0;
             }
-            EntityMinecart arg1 = (EntityMinecart)arg0;
-            if (this.handleExtract((IInventory)arg1, 0, arg1.getSize())) {
+            EntityMinecart arg1 = (EntityMinecart) arg0;
+            if (this.handleExtract((IInventory) arg1, 0, arg1.getSize())) {
                 return 2;
             }
         }

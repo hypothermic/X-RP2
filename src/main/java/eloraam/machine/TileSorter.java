@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  forge.ISidedInventory
  *  net.minecraft.server.BaseMod
@@ -18,38 +18,20 @@
  */
 package eloraam.machine;
 
-import eloraam.core.BluePowerConductor;
-import eloraam.core.BluePowerEndpoint;
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.IBluePowerConnectable;
-import eloraam.core.MachineLib;
-import eloraam.core.RedPowerLib;
-import eloraam.core.TubeBuffer;
-import eloraam.core.TubeItem;
-import eloraam.machine.TileTranspose;
+import eloraam.core.*;
 import forge.ISidedInventory;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.server.BaseMod;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
-import net.minecraft.server.mod_RedPowerMachine;
+import net.minecraft.server.*;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TileSorter
-extends TileTranspose
-implements IInventory,
-ISidedInventory,
-IBluePowerConnectable {
+        extends TileTranspose
+        implements IInventory,
+        ISidedInventory,
+        IBluePowerConnectable {
     BluePowerEndpoint cond;
     public int ConMask;
     private ItemStack[] contents;
@@ -63,7 +45,7 @@ IBluePowerConnectable {
     public List<HumanEntity> transaction = new ArrayList<HumanEntity>();
 
     public TileSorter() {
-        this.cond = new BluePowerEndpoint(){
+        this.cond = new BluePowerEndpoint() {
 
             @Override
             public TileEntity getParent() {
@@ -85,11 +67,11 @@ IBluePowerConnectable {
     }
 
     public void onOpen(CraftHumanEntity craftHumanEntity) {
-        this.transaction.add((HumanEntity)craftHumanEntity);
+        this.transaction.add((HumanEntity) craftHumanEntity);
     }
 
     public void onClose(CraftHumanEntity craftHumanEntity) {
-        this.transaction.remove((Object)craftHumanEntity);
+        this.transaction.remove((Object) craftHumanEntity);
     }
 
     public List<HumanEntity> getViewers() {
@@ -142,7 +124,7 @@ IBluePowerConnectable {
             return;
         }
         if (this.ConMask < 0) {
-            this.ConMask = RedPowerLib.getConnections((IBlockAccess)this.world, this, this.x, this.y, this.z);
+            this.ConMask = RedPowerLib.getConnections((IBlockAccess) this.world, this, this.x, this.y, this.z);
             this.cond.recache(this.ConMask, 0);
         }
         this.cond.iterate();
@@ -166,7 +148,7 @@ IBluePowerConnectable {
         if (CoreProxy.isClient(this.world)) {
             return true;
         }
-        entityHuman.openGui((BaseMod)mod_RedPowerMachine.instance, 5, this.world, this.x, this.y, this.z);
+        entityHuman.openGui((BaseMod) mod_RedPowerMachine.instance, 5, this.world, this.x, this.y, this.z);
         return true;
     }
 
@@ -239,7 +221,7 @@ IBluePowerConnectable {
     protected boolean tryDrainBuffer() {
         for (int i = 0; i < 9; ++i) {
             TubeBuffer tubeBuffer;
-            this.draining = (byte)(this.draining + 1);
+            this.draining = (byte) (this.draining + 1);
             if (this.draining > 7) {
                 this.draining = -1;
                 tubeBuffer = this.buffer;
@@ -394,7 +376,7 @@ IBluePowerConnectable {
 
     private void stepColumn() {
         for (int i = 0; i < 8; ++i) {
-            this.column = (byte)(this.column + 1);
+            this.column = (byte) (this.column + 1);
             if (this.column > 7) {
                 this.column = 0;
             }
@@ -601,7 +583,7 @@ IBluePowerConnectable {
         if (this.world.getTileEntity(this.x, this.y, this.z) != this) {
             return false;
         }
-        return entityHuman.e((double)this.x + 0.5, (double)this.y + 0.5, (double)this.z + 0.5) <= 64.0;
+        return entityHuman.e((double) this.x + 0.5, (double) this.y + 0.5, (double) this.z + 0.5) <= 64.0;
     }
 
     public void update() {
@@ -622,10 +604,10 @@ IBluePowerConnectable {
         NBTTagList nBTTagList = nBTTagCompound.getList("Items");
         this.contents = new ItemStack[this.getSize()];
         for (int i = 0; i < nBTTagList.size(); ++i) {
-            NBTTagCompound nBTTagCompound2 = (NBTTagCompound)nBTTagList.get(i);
+            NBTTagCompound nBTTagCompound2 = (NBTTagCompound) nBTTagList.get(i);
             n = nBTTagCompound2.getByte("Slot") & 255;
             if (n < 0 || n >= this.contents.length) continue;
-            this.contents[n] = ItemStack.a((NBTTagCompound)nBTTagCompound2);
+            this.contents[n] = ItemStack.a((NBTTagCompound) nBTTagCompound2);
         }
         this.column = nBTTagCompound.getByte("coln");
         byte[] arrby = nBTTagCompound.getByteArray("cols");
@@ -642,7 +624,7 @@ IBluePowerConnectable {
         this.cond.readFromNBT(nBTTagCompound);
         NBTTagList nBTTagList2 = nBTTagCompound.getList("buffers");
         for (n = 0; n < nBTTagList2.size(); ++n) {
-            NBTTagCompound nBTTagCompound3 = (NBTTagCompound)nBTTagList2.get(n);
+            NBTTagCompound nBTTagCompound3 = (NBTTagCompound) nBTTagList2.get(n);
             this.channelBuffers[n].readFromNBT(nBTTagCompound3);
         }
     }
@@ -654,12 +636,12 @@ IBluePowerConnectable {
         for (int i = 0; i < this.contents.length; ++i) {
             if (this.contents[i] == null) continue;
             NBTTagCompound nBTTagCompound2 = new NBTTagCompound();
-            nBTTagCompound2.setByte("Slot", (byte)i);
+            nBTTagCompound2.setByte("Slot", (byte) i);
             this.contents[i].save(nBTTagCompound2);
-            nBTTagList.add((NBTBase)nBTTagCompound2);
+            nBTTagList.add((NBTBase) nBTTagCompound2);
         }
         nBTTagCompound.setByte("coln", this.column);
-        nBTTagCompound.set("Items", (NBTBase)nBTTagList);
+        nBTTagCompound.set("Items", (NBTBase) nBTTagList);
         nBTTagCompound.setByteArray("cols", this.colors);
         nBTTagCompound.setByte("mode", this.mode);
         nBTTagCompound.setByte("drain", this.draining);
@@ -671,9 +653,9 @@ IBluePowerConnectable {
         for (int i = 0; i < 8; ++i) {
             NBTTagCompound nBTTagCompound3 = new NBTTagCompound();
             this.channelBuffers[i].writeToNBT(nBTTagCompound3);
-            nBTTagList2.add((NBTBase)nBTTagCompound3);
+            nBTTagList2.add((NBTBase) nBTTagCompound3);
         }
-        nBTTagCompound.set("buffers", (NBTBase)nBTTagList2);
+        nBTTagCompound.set("buffers", (NBTBase) nBTTagList2);
     }
 
 }

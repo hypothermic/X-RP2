@@ -1,8 +1,6 @@
 /* X-RP - decompiled with CFR */
 package eloraam.core;
 
-import eloraam.core.WorldCoord;
-
 public interface IFrameLink {
 
     public boolean isFrameMoving();

@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Block
  *  net.minecraft.server.EntityHuman
@@ -13,31 +13,17 @@
  */
 package eloraam.machine;
 
-import eloraam.core.BlockMultipart;
-import eloraam.core.IFrameSupport;
-import eloraam.core.IHandlePackets;
-import eloraam.core.IRotatable;
-import eloraam.core.Packet211TileDesc;
-import eloraam.core.TileMultipart;
-import eloraam.machine.BlockMachinePanel;
-import java.io.ByteArrayOutputStream;
+import eloraam.core.*;
+import net.minecraft.server.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import net.minecraft.server.Block;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.Packet;
-import net.minecraft.server.RedPowerMachine;
-import net.minecraft.server.World;
 
 public class TileMachinePanel
-extends TileMultipart
-implements IHandlePackets,
-IRotatable,
-IFrameSupport {
+        extends TileMultipart
+        implements IHandlePackets,
+        IRotatable,
+        IFrameSupport {
     public int Rotation = 0;
     public boolean Active = false;
     public boolean Powered = false;
@@ -53,9 +39,9 @@ IFrameSupport {
     }
 
     public int getFacing(EntityLiving entityLiving) {
-        int n = (int)Math.floor((double)(entityLiving.yaw * 4.0f / 360.0f) + 0.5) & 3;
-        if (Math.abs(entityLiving.locX - (double)this.x) < 2.0 && Math.abs(entityLiving.locZ - (double)this.z) < 2.0) {
-            double d = entityLiving.locY + 1.82 - (double)entityLiving.height - (double)this.y;
+        int n = (int) Math.floor((double) (entityLiving.yaw * 4.0f / 360.0f) + 0.5) & 3;
+        if (Math.abs(entityLiving.locX - (double) this.x) < 2.0 && Math.abs(entityLiving.locZ - (double) this.z) < 2.0) {
+            double d = entityLiving.locY + 1.82 - (double) entityLiving.height - (double) this.y;
             if (d > 2.0) {
                 return 0;
             }
@@ -79,7 +65,7 @@ IFrameSupport {
 
     @Override
     public void onBlockPlacedBy(EntityLiving entityLiving) {
-        this.Rotation = (int)Math.floor((double)(entityLiving.yaw * 4.0f / 360.0f) + 0.5) & 3;
+        this.Rotation = (int) Math.floor((double) (entityLiving.yaw * 4.0f / 360.0f) + 0.5) & 3;
     }
 
     @Override
@@ -100,7 +86,7 @@ IFrameSupport {
     @Override
     public float getPartStrength(EntityHuman entityHuman, int n) {
         BlockMachinePanel blockMachinePanel = RedPowerMachine.blockMachinePanel;
-        return entityHuman.getCurrentPlayerStrVsBlock((Block)blockMachinePanel, 0) / (blockMachinePanel.m() * 30.0f);
+        return entityHuman.getCurrentPlayerStrVsBlock((Block) blockMachinePanel, 0) / (blockMachinePanel.m() * 30.0f);
     }
 
     @Override
@@ -188,8 +174,8 @@ IFrameSupport {
     public void b(NBTTagCompound nBTTagCompound) {
         super.b(nBTTagCompound);
         int n = (this.Active ? 1 : 0) | (this.Powered ? 2 : 0) | (this.Delay ? 4 : 0) | (this.Charged ? 8 : 0);
-        nBTTagCompound.setByte("ps", (byte)n);
-        nBTTagCompound.setByte("rot", (byte)this.Rotation);
+        nBTTagCompound.setByte("ps", (byte) n);
+        nBTTagCompound.setByte("rot", (byte) this.Rotation);
     }
 
     protected void readFromPacket(Packet211TileDesc packet211TileDesc) throws IOException {
@@ -225,8 +211,7 @@ IFrameSupport {
                 return;
             }
             this.readFromPacket(packet211TileDesc);
-        }
-        catch (IOException iOException) {
+        } catch (IOException iOException) {
             // empty catch block
         }
         this.world.notify(this.x, this.y, this.z);

@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.EntityLiving
  *  net.minecraft.server.IBlockAccess
@@ -10,27 +10,16 @@
  */
 package eloraam.machine;
 
-import eloraam.core.BluePowerConductor;
-import eloraam.core.BluePowerEndpoint;
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.FluidBuffer;
-import eloraam.core.IBluePowerConnectable;
-import eloraam.core.IPipeConnectable;
-import eloraam.core.PipeLib;
-import eloraam.core.RedPowerLib;
-import eloraam.core.WorldCoord;
-import eloraam.machine.TileMachinePanel;
+import eloraam.core.*;
 import net.minecraft.server.EntityLiving;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
 
 public class TilePump
-extends TileMachinePanel
-implements IPipeConnectable,
-IBluePowerConnectable {
+        extends TileMachinePanel
+        implements IPipeConnectable,
+        IBluePowerConnectable {
     PumpBuffer inbuf;
     PumpBuffer outbuf;
     BluePowerEndpoint cond;
@@ -40,7 +29,7 @@ IBluePowerConnectable {
     public TilePump() {
         this.inbuf = new PumpBuffer();
         this.outbuf = new PumpBuffer();
-        this.cond = new BluePowerEndpoint(){
+        this.cond = new BluePowerEndpoint() {
 
             @Override
             public TileEntity getParent() {
@@ -112,13 +101,13 @@ IBluePowerConnectable {
 
     @Override
     public void onBlockPlacedBy(EntityLiving entityLiving) {
-        this.Rotation = (int)Math.floor((double)(entityLiving.yaw * 4.0f / 360.0f) + 2.5) & 3;
+        this.Rotation = (int) Math.floor((double) (entityLiving.yaw * 4.0f / 360.0f) + 2.5) & 3;
     }
 
     @Override
     public void onBlockNeighborChange(int n) {
         this.ConMask = -1;
-        if (RedPowerLib.isPowered((IBlockAccess)this.world, this.x, this.y, this.z, 16777215, 63)) {
+        if (RedPowerLib.isPowered((IBlockAccess) this.world, this.x, this.y, this.z, 16777215, 63)) {
             if (this.Powered) {
                 return;
             }
@@ -143,7 +132,7 @@ IBluePowerConnectable {
             return;
         }
         this.outbuf.addLevel(this.inbuf.Type, n);
-        this.inbuf.addLevel(this.inbuf.Type, - n);
+        this.inbuf.addLevel(this.inbuf.Type, -n);
     }
 
     @Override
@@ -151,7 +140,7 @@ IBluePowerConnectable {
         super.q_();
         if (CoreProxy.isClient(this.world)) {
             if (this.Active) {
-                this.PumpTick = (byte)(this.PumpTick + 1);
+                this.PumpTick = (byte) (this.PumpTick + 1);
                 if (this.PumpTick >= 16) {
                     this.PumpTick = 0;
                 }
@@ -159,7 +148,7 @@ IBluePowerConnectable {
             return;
         }
         if (this.ConMask < 0) {
-            this.ConMask = RedPowerLib.getConnections((IBlockAccess)this.world, this, this.x, this.y, this.z);
+            this.ConMask = RedPowerLib.getConnections((IBlockAccess) this.world, this, this.x, this.y, this.z);
             this.cond.recache(this.ConMask, 0);
         }
         this.cond.iterate();
@@ -168,7 +157,7 @@ IBluePowerConnectable {
         PipeLib.movePipeLiquid(this.world, this, new WorldCoord(this), 3 << (n & -2));
         boolean bl = this.Active;
         if (this.Active) {
-            this.PumpTick = (byte)(this.PumpTick + 1);
+            this.PumpTick = (byte) (this.PumpTick + 1);
             if (this.PumpTick == 8) {
                 this.cond.drawPower(10000.0);
                 this.pumpFluid();
@@ -228,7 +217,7 @@ IBluePowerConnectable {
     }
 
     private class PumpBuffer
-    extends FluidBuffer {
+            extends FluidBuffer {
         @Override
         public TileEntity getParent() {
             return TilePump.this;

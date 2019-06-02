@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  forge.AchievementPage
  *  forge.IOreHandler
@@ -15,36 +15,12 @@
  */
 package net.minecraft.server;
 
-import eloraam.base.BlockAppliance;
-import eloraam.base.BlockMicro;
-import eloraam.base.ItemDrawplate;
-import eloraam.base.ItemDyeIndigo;
-import eloraam.base.ItemHandsaw;
-import eloraam.base.ItemMicro;
-import eloraam.base.ItemScrewdriver;
-import eloraam.base.TileAdvBench;
-import eloraam.base.TileAlloyFurnace;
-import eloraam.core.AchieveLib;
-import eloraam.core.Config;
-import eloraam.core.CoreLib;
-import eloraam.core.CoverLib;
-import eloraam.core.CraftLib;
-import eloraam.core.FluidClassBase;
-import eloraam.core.ItemExtended;
-import eloraam.core.ItemParts;
-import eloraam.core.PipeLib;
-import eloraam.core.ReflectLib;
-import eloraam.core.TileCovered;
+import eloraam.base.*;
+import eloraam.core.*;
 import forge.AchievementPage;
 import forge.IOreHandler;
 import forge.ITextureProvider;
 import forge.MinecraftForge;
-import net.minecraft.server.Achievement;
-import net.minecraft.server.AchievementList;
-import net.minecraft.server.Block;
-import net.minecraft.server.Item;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.ModLoader;
 
 public class RedPowerBase {
     private static boolean initialized = false;
@@ -90,7 +66,7 @@ public class RedPowerBase {
             itemLumar.addItem(i, 32 + i, "item.rplumar." + CoreLib.rawColorNames[i]);
             Config.addName("item.rplumar." + CoreLib.rawColorNames[i] + ".name", CoreLib.enColorNames[i] + " Lumar");
             ItemStack itemStack = new ItemStack(Item.INK_SACK, 1, 15 - i);
-            ModLoader.addShapelessRecipe((ItemStack)new ItemStack((Item)itemLumar, 2, i), (Object[])new Object[]{Item.REDSTONE, itemStack, itemStack, Item.GLOWSTONE_DUST});
+            ModLoader.addShapelessRecipe((ItemStack) new ItemStack((Item) itemLumar, 2, i), (Object[]) new Object[]{Item.REDSTONE, itemStack, itemStack, Item.GLOWSTONE_DUST});
         }
         itemResource = new ItemParts(Config.getItemID("items.base.resource.id"), "/eloraam/base/items1.png");
         itemAlloy = new ItemParts(Config.getItemID("items.base.alloy.id"), "/eloraam/base/items1.png");
@@ -113,71 +89,71 @@ public class RedPowerBase {
         itemAlloy.addItem(9, 73, "item.fineiron");
         itemAlloy.addItem(10, 74, "item.coppercoil");
         itemAlloy.addItem(11, 75, "item.btmotor");
-        itemRuby = new ItemStack((Item)itemResource, 1, 0);
-        itemEmerald = new ItemStack((Item)itemResource, 1, 1);
-        itemSapphire = new ItemStack((Item)itemResource, 1, 2);
-        itemIngotSilver = new ItemStack((Item)itemResource, 1, 3);
-        itemIngotTin = new ItemStack((Item)itemResource, 1, 4);
-        itemIngotCopper = new ItemStack((Item)itemResource, 1, 5);
-        itemNikolite = new ItemStack((Item)itemResource, 1, 6);
-        itemIngotRed = new ItemStack((Item)itemAlloy, 1, 0);
-        itemIngotBlue = new ItemStack((Item)itemAlloy, 1, 1);
-        itemIngotBrass = new ItemStack((Item)itemAlloy, 1, 2);
-        itemBouleSilicon = new ItemStack((Item)itemAlloy, 1, 3);
-        itemWaferSilicon = new ItemStack((Item)itemAlloy, 1, 4);
-        itemWaferBlue = new ItemStack((Item)itemAlloy, 1, 5);
-        itemWaferRed = new ItemStack((Item)itemAlloy, 1, 6);
-        itemTinplate = new ItemStack((Item)itemAlloy, 1, 7);
-        itemFineCopper = new ItemStack((Item)itemAlloy, 1, 8);
-        itemFineIron = new ItemStack((Item)itemAlloy, 1, 9);
-        itemCopperCoil = new ItemStack((Item)itemAlloy, 1, 10);
-        itemMotor = new ItemStack((Item)itemAlloy, 1, 11);
-        MinecraftForge.registerOre((String)"gemRuby", (ItemStack)itemRuby);
-        MinecraftForge.registerOre((String)"gemEmerald", (ItemStack)itemEmerald);
-        MinecraftForge.registerOre((String)"gemSapphire", (ItemStack)itemSapphire);
-        MinecraftForge.registerOre((String)"ingotTin", (ItemStack)itemIngotTin);
-        MinecraftForge.registerOre((String)"ingotCopper", (ItemStack)itemIngotCopper);
-        MinecraftForge.registerOre((String)"ingotSilver", (ItemStack)itemIngotSilver);
-        MinecraftForge.registerOre((String)"ingotBrass", (ItemStack)itemIngotBrass);
+        itemRuby = new ItemStack((Item) itemResource, 1, 0);
+        itemEmerald = new ItemStack((Item) itemResource, 1, 1);
+        itemSapphire = new ItemStack((Item) itemResource, 1, 2);
+        itemIngotSilver = new ItemStack((Item) itemResource, 1, 3);
+        itemIngotTin = new ItemStack((Item) itemResource, 1, 4);
+        itemIngotCopper = new ItemStack((Item) itemResource, 1, 5);
+        itemNikolite = new ItemStack((Item) itemResource, 1, 6);
+        itemIngotRed = new ItemStack((Item) itemAlloy, 1, 0);
+        itemIngotBlue = new ItemStack((Item) itemAlloy, 1, 1);
+        itemIngotBrass = new ItemStack((Item) itemAlloy, 1, 2);
+        itemBouleSilicon = new ItemStack((Item) itemAlloy, 1, 3);
+        itemWaferSilicon = new ItemStack((Item) itemAlloy, 1, 4);
+        itemWaferBlue = new ItemStack((Item) itemAlloy, 1, 5);
+        itemWaferRed = new ItemStack((Item) itemAlloy, 1, 6);
+        itemTinplate = new ItemStack((Item) itemAlloy, 1, 7);
+        itemFineCopper = new ItemStack((Item) itemAlloy, 1, 8);
+        itemFineIron = new ItemStack((Item) itemAlloy, 1, 9);
+        itemCopperCoil = new ItemStack((Item) itemAlloy, 1, 10);
+        itemMotor = new ItemStack((Item) itemAlloy, 1, 11);
+        MinecraftForge.registerOre((String) "gemRuby", (ItemStack) itemRuby);
+        MinecraftForge.registerOre((String) "gemEmerald", (ItemStack) itemEmerald);
+        MinecraftForge.registerOre((String) "gemSapphire", (ItemStack) itemSapphire);
+        MinecraftForge.registerOre((String) "ingotTin", (ItemStack) itemIngotTin);
+        MinecraftForge.registerOre((String) "ingotCopper", (ItemStack) itemIngotCopper);
+        MinecraftForge.registerOre((String) "ingotSilver", (ItemStack) itemIngotSilver);
+        MinecraftForge.registerOre((String) "ingotBrass", (ItemStack) itemIngotBrass);
         itemNugget = new ItemParts(Config.getItemID("items.base.nuggets.id"), "/eloraam/base/items1.png");
         itemNugget.addItem(0, 160, "item.nuggetIron");
         itemNugget.addItem(1, 161, "item.nuggetSilver");
         itemNugget.addItem(2, 162, "item.nuggetTin");
         itemNugget.addItem(3, 163, "item.nuggetCopper");
-        itemNuggetIron = new ItemStack((Item)itemNugget, 1, 0);
-        itemNuggetSilver = new ItemStack((Item)itemNugget, 1, 1);
-        itemNuggetTin = new ItemStack((Item)itemNugget, 1, 2);
-        itemNuggetCopper = new ItemStack((Item)itemNugget, 1, 3);
+        itemNuggetIron = new ItemStack((Item) itemNugget, 1, 0);
+        itemNuggetSilver = new ItemStack((Item) itemNugget, 1, 1);
+        itemNuggetTin = new ItemStack((Item) itemNugget, 1, 2);
+        itemNuggetCopper = new ItemStack((Item) itemNugget, 1, 3);
         itemDrawplateDiamond = new ItemDrawplate(Config.getItemID("items.base.drawplateDiamond.id"));
         itemDrawplateDiamond.a("drawplateDiamond").d(27).setMaxDurability(255);
         CraftLib.addDamageOnCraft(itemDrawplateDiamond);
     }
 
     public static void initOreDictionary() {
-        MinecraftForge.registerOreHandler((IOreHandler)new IOreHandler(){
+        MinecraftForge.registerOreHandler((IOreHandler) new IOreHandler() {
 
             public void registerOre(String string, ItemStack itemStack) {
                 if (string.equals("ingotCopper")) {
                     CraftLib.addAlloyResult(RedPowerBase.itemIngotRed, new ItemStack[]{new ItemStack(Item.REDSTONE, 4), CoreLib.copyStack(itemStack, 1)});
-                    for (ItemStack itemStack2 : MinecraftForge.getOreClass((String)"ingotTin")) {
+                    for (ItemStack itemStack2 : MinecraftForge.getOreClass((String) "ingotTin")) {
                         CraftLib.addAlloyResult(CoreLib.copyStack(RedPowerBase.itemIngotBrass, 4), new ItemStack[]{itemStack2, CoreLib.copyStack(itemStack, 3)});
                     }
-                    ModLoader.addShapelessRecipe((ItemStack)RedPowerBase.itemFineCopper, (Object[])new Object[]{itemStack, new ItemStack(RedPowerBase.itemDrawplateDiamond, 1, -1)});
-                    ModLoader.addRecipe((ItemStack)CoreLib.copyStack(RedPowerBase.itemNuggetCopper, 9), (Object[])new Object[]{"I", Character.valueOf('I'), itemStack});
+                    ModLoader.addShapelessRecipe((ItemStack) RedPowerBase.itemFineCopper, (Object[]) new Object[]{itemStack, new ItemStack(RedPowerBase.itemDrawplateDiamond, 1, -1)});
+                    ModLoader.addRecipe((ItemStack) CoreLib.copyStack(RedPowerBase.itemNuggetCopper, 9), (Object[]) new Object[]{"I", Character.valueOf('I'), itemStack});
                 }
                 if (string.equals("ingotTin")) {
-                    for (ItemStack itemStack2 : MinecraftForge.getOreClass((String)"ingotCopper")) {
+                    for (ItemStack itemStack2 : MinecraftForge.getOreClass((String) "ingotCopper")) {
                         CraftLib.addAlloyResult(CoreLib.copyStack(RedPowerBase.itemIngotBrass, 4), new ItemStack[]{itemStack, CoreLib.copyStack(itemStack2, 3)});
                     }
                     CraftLib.addAlloyResult(CoreLib.copyStack(RedPowerBase.itemTinplate, 4), new ItemStack[]{itemStack, new ItemStack(Item.IRON_INGOT, 2)});
-                    ModLoader.addRecipe((ItemStack)CoreLib.copyStack(RedPowerBase.itemNuggetTin, 9), (Object[])new Object[]{"I", Character.valueOf('I'), itemStack});
+                    ModLoader.addRecipe((ItemStack) CoreLib.copyStack(RedPowerBase.itemNuggetTin, 9), (Object[]) new Object[]{"I", Character.valueOf('I'), itemStack});
                 }
                 if (string.equals("ingotSilver")) {
                     CraftLib.addAlloyResult(RedPowerBase.itemIngotBlue, new ItemStack[]{itemStack, CoreLib.copyStack(RedPowerBase.itemNikolite, 4)});
-                    ModLoader.addRecipe((ItemStack)CoreLib.copyStack(RedPowerBase.itemNuggetSilver, 9), (Object[])new Object[]{"I", Character.valueOf('I'), itemStack});
+                    ModLoader.addRecipe((ItemStack) CoreLib.copyStack(RedPowerBase.itemNuggetSilver, 9), (Object[]) new Object[]{"I", Character.valueOf('I'), itemStack});
                 }
                 if (string.equals("dyeBlue")) {
-                    ModLoader.addShapelessRecipe((ItemStack)new ItemStack((Item)RedPowerBase.itemLumar, 2, 11), (Object[])new Object[]{Item.REDSTONE, itemStack, itemStack, Item.GLOWSTONE_DUST});
+                    ModLoader.addShapelessRecipe((ItemStack) new ItemStack((Item) RedPowerBase.itemLumar, 2, 11), (Object[]) new Object[]{Item.REDSTONE, itemStack, itemStack, Item.GLOWSTONE_DUST});
                 }
             }
         });
@@ -185,13 +161,13 @@ public class RedPowerBase {
 
     public static void initIndigo() {
         itemDyeIndigo = new ItemDyeIndigo(Config.getItemID("items.base.dyeIndigo.id"));
-        MinecraftForge.registerOre((String)"dyeBlue", (ItemStack)new ItemStack(itemDyeIndigo));
-        ModLoader.addShapelessRecipe((ItemStack)new ItemStack(Block.WOOL.id, 1, 11), (Object[])new Object[]{itemDyeIndigo, Block.WOOL});
-        ModLoader.addShapelessRecipe((ItemStack)new ItemStack(Item.INK_SACK, 2, 12), (Object[])new Object[]{itemDyeIndigo, new ItemStack(Item.INK_SACK, 1, 15)});
-        ModLoader.addShapelessRecipe((ItemStack)new ItemStack(Item.INK_SACK, 2, 6), (Object[])new Object[]{itemDyeIndigo, new ItemStack(Item.INK_SACK, 1, 2)});
-        ModLoader.addShapelessRecipe((ItemStack)new ItemStack(Item.INK_SACK, 2, 5), (Object[])new Object[]{itemDyeIndigo, new ItemStack(Item.INK_SACK, 1, 1)});
-        ModLoader.addShapelessRecipe((ItemStack)new ItemStack(Item.INK_SACK, 3, 13), (Object[])new Object[]{itemDyeIndigo, new ItemStack(Item.INK_SACK, 1, 1), new ItemStack(Item.INK_SACK, 1, 9)});
-        ModLoader.addShapelessRecipe((ItemStack)new ItemStack(Item.INK_SACK, 4, 13), (Object[])new Object[]{itemDyeIndigo, new ItemStack(Item.INK_SACK, 1, 1), new ItemStack(Item.INK_SACK, 1, 1), new ItemStack(Item.INK_SACK, 1, 15)});
+        MinecraftForge.registerOre((String) "dyeBlue", (ItemStack) new ItemStack(itemDyeIndigo));
+        ModLoader.addShapelessRecipe((ItemStack) new ItemStack(Block.WOOL.id, 1, 11), (Object[]) new Object[]{itemDyeIndigo, Block.WOOL});
+        ModLoader.addShapelessRecipe((ItemStack) new ItemStack(Item.INK_SACK, 2, 12), (Object[]) new Object[]{itemDyeIndigo, new ItemStack(Item.INK_SACK, 1, 15)});
+        ModLoader.addShapelessRecipe((ItemStack) new ItemStack(Item.INK_SACK, 2, 6), (Object[]) new Object[]{itemDyeIndigo, new ItemStack(Item.INK_SACK, 1, 2)});
+        ModLoader.addShapelessRecipe((ItemStack) new ItemStack(Item.INK_SACK, 2, 5), (Object[]) new Object[]{itemDyeIndigo, new ItemStack(Item.INK_SACK, 1, 1)});
+        ModLoader.addShapelessRecipe((ItemStack) new ItemStack(Item.INK_SACK, 3, 13), (Object[]) new Object[]{itemDyeIndigo, new ItemStack(Item.INK_SACK, 1, 1), new ItemStack(Item.INK_SACK, 1, 9)});
+        ModLoader.addShapelessRecipe((ItemStack) new ItemStack(Item.INK_SACK, 4, 13), (Object[]) new Object[]{itemDyeIndigo, new ItemStack(Item.INK_SACK, 1, 1), new ItemStack(Item.INK_SACK, 1, 1), new ItemStack(Item.INK_SACK, 1, 15)});
     }
 
     public static void initAlloys() {
@@ -237,7 +213,7 @@ public class RedPowerBase {
     public static void initMicroblocks() {
         blockMicro = new BlockMicro(Config.getBlockID("blocks.base.microblock.id"));
         blockMicro.a("rpwire");
-        ModLoader.registerBlock((Block)blockMicro, ItemMicro.class);
+        ModLoader.registerBlock((Block) blockMicro, ItemMicro.class);
         blockMicro.addTileEntityMapping(0, TileCovered.class);
         CoverLib.blockCoverPlate = blockMicro;
     }
@@ -252,12 +228,12 @@ public class RedPowerBase {
         PipeLib.registerFluid(1, fluidClassBase);
         PipeLib.registerFluid(2, fluidClassBase2);
         ReflectLib.callClassMethod("net.minecraft.server.BuildCraftEnergy", "initialize", new Class[0], new Object[0]);
-        Block block = (Block)ReflectLib.getStaticField("net.minecraft.server.BuildCraftEnergy", "oilStill", Block.class);
-        Block block2 = (Block)ReflectLib.getStaticField("net.minecraft.server.BuildCraftEnergy", "oilMoving", Block.class);
+        Block block = (Block) ReflectLib.getStaticField("net.minecraft.server.BuildCraftEnergy", "oilStill", Block.class);
+        Block block2 = (Block) ReflectLib.getStaticField("net.minecraft.server.BuildCraftEnergy", "oilMoving", Block.class);
         if (block != null && block2 != null) {
             String string = "/terrain.png";
             if (block instanceof ITextureProvider) {
-                string = ((ITextureProvider)block).getTextureFile();
+                string = ((ITextureProvider) block).getTextureFile();
             }
             FluidClassBase fluidClassBase3 = new FluidClassBase(256, block.id, block2.id, string, block.textureId);
             PipeLib.registerFluidBlock(block.id, fluidClassBase3);
@@ -307,19 +283,19 @@ public class RedPowerBase {
     }
 
     public static void initAchievements() {
-        AchieveLib.registerAchievement(117027, "rpMakeAlloy", 0, 0, new ItemStack((Block)blockAppliance, 1, 0), (Object)AchievementList.j);
-        AchieveLib.registerAchievement(117028, "rpMakeSaw", 4, 0, new ItemStack(itemHandsawDiamond), (Object)AchievementList.w);
+        AchieveLib.registerAchievement(117027, "rpMakeAlloy", 0, 0, new ItemStack((Block) blockAppliance, 1, 0), (Object) AchievementList.j);
+        AchieveLib.registerAchievement(117028, "rpMakeSaw", 4, 0, new ItemStack(itemHandsawDiamond), (Object) AchievementList.w);
         AchieveLib.registerAchievement(117029, "rpIngotRed", 2, 2, itemIngotRed, "rpMakeAlloy");
         AchieveLib.registerAchievement(117030, "rpIngotBlue", 2, 4, itemIngotBlue, "rpMakeAlloy");
         AchieveLib.registerAchievement(117031, "rpIngotBrass", 2, 6, itemIngotBrass, "rpMakeAlloy");
-        AchieveLib.registerAchievement(117032, "rpAdvBench", -2, 0, new ItemStack((Block)blockAppliance, 1, 3), (Object)AchievementList.h);
-        AchieveLib.addCraftingAchievement(new ItemStack((Block)blockAppliance, 1, 0), "rpMakeAlloy");
-        AchieveLib.addCraftingAchievement(new ItemStack((Block)blockAppliance, 1, 3), "rpAdvBench");
+        AchieveLib.registerAchievement(117032, "rpAdvBench", -2, 0, new ItemStack((Block) blockAppliance, 1, 3), (Object) AchievementList.h);
+        AchieveLib.addCraftingAchievement(new ItemStack((Block) blockAppliance, 1, 0), "rpMakeAlloy");
+        AchieveLib.addCraftingAchievement(new ItemStack((Block) blockAppliance, 1, 3), "rpAdvBench");
         AchieveLib.addCraftingAchievement(new ItemStack(itemHandsawDiamond), "rpMakeSaw");
         AchieveLib.addAlloyAchievement(itemIngotRed, "rpIngotRed");
         AchieveLib.addAlloyAchievement(itemIngotBlue, "rpIngotBlue");
         AchieveLib.addAlloyAchievement(itemIngotBrass, "rpIngotBrass");
-        MinecraftForge.registerAchievementPage((AchievementPage)AchieveLib.achievepage);
+        MinecraftForge.registerAchievementPage((AchievementPage) AchieveLib.achievepage);
     }
 
     public static void initialize() {
@@ -336,40 +312,40 @@ public class RedPowerBase {
         RedPowerBase.initOreDictionary();
         RedPowerBase.initFluids();
         blockAppliance = new BlockAppliance(Config.getBlockID("blocks.base.appliance.id"));
-        ModLoader.registerBlock((Block)blockAppliance, ItemExtended.class);
-        ModLoader.registerTileEntity(TileAlloyFurnace.class, (String)"RPAFurnace");
+        ModLoader.registerBlock((Block) blockAppliance, ItemExtended.class);
+        ModLoader.registerTileEntity(TileAlloyFurnace.class, (String) "RPAFurnace");
         blockAppliance.addTileEntityMapping(0, TileAlloyFurnace.class);
         blockAppliance.setItemName(0, "rpafurnace");
-        ModLoader.addRecipe((ItemStack)new ItemStack((Block)blockAppliance, 1, 0), (Object[])new Object[]{"BBB", "B B", "BBB", Character.valueOf('B'), Block.BRICK});
-        ModLoader.registerTileEntity(TileAdvBench.class, (String)"RPAdvBench");
+        ModLoader.addRecipe((ItemStack) new ItemStack((Block) blockAppliance, 1, 0), (Object[]) new Object[]{"BBB", "B B", "BBB", Character.valueOf('B'), Block.BRICK});
+        ModLoader.registerTileEntity(TileAdvBench.class, (String) "RPAdvBench");
         blockAppliance.addTileEntityMapping(3, TileAdvBench.class);
         blockAppliance.setItemName(3, "rpabench");
-        ModLoader.addRecipe((ItemStack)new ItemStack((Block)blockAppliance, 1, 3), (Object[])new Object[]{"SSS", "WTW", "WCW", Character.valueOf('S'), Block.STONE, Character.valueOf('W'), Block.WOOD, Character.valueOf('T'), Block.WORKBENCH, Character.valueOf('C'), Block.CHEST});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Block) blockAppliance, 1, 3), (Object[]) new Object[]{"SSS", "WTW", "WCW", Character.valueOf('S'), Block.STONE, Character.valueOf('W'), Block.WOOD, Character.valueOf('T'), Block.WORKBENCH, Character.valueOf('C'), Block.CHEST});
         itemHandsawIron = new ItemHandsaw(Config.getItemID("items.base.handsawIron.id"), 0);
         itemHandsawDiamond = new ItemHandsaw(Config.getItemID("items.base.handsawDiamond.id"), 2);
         itemHandsawIron.a("handsawIron").d(17);
         itemHandsawIron.setMaxDurability(320);
         itemHandsawDiamond.a("handsawDiamond").d(18);
         itemHandsawDiamond.setMaxDurability(1280);
-        ModLoader.addRecipe((ItemStack)new ItemStack(itemHandsawIron, 1), (Object[])new Object[]{"WWW", " II", " II", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack(itemHandsawDiamond, 1), (Object[])new Object[]{"WWW", " II", " DD", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('D'), Item.DIAMOND, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack(itemHandsawIron, 1), (Object[]) new Object[]{"WWW", " II", " II", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack(itemHandsawDiamond, 1), (Object[]) new Object[]{"WWW", " II", " DD", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('D'), Item.DIAMOND, Character.valueOf('W'), Item.STICK});
         CoverLib.addSaw(itemHandsawIron, 0);
         CoverLib.addSaw(itemHandsawDiamond, 2);
-        ModLoader.addShapelessRecipe((ItemStack)CoreLib.copyStack(itemWaferSilicon, 16), (Object[])new Object[]{itemBouleSilicon, new ItemStack(itemHandsawDiamond, 1, -1)});
+        ModLoader.addShapelessRecipe((ItemStack) CoreLib.copyStack(itemWaferSilicon, 16), (Object[]) new Object[]{itemBouleSilicon, new ItemStack(itemHandsawDiamond, 1, -1)});
         itemScrewdriver = new ItemScrewdriver(Config.getItemID("items.base.screwdriver.id"));
         itemScrewdriver.a("screwdriver").d(16);
-        ModLoader.addRecipe((ItemStack)new ItemStack((Item)itemScrewdriver, 1), (Object[])new Object[]{"I ", " W", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('W'), Item.STICK});
-        ModLoader.addRecipe((ItemStack)new ItemStack(itemDrawplateDiamond, 1), (Object[])new Object[]{" I ", "IDI", " I ", Character.valueOf('I'), new ItemStack((Block)blockMicro, 1, 5649), Character.valueOf('D'), new ItemStack((Block)blockMicro, 1, 4115)});
-        ModLoader.addShapelessRecipe((ItemStack)itemFineIron, (Object[])new Object[]{Item.IRON_INGOT, new ItemStack(itemDrawplateDiamond, 1, -1)});
-        ModLoader.addRecipe((ItemStack)CoreLib.copyStack(itemNuggetIron, 9), (Object[])new Object[]{"I", Character.valueOf('I'), Item.IRON_INGOT});
-        ModLoader.addRecipe((ItemStack)new ItemStack(Item.IRON_INGOT, 1, 0), (Object[])new Object[]{"III", "III", "III", Character.valueOf('I'), itemNuggetIron});
-        ModLoader.addRecipe((ItemStack)itemIngotSilver, (Object[])new Object[]{"III", "III", "III", Character.valueOf('I'), itemNuggetSilver});
-        ModLoader.addRecipe((ItemStack)itemIngotTin, (Object[])new Object[]{"III", "III", "III", Character.valueOf('I'), itemNuggetTin});
-        ModLoader.addRecipe((ItemStack)itemIngotCopper, (Object[])new Object[]{"III", "III", "III", Character.valueOf('I'), itemNuggetCopper});
-        ModLoader.addRecipe((ItemStack)new ItemStack(Item.DIAMOND, 2), (Object[])new Object[]{"D", Character.valueOf('D'), new ItemStack((Block)blockMicro, 1, 4115)});
-        ModLoader.addRecipe((ItemStack)new ItemStack(Item.DIAMOND, 1), (Object[])new Object[]{"D", Character.valueOf('D'), new ItemStack((Block)blockMicro, 1, 19)});
-        ModLoader.addRecipe((ItemStack)new ItemStack(Item.IRON_INGOT, 2), (Object[])new Object[]{"I", Character.valueOf('I'), new ItemStack((Block)blockMicro, 1, 4113)});
-        ModLoader.addRecipe((ItemStack)new ItemStack(Item.IRON_INGOT, 1), (Object[])new Object[]{"I", Character.valueOf('I'), new ItemStack((Block)blockMicro, 1, 17)});
+        ModLoader.addRecipe((ItemStack) new ItemStack((Item) itemScrewdriver, 1), (Object[]) new Object[]{"I ", " W", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('W'), Item.STICK});
+        ModLoader.addRecipe((ItemStack) new ItemStack(itemDrawplateDiamond, 1), (Object[]) new Object[]{" I ", "IDI", " I ", Character.valueOf('I'), new ItemStack((Block) blockMicro, 1, 5649), Character.valueOf('D'), new ItemStack((Block) blockMicro, 1, 4115)});
+        ModLoader.addShapelessRecipe((ItemStack) itemFineIron, (Object[]) new Object[]{Item.IRON_INGOT, new ItemStack(itemDrawplateDiamond, 1, -1)});
+        ModLoader.addRecipe((ItemStack) CoreLib.copyStack(itemNuggetIron, 9), (Object[]) new Object[]{"I", Character.valueOf('I'), Item.IRON_INGOT});
+        ModLoader.addRecipe((ItemStack) new ItemStack(Item.IRON_INGOT, 1, 0), (Object[]) new Object[]{"III", "III", "III", Character.valueOf('I'), itemNuggetIron});
+        ModLoader.addRecipe((ItemStack) itemIngotSilver, (Object[]) new Object[]{"III", "III", "III", Character.valueOf('I'), itemNuggetSilver});
+        ModLoader.addRecipe((ItemStack) itemIngotTin, (Object[]) new Object[]{"III", "III", "III", Character.valueOf('I'), itemNuggetTin});
+        ModLoader.addRecipe((ItemStack) itemIngotCopper, (Object[]) new Object[]{"III", "III", "III", Character.valueOf('I'), itemNuggetCopper});
+        ModLoader.addRecipe((ItemStack) new ItemStack(Item.DIAMOND, 2), (Object[]) new Object[]{"D", Character.valueOf('D'), new ItemStack((Block) blockMicro, 1, 4115)});
+        ModLoader.addRecipe((ItemStack) new ItemStack(Item.DIAMOND, 1), (Object[]) new Object[]{"D", Character.valueOf('D'), new ItemStack((Block) blockMicro, 1, 19)});
+        ModLoader.addRecipe((ItemStack) new ItemStack(Item.IRON_INGOT, 2), (Object[]) new Object[]{"I", Character.valueOf('I'), new ItemStack((Block) blockMicro, 1, 4113)});
+        ModLoader.addRecipe((ItemStack) new ItemStack(Item.IRON_INGOT, 1), (Object[]) new Object[]{"I", Character.valueOf('I'), new ItemStack((Block) blockMicro, 1, 17)});
         RedPowerBase.initAchievements();
         Config.saveConfig();
     }

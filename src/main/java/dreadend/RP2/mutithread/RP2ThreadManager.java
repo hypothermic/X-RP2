@@ -1,7 +1,6 @@
 /* X-RP - decompiled with CFR */
 package dreadend.RP2.mutithread;
 
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;

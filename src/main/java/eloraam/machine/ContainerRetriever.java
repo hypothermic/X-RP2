@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Container
  *  net.minecraft.server.EntityHuman
@@ -12,23 +12,15 @@
  */
 package eloraam.machine;
 
-import eloraam.core.BluePowerEndpoint;
 import eloraam.core.IHandleGuiEvent;
 import eloraam.core.Packet212GuiEvent;
-import eloraam.machine.TileRetriever;
+import net.minecraft.server.*;
+
 import java.io.IOException;
-import java.util.List;
-import net.minecraft.server.Container;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.ICrafting;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.Slot;
 
 public class ContainerRetriever
-extends Container
-implements IHandleGuiEvent {
+        extends Container
+        implements IHandleGuiEvent {
     private TileRetriever tileRetriever;
     public int charge = 0;
     public int flow = 0;
@@ -42,7 +34,7 @@ implements IHandleGuiEvent {
         this.tileRetriever = tileRetriever;
         for (n2 = 0; n2 < 3; ++n2) {
             for (n = 0; n < 3; ++n) {
-                this.a(new Slot((IInventory)tileRetriever, n + n2 * 3, 62 + n * 18, 17 + n2 * 18));
+                this.a(new Slot((IInventory) tileRetriever, n + n2 * 3, 62 + n * 18, 17 + n2 * 18));
             }
         }
         for (n2 = 0; n2 < 3; ++n2) {
@@ -53,7 +45,7 @@ implements IHandleGuiEvent {
         for (n2 = 0; n2 < 9; ++n2) {
             this.a(new Slot(iInventory, n2, 8 + n2 * 18, 142));
         }
-        this.setPlayer(((PlayerInventory)iInventory).player);
+        this.setPlayer(((PlayerInventory) iInventory).player);
     }
 
     public IInventory getInventory() {
@@ -66,7 +58,7 @@ implements IHandleGuiEvent {
 
     public ItemStack a(int n) {
         ItemStack itemStack = null;
-        Slot slot = (Slot)this.e.get(n);
+        Slot slot = (Slot) this.e.get(n);
         if (slot != null && slot.c()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.cloneItemStack();
@@ -90,21 +82,21 @@ implements IHandleGuiEvent {
     public void a() {
         super.a();
         for (int i = 0; i < this.listeners.size(); ++i) {
-            ICrafting iCrafting = (ICrafting)this.listeners.get(i);
+            ICrafting iCrafting = (ICrafting) this.listeners.get(i);
             if (this.charge != this.tileRetriever.cond.Charge) {
-                iCrafting.setContainerData((Container)this, 0, this.tileRetriever.cond.Charge);
+                iCrafting.setContainerData((Container) this, 0, this.tileRetriever.cond.Charge);
             }
             if (this.flow != this.tileRetriever.cond.Flow) {
-                iCrafting.setContainerData((Container)this, 1, this.tileRetriever.cond.Flow);
+                iCrafting.setContainerData((Container) this, 1, this.tileRetriever.cond.Flow);
             }
             if (this.color != this.tileRetriever.color) {
-                iCrafting.setContainerData((Container)this, 2, (int)this.tileRetriever.color);
+                iCrafting.setContainerData((Container) this, 2, (int) this.tileRetriever.color);
             }
             if (this.select != this.tileRetriever.select) {
-                iCrafting.setContainerData((Container)this, 3, (int)this.tileRetriever.select);
+                iCrafting.setContainerData((Container) this, 3, (int) this.tileRetriever.select);
             }
             if (this.mode == this.tileRetriever.mode) continue;
-            iCrafting.setContainerData((Container)this, 4, (int)this.tileRetriever.mode);
+            iCrafting.setContainerData((Container) this, 4, (int) this.tileRetriever.mode);
         }
         this.flow = this.tileRetriever.cond.Flow;
         this.charge = this.tileRetriever.cond.Charge;
@@ -124,15 +116,15 @@ implements IHandleGuiEvent {
                 break;
             }
             case 2: {
-                this.tileRetriever.color = (byte)n2;
+                this.tileRetriever.color = (byte) n2;
                 break;
             }
             case 3: {
-                this.tileRetriever.select = (byte)n2;
+                this.tileRetriever.select = (byte) n2;
                 break;
             }
             case 4: {
-                this.tileRetriever.mode = (byte)n2;
+                this.tileRetriever.mode = (byte) n2;
             }
         }
     }
@@ -142,17 +134,16 @@ implements IHandleGuiEvent {
         try {
             switch (packet212GuiEvent.eventId) {
                 case 1: {
-                    this.tileRetriever.color = (byte)packet212GuiEvent.getByte();
+                    this.tileRetriever.color = (byte) packet212GuiEvent.getByte();
                     this.tileRetriever.dirtyBlock();
                     break;
                 }
                 case 2: {
-                    this.tileRetriever.mode = (byte)packet212GuiEvent.getByte();
+                    this.tileRetriever.mode = (byte) packet212GuiEvent.getByte();
                     this.tileRetriever.dirtyBlock();
                 }
             }
-        }
-        catch (IOException iOException) {
+        } catch (IOException iOException) {
             // empty catch block
         }
     }

@@ -1,17 +1,15 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  forge.NetworkMod
  */
 package net.minecraft.server;
 
 import forge.NetworkMod;
-import net.minecraft.server.RedPowerWiring;
-import net.minecraft.server.mod_RedPowerCore;
 
 public class mod_RedPowerWiring
-extends NetworkMod {
+        extends NetworkMod {
     public static mod_RedPowerWiring instance;
     private static boolean initialized;
 

@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Container
  *  net.minecraft.server.EntityHuman
@@ -14,20 +14,13 @@ package eloraam.machine;
 
 import eloraam.core.IHandleGuiEvent;
 import eloraam.core.Packet212GuiEvent;
-import eloraam.machine.TileFilter;
+import net.minecraft.server.*;
+
 import java.io.IOException;
-import java.util.List;
-import net.minecraft.server.Container;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.ICrafting;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.Slot;
 
 public class ContainerFilter
-extends Container
-implements IHandleGuiEvent {
+        extends Container
+        implements IHandleGuiEvent {
     private TileFilter tileFilter;
     public int color = 0;
 
@@ -37,7 +30,7 @@ implements IHandleGuiEvent {
         this.tileFilter = tileFilter;
         for (n2 = 0; n2 < 3; ++n2) {
             for (n = 0; n < 3; ++n) {
-                this.a(new Slot((IInventory)tileFilter, n + n2 * 3, 62 + n * 18, 17 + n2 * 18));
+                this.a(new Slot((IInventory) tileFilter, n + n2 * 3, 62 + n * 18, 17 + n2 * 18));
             }
         }
         for (n2 = 0; n2 < 3; ++n2) {
@@ -48,7 +41,7 @@ implements IHandleGuiEvent {
         for (n2 = 0; n2 < 9; ++n2) {
             this.a(new Slot(iInventory, n2, 8 + n2 * 18, 142));
         }
-        this.setPlayer(((PlayerInventory)iInventory).player);
+        this.setPlayer(((PlayerInventory) iInventory).player);
     }
 
     public IInventory getInventory() {
@@ -61,7 +54,7 @@ implements IHandleGuiEvent {
 
     public ItemStack a(int n) {
         ItemStack itemStack = null;
-        Slot slot = (Slot)this.e.get(n);
+        Slot slot = (Slot) this.e.get(n);
         if (slot != null && slot.c()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.cloneItemStack();
@@ -85,9 +78,9 @@ implements IHandleGuiEvent {
     public void a() {
         super.a();
         for (int i = 0; i < this.listeners.size(); ++i) {
-            ICrafting iCrafting = (ICrafting)this.listeners.get(i);
+            ICrafting iCrafting = (ICrafting) this.listeners.get(i);
             if (this.color == this.tileFilter.color) continue;
-            iCrafting.setContainerData((Container)this, 0, (int)this.tileFilter.color);
+            iCrafting.setContainerData((Container) this, 0, (int) this.tileFilter.color);
         }
         this.color = this.tileFilter.color;
     }
@@ -95,7 +88,7 @@ implements IHandleGuiEvent {
     public void updateProgressBar(int n, int n2) {
         switch (n) {
             case 0: {
-                this.tileFilter.color = (byte)n2;
+                this.tileFilter.color = (byte) n2;
             }
         }
     }
@@ -106,10 +99,9 @@ implements IHandleGuiEvent {
             if (packet212GuiEvent.eventId != 1) {
                 return;
             }
-            this.tileFilter.color = (byte)packet212GuiEvent.getByte();
+            this.tileFilter.color = (byte) packet212GuiEvent.getByte();
             this.tileFilter.dirtyBlock();
-        }
-        catch (IOException iOException) {
+        } catch (IOException iOException) {
             // empty catch block
         }
     }

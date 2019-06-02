@@ -1,7 +1,6 @@
 /* X-RP - decompiled with CFR */
 package eloraam.core;
 
-import eloraam.core.WorldCoord;
 import net.minecraft.server.World;
 
 public abstract class FluidClass {

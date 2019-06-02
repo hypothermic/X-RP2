@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  forge.ICraftingHandler
  *  forge.IDestroyToolHandler
@@ -19,29 +19,12 @@
  */
 package net.minecraft.server;
 
-import eloraam.core.Config;
-import eloraam.core.CoverRecipe;
-import eloraam.core.CraftLib;
-import eloraam.core.Packet211TileDesc;
-import eloraam.core.Packet212GuiEvent;
+import eloraam.core.*;
 import forge.ICraftingHandler;
 import forge.IDestroyToolHandler;
 import forge.MinecraftForge;
+
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import net.minecraft.server.Block;
-import net.minecraft.server.CraftingManager;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.IDataManager;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.Packet;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.World;
-import net.minecraft.server.WorldNBTStorage;
 
 public class RedPowerCore {
     private static boolean initialized = false;
@@ -59,7 +42,7 @@ public class RedPowerCore {
     public static final int idPipeUpdate = 11;
 
     private static void setupDestroyToolHook() {
-        IDestroyToolHandler iDestroyToolHandler = new IDestroyToolHandler(){
+        IDestroyToolHandler iDestroyToolHandler = new IDestroyToolHandler() {
 
             public void onDestroyCurrentItem(EntityHuman entityHuman, ItemStack itemStack) {
                 int n = entityHuman.inventory.itemInHandIndex;
@@ -110,11 +93,11 @@ public class RedPowerCore {
                 }
             }
         };
-        MinecraftForge.registerDestroyToolHandler((IDestroyToolHandler)iDestroyToolHandler);
+        MinecraftForge.registerDestroyToolHandler((IDestroyToolHandler) iDestroyToolHandler);
     }
 
     private static void setupCraftHook() {
-        ICraftingHandler iCraftingHandler = new ICraftingHandler(){
+        ICraftingHandler iCraftingHandler = new ICraftingHandler() {
 
             public void onTakenFromCrafting(EntityHuman entityHuman, ItemStack itemStack, IInventory iInventory) {
                 for (int i = 0; i < iInventory.getSize(); ++i) {
@@ -122,13 +105,14 @@ public class RedPowerCore {
                     ItemStack itemStack2 = iInventory.getItem(i);
                     if (itemStack2 == null || !CraftLib.damageOnCraft.contains(itemStack2.id)) continue;
                     ++itemStack2.count;
-                    itemStack2.damage(1, (EntityLiving)entityHuman);
-                    if (itemStack2.count != 1 || (n = (Integer)CraftLib.damageContainer.get(itemStack2.id)) == null) continue;
+                    itemStack2.damage(1, (EntityLiving) entityHuman);
+                    if (itemStack2.count != 1 || (n = (Integer) CraftLib.damageContainer.get(itemStack2.id)) == null)
+                        continue;
                     iInventory.setItem(i, new ItemStack(n.intValue(), 2, 0));
                 }
             }
         };
-        MinecraftForge.registerCraftingHandler((ICraftingHandler)iCraftingHandler);
+        MinecraftForge.registerCraftingHandler((ICraftingHandler) iCraftingHandler);
     }
 
     public static void initialize() {
@@ -137,13 +121,13 @@ public class RedPowerCore {
         }
         initialized = true;
         Config.loadConfig();
-        MinecraftForge.versionDetect((String)"RedPowerCore", (int)3, (int)1, (int)2);
-        Packet.a((int)211, (boolean)true, (boolean)true, Packet211TileDesc.class);
-        Packet.a((int)212, (boolean)true, (boolean)true, Packet212GuiEvent.class);
+        MinecraftForge.versionDetect((String) "RedPowerCore", (int) 3, (int) 1, (int) 2);
+        Packet.a((int) 211, (boolean) true, (boolean) true, Packet211TileDesc.class);
+        Packet.a((int) 212, (boolean) true, (boolean) true, Packet212GuiEvent.class);
         RedPowerCore.setupDestroyToolHook();
         RedPowerCore.setupCraftHook();
-        MinecraftForge.setBlockHarvestLevel((Block)Block.REDSTONE_ORE, (String)"pickaxe", (int)2);
-        MinecraftForge.setBlockHarvestLevel((Block)Block.GLOWING_REDSTONE_ORE, (String)"pickaxe", (int)2);
+        MinecraftForge.setBlockHarvestLevel((Block) Block.REDSTONE_ORE, (String) "pickaxe", (int) 2);
+        MinecraftForge.setBlockHarvestLevel((Block) Block.GLOWING_REDSTONE_ORE, (String) "pickaxe", (int) 2);
         CraftingManager.getInstance().getRecipies().add(new CoverRecipe());
         Config.saveConfig();
     }
@@ -153,7 +137,7 @@ public class RedPowerCore {
         if (!(iDataManager instanceof WorldNBTStorage)) {
             return null;
         }
-        WorldNBTStorage worldNBTStorage = (WorldNBTStorage)iDataManager;
+        WorldNBTStorage worldNBTStorage = (WorldNBTStorage) iDataManager;
         return worldNBTStorage.getDirectory();
     }
 

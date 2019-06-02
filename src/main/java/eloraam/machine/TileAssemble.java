@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  forge.ISidedInventory
  *  net.minecraft.server.BaseMod
@@ -19,37 +19,21 @@
  */
 package eloraam.machine;
 
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.IRedPowerWiring;
-import eloraam.core.Packet211TileDesc;
-import eloraam.core.RedPowerLib;
-import eloraam.core.WorldCoord;
-import eloraam.machine.TileDeployBase;
+import eloraam.core.*;
 import forge.ISidedInventory;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.server.BaseMod;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
-import net.minecraft.server.mod_RedPowerMachine;
+import net.minecraft.server.*;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class TileAssemble
-extends TileDeployBase
-implements IInventory,
-ISidedInventory,
-IRedPowerWiring {
+        extends TileDeployBase
+        implements IInventory,
+        ISidedInventory,
+        IRedPowerWiring {
     private ItemStack[] contents = new ItemStack[34];
     public byte select = 0;
     public byte mode = 0;
@@ -59,11 +43,11 @@ IRedPowerWiring {
     public List<HumanEntity> transaction = new ArrayList<HumanEntity>();
 
     public void onOpen(CraftHumanEntity craftHumanEntity) {
-        this.transaction.add((HumanEntity)craftHumanEntity);
+        this.transaction.add((HumanEntity) craftHumanEntity);
     }
 
     public void onClose(CraftHumanEntity craftHumanEntity) {
-        this.transaction.remove((Object)craftHumanEntity);
+        this.transaction.remove((Object) craftHumanEntity);
     }
 
     public List<HumanEntity> getViewers() {
@@ -90,7 +74,7 @@ IRedPowerWiring {
         if (CoreProxy.isClient(this.world)) {
             return true;
         }
-        entityHuman.openGui((BaseMod)mod_RedPowerMachine.instance, 11, this.world, this.x, this.y, this.z);
+        entityHuman.openGui((BaseMod) mod_RedPowerMachine.instance, 11, this.world, this.x, this.y, this.z);
         return true;
     }
 
@@ -117,7 +101,7 @@ IRedPowerWiring {
         if (this.ConMask >= 0) {
             return this.ConMask;
         }
-        this.ConMask = RedPowerLib.getConnections((IBlockAccess)this.world, this, this.x, this.y, this.z);
+        this.ConMask = RedPowerLib.getConnections((IBlockAccess) this.world, this, this.x, this.y, this.z);
         return this.ConMask;
     }
 
@@ -148,12 +132,12 @@ IRedPowerWiring {
             return;
         }
         for (n = 0; n < 16; ++n) {
-            short s = (short)RedPowerLib.getMaxCurrentStrength(this.world, this.x, this.y, this.z, 1073741823, 0, n + 1);
+            short s = (short) RedPowerLib.getMaxCurrentStrength(this.world, this.x, this.y, this.z, 1073741823, 0, n + 1);
             if (s > 0) {
                 this.PowerState |= 1 << n;
                 continue;
             }
-            this.PowerState &= ~ (1 << n);
+            this.PowerState &= ~(1 << n);
         }
         CoreLib.markBlockDirty(this.world, this.x, this.y, this.z);
         if (this.PowerState == 0) {
@@ -212,7 +196,8 @@ IRedPowerWiring {
     protected int getMatchingStack(int n) {
         for (int i = 0; i < 18; ++i) {
             ItemStack itemStack = this.contents[16 + i];
-            if (this.contents[16 + i] == null || CoreLib.compareItemStack(this.contents[16 + i], this.contents[n]) != 0) continue;
+            if (this.contents[16 + i] == null || CoreLib.compareItemStack(this.contents[16 + i], this.contents[n]) != 0)
+                continue;
             return i;
         }
         return -1;
@@ -225,7 +210,7 @@ IRedPowerWiring {
             this.enableTowardsActive(worldCoord, n);
         }
         for (n = 0; n < 16; ++n) {
-            this.select = (byte)(this.select + 1 & 15);
+            this.select = (byte) (this.select + 1 & 15);
             if ((this.skipSlots & 1 << this.select) == 0 || this.select == 0) break;
         }
     }
@@ -290,7 +275,7 @@ IRedPowerWiring {
             itemStack.count = this.getMaxStackSize();
         }
         if (itemStack != null && n < 16) {
-            this.skipSlots &= ~ (1 << n);
+            this.skipSlots &= ~(1 << n);
         }
         this.update();
     }
@@ -307,7 +292,7 @@ IRedPowerWiring {
         if (this.world.getTileEntity(this.x, this.y, this.z) != this) {
             return false;
         }
-        return entityHuman.e((double)this.x + 0.5, (double)this.y + 0.5, (double)this.z + 0.5) <= 64.0;
+        return entityHuman.e((double) this.x + 0.5, (double) this.y + 0.5, (double) this.z + 0.5) <= 64.0;
     }
 
     public void g() {
@@ -330,10 +315,10 @@ IRedPowerWiring {
         NBTTagList nBTTagList = nBTTagCompound.getList("Items");
         this.contents = new ItemStack[this.getSize()];
         for (int i = 0; i < nBTTagList.size(); ++i) {
-            NBTTagCompound nBTTagCompound2 = (NBTTagCompound)nBTTagList.get(i);
+            NBTTagCompound nBTTagCompound2 = (NBTTagCompound) nBTTagList.get(i);
             int n = nBTTagCompound2.getByte("Slot") & 255;
             if (n < 0 || n >= this.contents.length) continue;
-            this.contents[n] = ItemStack.a((NBTTagCompound)nBTTagCompound2);
+            this.contents[n] = ItemStack.a((NBTTagCompound) nBTTagCompound2);
         }
         this.mode = nBTTagCompound.getByte("mode");
         this.select = nBTTagCompound.getByte("sel");
@@ -348,21 +333,21 @@ IRedPowerWiring {
         for (int i = 0; i < this.contents.length; ++i) {
             if (this.contents[i] == null) continue;
             NBTTagCompound nBTTagCompound2 = new NBTTagCompound();
-            nBTTagCompound2.setByte("Slot", (byte)i);
+            nBTTagCompound2.setByte("Slot", (byte) i);
             this.contents[i].save(nBTTagCompound2);
-            nBTTagList.add((NBTBase)nBTTagCompound2);
+            nBTTagList.add((NBTBase) nBTTagCompound2);
         }
-        nBTTagCompound.set("Items", (NBTBase)nBTTagList);
+        nBTTagCompound.set("Items", (NBTBase) nBTTagList);
         nBTTagCompound.setByte("mode", this.mode);
         nBTTagCompound.setByte("sel", this.select);
-        nBTTagCompound.setShort("ssl", (short)this.skipSlots);
+        nBTTagCompound.setShort("ssl", (short) this.skipSlots);
         nBTTagCompound.setInt("psex", this.PowerState);
     }
 
     @Override
     protected void readFromPacket(Packet211TileDesc packet211TileDesc) throws IOException {
         super.readFromPacket(packet211TileDesc);
-        this.mode = (byte)packet211TileDesc.getByte();
+        this.mode = (byte) packet211TileDesc.getByte();
     }
 
     @Override

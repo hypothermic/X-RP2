@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Block
  *  net.minecraft.server.EntityHuman
@@ -12,32 +12,15 @@
  */
 package eloraam.machine;
 
-import eloraam.base.BlockMicro;
-import eloraam.core.BlockMultipart;
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.FluidBuffer;
-import eloraam.core.IPipeConnectable;
-import eloraam.core.Packet211TileDesc;
-import eloraam.core.PipeLib;
-import eloraam.core.TileCovered;
-import eloraam.core.WorldCoord;
-import eloraam.machine.BlockMachine;
+import eloraam.core.*;
+import net.minecraft.server.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import net.minecraft.server.Block;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.RedPowerBase;
-import net.minecraft.server.RedPowerMachine;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
 
 public class TilePipe
-extends TileCovered
-implements IPipeConnectable {
+        extends TileCovered
+        implements IPipeConnectable {
     public FluidBuffer pipebuf;
     public int Pressure;
     public int ConCache;
@@ -45,7 +28,7 @@ implements IPipeConnectable {
     private boolean hasChanged;
 
     public TilePipe() {
-        this.pipebuf = new FluidBuffer(){
+        this.pipebuf = new FluidBuffer() {
 
             @Override
             public TileEntity getParent() {
@@ -68,7 +51,7 @@ implements IPipeConnectable {
         int n = 63;
         for (int i = 0; i < 6; ++i) {
             if ((this.CoverSides & 1 << i) <= 0 || this.Covers[i] >> 8 >= 3) continue;
-            n &= ~ (1 << i);
+            n &= ~(1 << i);
         }
         return n;
     }
@@ -136,7 +119,7 @@ implements IPipeConnectable {
             if ((this.ConCache & 1 << i) == 0) continue;
             WorldCoord worldCoord = new WorldCoord(this);
             worldCoord.step(i);
-            IPipeConnectable iPipeConnectable = (IPipeConnectable)CoreLib.getTileEntity((IBlockAccess)this.world, worldCoord, IPipeConnectable.class);
+            IPipeConnectable iPipeConnectable = (IPipeConnectable) CoreLib.getTileEntity((IBlockAccess) this.world, worldCoord, IPipeConnectable.class);
             if (iPipeConnectable == null) continue;
             int n5 = iPipeConnectable.getPipePressure(i ^ 1);
             n3 = Math.min(n5, n3);
@@ -169,7 +152,7 @@ implements IPipeConnectable {
 
     public void cacheCon() {
         if (this.ConCache < 0) {
-            this.ConCache = PipeLib.getConnections((IBlockAccess)this.world, this.x, this.y, this.z);
+            this.ConCache = PipeLib.getConnections((IBlockAccess) this.world, this.x, this.y, this.z);
         }
     }
 
@@ -183,7 +166,7 @@ implements IPipeConnectable {
             if ((this.ConCache & 1 << i) == 0) continue;
             WorldCoord worldCoord = new WorldCoord(this);
             worldCoord.step(i);
-            IPipeConnectable iPipeConnectable = (IPipeConnectable)CoreLib.getTileEntity((IBlockAccess)this.world, worldCoord, IPipeConnectable.class);
+            IPipeConnectable iPipeConnectable = (IPipeConnectable) CoreLib.getTileEntity((IBlockAccess) this.world, worldCoord, IPipeConnectable.class);
             if (iPipeConnectable == null || (iPipeConnectable.getPipeFlangeSides() & 1 << (i ^ 1)) <= 0) continue;
             this.Flanges |= 1 << i;
         }
@@ -260,7 +243,7 @@ implements IPipeConnectable {
     public float getPartStrength(EntityHuman entityHuman, int n) {
         BlockMachine blockMachine = RedPowerMachine.blockMachine;
         if (n == 29) {
-            return entityHuman.getCurrentPlayerStrVsBlock((Block)blockMachine, 0) / (blockMachine.m() * 30.0f);
+            return entityHuman.getCurrentPlayerStrVsBlock((Block) blockMachine, 0) / (blockMachine.m() * 30.0f);
         }
         return super.getPartStrength(entityHuman, n);
     }
@@ -323,8 +306,7 @@ implements IPipeConnectable {
     public void handlePacket(Packet211TileDesc packet211TileDesc) {
         try {
             this.readFromPacket(packet211TileDesc);
-        }
-        catch (IOException iOException) {
+        } catch (IOException iOException) {
             // empty catch block
         }
     }

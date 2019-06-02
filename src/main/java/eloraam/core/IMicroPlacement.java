@@ -1,11 +1,11 @@
 /* X-RP - decompiled with CFR */
 package eloraam.core;
 
-import eloraam.core.WorldCoord;
-import java.util.ArrayList;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.World;
+
+import java.util.ArrayList;
 
 public interface IMicroPlacement {
 

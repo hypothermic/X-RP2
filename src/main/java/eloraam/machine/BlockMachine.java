@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Block
  *  net.minecraft.server.IBlockAccess
@@ -11,15 +11,12 @@ package eloraam.machine;
 
 import eloraam.core.BlockExtended;
 import eloraam.core.CoreLib;
-import eloraam.machine.TileIgniter;
-import eloraam.machine.TileMachine;
-import net.minecraft.server.Block;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.Material;
 import net.minecraft.server.World;
 
 public class BlockMachine
-extends BlockExtended {
+        extends BlockExtended {
     public BlockMachine(int n) {
         super(n, Material.STONE);
         this.c(2.0f);
@@ -59,7 +56,7 @@ extends BlockExtended {
 
     @Override
     public boolean a(IBlockAccess iBlockAccess, int n, int n2, int n3, int n4) {
-        TileMachine tileMachine = (TileMachine)CoreLib.getTileEntity(iBlockAccess, n, n2, n3, TileMachine.class);
+        TileMachine tileMachine = (TileMachine) CoreLib.getTileEntity(iBlockAccess, n, n2, n3, TileMachine.class);
         if (tileMachine == null) {
             return false;
         }
@@ -73,7 +70,7 @@ extends BlockExtended {
         if (n4 != 12) {
             return false;
         }
-        TileIgniter tileIgniter = (TileIgniter)CoreLib.getTileEntity((IBlockAccess)world, n, n2, n3, TileIgniter.class);
+        TileIgniter tileIgniter = (TileIgniter) CoreLib.getTileEntity((IBlockAccess) world, n, n2, n3, TileIgniter.class);
         if (tileIgniter == null) {
             return false;
         }

@@ -8,10 +8,10 @@ import net.minecraft.server.ItemPickaxe;
 public class ItemCustomPickaxe extends ItemPickaxe implements ITextureProvider {
 
     public ItemCustomPickaxe(int n) {
-	super(n, EnumToolMaterial.WOOD);
+        super(n, EnumToolMaterial.WOOD);
     }
 
     public String getTextureFile() {
-	return "/eloraam/world/worlditems1.png";
+        return "/eloraam/world/worlditems1.png";
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.IBlockAccess
  *  net.minecraft.server.NBTTagCompound
@@ -8,20 +8,15 @@
  */
 package eloraam.logic;
 
-import eloraam.core.BlockMultipart;
-import eloraam.core.CoreLib;
-import eloraam.core.IRedPowerWiring;
-import eloraam.core.Packet211TileDesc;
-import eloraam.core.RedPowerLib;
-import eloraam.logic.TileLogic;
-import java.io.IOException;
+import eloraam.core.*;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.World;
+
+import java.io.IOException;
 
 public class TileLogicArray
-extends TileLogic
-implements IRedPowerWiring {
+        extends TileLogic
+        implements IRedPowerWiring {
     public short PowerVal1 = 0;
     public short PowerVal2 = 0;
 
@@ -42,8 +37,8 @@ implements IRedPowerWiring {
 
     @Override
     public void updateCurrentStrength() {
-        this.PowerVal2 = (short)RedPowerLib.updateBlockCurrentStrength(this.world, this, this.x, this.y, this.z, RedPowerLib.mapRotToCon(5, this.Rotation), 1);
-        this.PowerVal1 = (short)RedPowerLib.updateBlockCurrentStrength(this.world, this, this.x, this.y, this.z, RedPowerLib.mapRotToCon(10, this.Rotation), 1);
+        this.PowerVal2 = (short) RedPowerLib.updateBlockCurrentStrength(this.world, this, this.x, this.y, this.z, RedPowerLib.mapRotToCon(5, this.Rotation), 1);
+        this.PowerVal1 = (short) RedPowerLib.updateBlockCurrentStrength(this.world, this, this.x, this.y, this.z, RedPowerLib.mapRotToCon(10, this.Rotation), 1);
         CoreLib.markBlockDirty(this.world, this.x, this.y, this.z);
     }
 
@@ -72,10 +67,10 @@ implements IRedPowerWiring {
             if (this.Powered) {
                 return 255;
             }
-            return !RedPowerLib.isPowered((IBlockAccess)this.world, this.x, this.y, this.z, n3 & n, 0) ? 0 : 255;
+            return !RedPowerLib.isPowered((IBlockAccess) this.world, this.x, this.y, this.z, n3 & n, 0) ? 0 : 255;
         }
         if ((n4 & n) > 0) {
-            return !RedPowerLib.isPowered((IBlockAccess)this.world, this.x, this.y, this.z, n4 & n, 0) ? 0 : 255;
+            return !RedPowerLib.isPowered((IBlockAccess) this.world, this.x, this.y, this.z, n4 & n, 0) ? 0 : 255;
         }
         return 0;
     }
@@ -189,15 +184,15 @@ implements IRedPowerWiring {
     @Override
     public void a(NBTTagCompound nBTTagCompound) {
         super.a(nBTTagCompound);
-        this.PowerVal1 = (short)(nBTTagCompound.getByte("pv1") & 255);
-        this.PowerVal2 = (short)(nBTTagCompound.getByte("pv2") & 255);
+        this.PowerVal1 = (short) (nBTTagCompound.getByte("pv1") & 255);
+        this.PowerVal2 = (short) (nBTTagCompound.getByte("pv2") & 255);
     }
 
     @Override
     public void b(NBTTagCompound nBTTagCompound) {
         super.b(nBTTagCompound);
-        nBTTagCompound.setByte("pv1", (byte)this.PowerVal1);
-        nBTTagCompound.setByte("pv2", (byte)this.PowerVal2);
+        nBTTagCompound.setByte("pv1", (byte) this.PowerVal1);
+        nBTTagCompound.setByte("pv2", (byte) this.PowerVal2);
     }
 
     @Override
@@ -206,8 +201,8 @@ implements IRedPowerWiring {
         if (packet211TileDesc.subId != 6) {
             return;
         }
-        this.PowerVal1 = (short)packet211TileDesc.getByte();
-        this.PowerVal2 = (short)packet211TileDesc.getByte();
+        this.PowerVal1 = (short) packet211TileDesc.getByte();
+        this.PowerVal2 = (short) packet211TileDesc.getByte();
     }
 
     @Override

@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.BaseMod
  *  net.minecraft.server.EntityHuman
@@ -11,16 +11,10 @@
 package eloraam.machine;
 
 import eloraam.core.CoreProxy;
-import eloraam.machine.TileEjectBase;
-import net.minecraft.server.BaseMod;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.World;
-import net.minecraft.server.mod_RedPowerMachine;
+import net.minecraft.server.*;
 
 public class TileRelay
-extends TileEjectBase {
+        extends TileEjectBase {
     @Override
     public int getExtendedID() {
         return 15;
@@ -58,7 +52,7 @@ extends TileEjectBase {
         if (CoreProxy.isClient(this.world)) {
             return true;
         }
-        entityHuman.openGui((BaseMod)mod_RedPowerMachine.instance, 13, this.world, this.x, this.y, this.z);
+        entityHuman.openGui((BaseMod) mod_RedPowerMachine.instance, 13, this.world, this.x, this.y, this.z);
         return true;
     }
 

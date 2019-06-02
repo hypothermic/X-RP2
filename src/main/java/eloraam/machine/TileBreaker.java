@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Block
  *  net.minecraft.server.IBlockAccess
@@ -17,36 +17,20 @@
  */
 package eloraam.machine;
 
-import eloraam.core.IConnectable;
-import eloraam.core.IFrameLink;
-import eloraam.core.ITubeConnectable;
-import eloraam.core.RedPowerLib;
-import eloraam.core.TubeBuffer;
-import eloraam.core.TubeItem;
-import eloraam.core.WorldCoord;
-import eloraam.machine.FakePlayer;
-import eloraam.machine.TileMachine;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
+import eloraam.core.*;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.RedPowerMachine;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.plugin.PluginManager;
 
 public class TileBreaker
-extends TileMachine
-implements ITubeConnectable,
-IFrameLink,
-IConnectable {
+        extends TileMachine
+        implements ITubeConnectable,
+        IFrameLink,
+        IConnectable {
     TubeBuffer buffer;
 
     public TileBreaker() {
@@ -130,7 +114,7 @@ IConnectable {
     @Override
     public void onBlockNeighborChange(int n) {
         int n2 = this.getConnectableMask();
-        if (RedPowerLib.isPowered((IBlockAccess)this.world, this.x, this.y, this.z, n2, n2 >> 24)) {
+        if (RedPowerLib.isPowered((IBlockAccess) this.world, this.x, this.y, this.z, n2, n2 >> 24)) {
             if (this.Powered) {
                 return;
             }
@@ -160,8 +144,8 @@ IConnectable {
             return;
         }
         Block block = this.world.getWorld().getBlockAt(worldCoord.x, worldCoord.y, worldCoord.z);
-        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, (Player)FakePlayer.getBukkitEntity(this.world));
-        this.world.getServer().getPluginManager().callEvent((Event)blockBreakEvent);
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, (Player) FakePlayer.getBukkitEntity(this.world));
+        this.world.getServer().getPluginManager().callEvent((Event) blockBreakEvent);
         if (blockBreakEvent.isCancelled()) {
             return;
         }

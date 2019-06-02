@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Container
  *  net.minecraft.server.EntityHuman
@@ -14,20 +14,13 @@ package eloraam.machine;
 
 import eloraam.core.IHandleGuiEvent;
 import eloraam.core.Packet212GuiEvent;
-import eloraam.machine.TileItemDetect;
+import net.minecraft.server.*;
+
 import java.io.IOException;
-import java.util.List;
-import net.minecraft.server.Container;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.ICrafting;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.Slot;
 
 public class ContainerItemDetect
-extends Container
-implements IHandleGuiEvent {
+        extends Container
+        implements IHandleGuiEvent {
     private TileItemDetect tileDetect;
     byte mode;
 
@@ -37,7 +30,7 @@ implements IHandleGuiEvent {
         this.tileDetect = tileItemDetect;
         for (n2 = 0; n2 < 3; ++n2) {
             for (n = 0; n < 3; ++n) {
-                this.a(new Slot((IInventory)tileItemDetect, n + n2 * 3, 62 + n * 18, 17 + n2 * 18));
+                this.a(new Slot((IInventory) tileItemDetect, n + n2 * 3, 62 + n * 18, 17 + n2 * 18));
             }
         }
         for (n2 = 0; n2 < 3; ++n2) {
@@ -48,7 +41,7 @@ implements IHandleGuiEvent {
         for (n2 = 0; n2 < 9; ++n2) {
             this.a(new Slot(iInventory, n2, 8 + n2 * 18, 142));
         }
-        this.setPlayer(((PlayerInventory)iInventory).player);
+        this.setPlayer(((PlayerInventory) iInventory).player);
     }
 
     public IInventory getInventory() {
@@ -61,7 +54,7 @@ implements IHandleGuiEvent {
 
     public ItemStack a(int n) {
         ItemStack itemStack = null;
-        Slot slot = (Slot)this.e.get(n);
+        Slot slot = (Slot) this.e.get(n);
         if (slot != null && slot.c()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.cloneItemStack();
@@ -85,9 +78,9 @@ implements IHandleGuiEvent {
     public void a() {
         super.a();
         for (int i = 0; i < this.listeners.size(); ++i) {
-            ICrafting iCrafting = (ICrafting)this.listeners.get(i);
+            ICrafting iCrafting = (ICrafting) this.listeners.get(i);
             if (this.mode == this.tileDetect.mode) continue;
-            iCrafting.setContainerData((Container)this, 0, (int)this.tileDetect.mode);
+            iCrafting.setContainerData((Container) this, 0, (int) this.tileDetect.mode);
         }
         this.mode = this.tileDetect.mode;
     }
@@ -98,7 +91,7 @@ implements IHandleGuiEvent {
 
     public void updateProgressBar(int n, int n2) {
         if (n == 0) {
-            this.tileDetect.mode = (byte)n2;
+            this.tileDetect.mode = (byte) n2;
         }
     }
 
@@ -108,10 +101,9 @@ implements IHandleGuiEvent {
             return;
         }
         try {
-            this.tileDetect.mode = (byte)packet212GuiEvent.getByte();
+            this.tileDetect.mode = (byte) packet212GuiEvent.getByte();
             this.tileDetect.dirtyBlock();
-        }
-        catch (IOException iOException) {
+        } catch (IOException iOException) {
             // empty catch block
         }
         this.a();

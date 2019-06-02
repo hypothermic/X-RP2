@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Block
  *  net.minecraft.server.BlockFire
@@ -12,28 +12,12 @@
  */
 package eloraam.machine;
 
-import eloraam.core.BluePowerConductor;
-import eloraam.core.CoreProxy;
-import eloraam.core.IBluePowerConnectable;
-import eloraam.core.RedPowerLib;
-import eloraam.core.TileExtended;
-import eloraam.core.WorldCoord;
-import eloraam.machine.BlockMachine;
-import eloraam.world.BlockCustomStone;
-import java.util.Random;
-import net.minecraft.server.Block;
-import net.minecraft.server.BlockFire;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.RedPowerMachine;
-import net.minecraft.server.RedPowerWorld;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
-import net.minecraft.server.WorldProvider;
+import eloraam.core.*;
+import net.minecraft.server.*;
 
 public class TileThermopile
-extends TileExtended
-implements IBluePowerConnectable {
+        extends TileExtended
+        implements IBluePowerConnectable {
     BluePowerConductor cond;
     public int tempHot;
     public int tempCold;
@@ -41,7 +25,7 @@ implements IBluePowerConnectable {
     public int ConMask;
 
     public TileThermopile() {
-        this.cond = new BluePowerConductor(){
+        this.cond = new BluePowerConductor() {
 
             @Override
             public TileEntity getParent() {
@@ -143,7 +127,8 @@ implements IBluePowerConnectable {
                 worldCoord = new WorldCoord(this);
                 worldCoord.step(n);
                 n2 = this.world.getTypeId(worldCoord.x, worldCoord.y, worldCoord.z);
-                if (n2 != Block.LAVA.id && n2 != Block.STATIONARY_LAVA.id || this.world.random.nextInt(300) != 0) continue;
+                if (n2 != Block.LAVA.id && n2 != Block.STATIONARY_LAVA.id || this.world.random.nextInt(300) != 0)
+                    continue;
                 int n5 = this.world.getData(worldCoord.x, worldCoord.y, worldCoord.z);
                 this.world.setTypeIdAndData(worldCoord.x, worldCoord.y, worldCoord.z, n5 != 0 ? RedPowerWorld.blockStone.id : Block.OBSIDIAN.id, n5 <= 0 ? 0 : 1);
                 break;
@@ -175,7 +160,7 @@ implements IBluePowerConnectable {
             return;
         }
         if (this.ConMask < 0) {
-            this.ConMask = RedPowerLib.getConnections((IBlockAccess)this.world, this, this.x, this.y, this.z);
+            this.ConMask = RedPowerLib.getConnections((IBlockAccess) this.world, this, this.x, this.y, this.z);
             this.cond.recache(this.ConMask, 0);
         }
         this.cond.iterate();
@@ -189,7 +174,7 @@ implements IBluePowerConnectable {
             this.updateTemps();
         }
         int n = Math.min(this.tempHot, this.tempCold);
-        this.cond.applyDirect(0.005 * (double)n);
+        this.cond.applyDirect(0.005 * (double) n);
     }
 
     @Override
@@ -210,9 +195,9 @@ implements IBluePowerConnectable {
     public void b(NBTTagCompound nBTTagCompound) {
         super.b(nBTTagCompound);
         this.cond.writeToNBT(nBTTagCompound);
-        nBTTagCompound.setShort("hot", (short)this.tempHot);
-        nBTTagCompound.setShort("cold", (short)this.tempCold);
-        nBTTagCompound.setByte("ticks", (byte)this.ticks);
+        nBTTagCompound.setShort("hot", (short) this.tempHot);
+        nBTTagCompound.setShort("cold", (short) this.tempCold);
+        nBTTagCompound.setByte("ticks", (byte) this.ticks);
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.AxisAlignedBB
  *  net.minecraft.server.Block
@@ -17,41 +17,17 @@
  */
 package eloraam.machine;
 
-import eloraam.core.BlockMultipart;
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.IFrameLink;
-import eloraam.core.IFrameSupport;
-import eloraam.core.IHandlePackets;
-import eloraam.core.Packet211TileDesc;
-import eloraam.core.RedPowerLib;
-import eloraam.core.TileMultipart;
-import eloraam.core.WorldCoord;
-import eloraam.machine.BlockFrame;
-import eloraam.machine.BlockMachine;
-import eloraam.machine.TileMotor;
+import eloraam.core.*;
+import net.minecraft.server.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import net.minecraft.server.AxisAlignedBB;
-import net.minecraft.server.Block;
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.Material;
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.Packet;
-import net.minecraft.server.RedPowerMachine;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
-import net.minecraft.server.WorldChunkManager;
 
 public class TileFrameMoving
-extends TileMultipart
-implements IFrameLink,
-IHandlePackets {
+        extends TileMultipart
+        implements IFrameLink,
+        IHandlePackets {
     FrameBlockAccess frameblock;
     public int motorX;
     public int motorY;
@@ -137,7 +113,7 @@ IHandlePackets {
 
     @Override
     public void setPartBounds(BlockMultipart blockMultipart, int n) {
-        TileMotor tileMotor = (TileMotor)CoreLib.getTileEntity((IBlockAccess)this.world, this.motorX, this.motorY, this.motorZ, TileMotor.class);
+        TileMotor tileMotor = (TileMotor) CoreLib.getTileEntity((IBlockAccess) this.world, this.motorX, this.motorY, this.motorZ, TileMotor.class);
         if (tileMotor == null) {
             return;
         }
@@ -194,7 +170,7 @@ IHandlePackets {
         if (!(this.movingTileEntity instanceof IFrameSupport)) {
             return;
         }
-        IFrameSupport iFrameSupport = (IFrameSupport)this.movingTileEntity;
+        IFrameSupport iFrameSupport = (IFrameSupport) this.movingTileEntity;
         iFrameSupport.onFrameRefresh(iBlockAccess);
     }
 
@@ -213,45 +189,45 @@ IHandlePackets {
     }
 
     private AxisAlignedBB getAABB(int n, float f) {
-        AxisAlignedBB axisAlignedBB = AxisAlignedBB.b((double)this.x, (double)this.y, (double)this.z, (double)(this.x + 1), (double)(this.y + 1), (double)(this.z + 1));
+        AxisAlignedBB axisAlignedBB = AxisAlignedBB.b((double) this.x, (double) this.y, (double) this.z, (double) (this.x + 1), (double) (this.y + 1), (double) (this.z + 1));
         switch (n) {
             case 0: {
-                axisAlignedBB.b -= (double)f;
-                axisAlignedBB.e -= (double)f;
+                axisAlignedBB.b -= (double) f;
+                axisAlignedBB.e -= (double) f;
                 break;
             }
             case 1: {
-                axisAlignedBB.b += (double)f;
-                axisAlignedBB.e += (double)f;
+                axisAlignedBB.b += (double) f;
+                axisAlignedBB.e += (double) f;
                 break;
             }
             case 2: {
-                axisAlignedBB.c -= (double)f;
-                axisAlignedBB.f -= (double)f;
+                axisAlignedBB.c -= (double) f;
+                axisAlignedBB.f -= (double) f;
                 break;
             }
             case 3: {
-                axisAlignedBB.c += (double)f;
-                axisAlignedBB.f += (double)f;
+                axisAlignedBB.c += (double) f;
+                axisAlignedBB.f += (double) f;
                 break;
             }
             case 4: {
-                axisAlignedBB.a -= (double)f;
-                axisAlignedBB.d -= (double)f;
+                axisAlignedBB.a -= (double) f;
+                axisAlignedBB.d -= (double) f;
                 break;
             }
             case 5: {
-                axisAlignedBB.a += (double)f;
-                axisAlignedBB.d += (double)f;
+                axisAlignedBB.a += (double) f;
+                axisAlignedBB.d += (double) f;
             }
         }
         return axisAlignedBB;
     }
 
     void pushEntities(TileMotor tileMotor) {
-        float f = (float)this.lastMovePos / 16.0f;
-        float f2 = (float)tileMotor.MovePos / 16.0f;
-        this.lastMovePos = (byte)tileMotor.MovePos;
+        float f = (float) this.lastMovePos / 16.0f;
+        float f2 = (float) tileMotor.MovePos / 16.0f;
+        this.lastMovePos = (byte) tileMotor.MovePos;
         float f3 = 0.0f;
         float f4 = 0.0f;
         float f5 = 0.0f;
@@ -285,15 +261,15 @@ IHandlePackets {
         ArrayList arrayList = new ArrayList();
         arrayList.addAll(list);
         for (Object e : arrayList) {
-            Entity entity = (Entity)e;
-            entity.move((double)f3, (double)f4, (double)f5);
+            Entity entity = (Entity) e;
+            entity.move((double) f3, (double) f4, (double) f5);
         }
     }
 
     @Override
     public void q_() {
         super.q_();
-        TileMotor tileMotor = (TileMotor)CoreLib.getTileEntity((IBlockAccess)this.world, this.motorX, this.motorY, this.motorZ, TileMotor.class);
+        TileMotor tileMotor = (TileMotor) CoreLib.getTileEntity((IBlockAccess) this.world, this.motorX, this.motorY, this.motorZ, TileMotor.class);
         if (tileMotor == null || tileMotor.MovePos < 0) {
             if (CoreProxy.isClient(this.world)) {
                 return;
@@ -322,7 +298,7 @@ IHandlePackets {
         this.lastMovePos = nBTTagCompound.getByte("lmp");
         if (nBTTagCompound.hasKey("mte")) {
             NBTTagCompound nBTTagCompound2 = nBTTagCompound.getCompound("mte");
-            this.movingTileEntity = TileEntity.c((NBTTagCompound)nBTTagCompound2);
+            this.movingTileEntity = TileEntity.c((NBTTagCompound) nBTTagCompound2);
         } else {
             this.movingTileEntity = null;
         }
@@ -340,15 +316,15 @@ IHandlePackets {
         if (this.movingTileEntity != null) {
             NBTTagCompound nBTTagCompound2 = new NBTTagCompound();
             this.movingTileEntity.b(nBTTagCompound2);
-            nBTTagCompound.set("mte", (NBTBase)nBTTagCompound2);
+            nBTTagCompound.set("mte", (NBTBase) nBTTagCompound2);
         }
     }
 
     protected void readFromPacket(Packet211TileDesc packet211TileDesc) throws IOException {
-        this.motorX = (int)packet211TileDesc.getVLC();
-        this.motorY = (int)packet211TileDesc.getVLC();
-        this.motorZ = (int)packet211TileDesc.getVLC();
-        this.movingBlockID = (int)packet211TileDesc.getUVLC();
+        this.motorX = (int) packet211TileDesc.getVLC();
+        this.motorY = (int) packet211TileDesc.getVLC();
+        this.motorZ = (int) packet211TileDesc.getVLC();
+        this.movingBlockID = (int) packet211TileDesc.getUVLC();
         this.movingBlockMeta = packet211TileDesc.getByte();
         if (this.movingBlockID != 0) {
             this.movingTileEntity = Block.byId[this.movingBlockID].getTileEntity(this.movingBlockMeta);
@@ -361,7 +337,7 @@ IHandlePackets {
                 this.movingTileEntity.x = this.x;
                 this.movingTileEntity.y = this.y;
                 this.movingTileEntity.z = this.z;
-                IFrameSupport iFrameSupport = (IFrameSupport)this.movingTileEntity;
+                IFrameSupport iFrameSupport = (IFrameSupport) this.movingTileEntity;
                 iFrameSupport.handleFramePacket(packet211TileDesc.getByteArray());
             }
         }
@@ -374,7 +350,7 @@ IHandlePackets {
         packet211TileDesc.addUVLC(this.movingBlockID);
         packet211TileDesc.addByte(this.movingBlockMeta);
         if (this.movingTileEntity instanceof IFrameSupport) {
-            IFrameSupport iFrameSupport = (IFrameSupport)this.movingTileEntity;
+            IFrameSupport iFrameSupport = (IFrameSupport) this.movingTileEntity;
             packet211TileDesc.addByteArray(iFrameSupport.getFramePacket());
         } else {
             packet211TileDesc.addByteArray(new byte[0]);
@@ -399,17 +375,16 @@ IHandlePackets {
                 return;
             }
             this.readFromPacket(packet211TileDesc);
-        }
-        catch (IOException iOException) {
+        } catch (IOException iOException) {
             // empty catch block
         }
         this.world.notify(this.x, this.y, this.z);
     }
 
     private class FrameBlockAccess
-    implements IBlockAccess {
+            implements IBlockAccess {
         private TileFrameMoving getFrame(int n, int n2, int n3) {
-            TileFrameMoving tileFrameMoving = (TileFrameMoving)CoreLib.getTileEntity((IBlockAccess)TileFrameMoving.this.world, n, n2, n3, TileFrameMoving.class);
+            TileFrameMoving tileFrameMoving = (TileFrameMoving) CoreLib.getTileEntity((IBlockAccess) TileFrameMoving.this.world, n, n2, n3, TileFrameMoving.class);
             if (tileFrameMoving == null) {
                 return null;
             }
@@ -436,11 +411,11 @@ IHandlePackets {
         }
 
         public int getLightBrightnessForSkyBlocks(int n, int n2, int n3, int n4) {
-            return CoreProxy.getLightBrightnessForSkyBlocks((IBlockAccess)TileFrameMoving.this.world, n, n2, n3, n4);
+            return CoreProxy.getLightBrightnessForSkyBlocks((IBlockAccess) TileFrameMoving.this.world, n, n2, n3, n4);
         }
 
         public float getBrightness(int n, int n2, int n3, int n4) {
-            return CoreProxy.getBrightness((IBlockAccess)TileFrameMoving.this.world, n, n2, n3, n4);
+            return CoreProxy.getBrightness((IBlockAccess) TileFrameMoving.this.world, n, n2, n3, n4);
         }
 
         public float getLightBrightness(int n, int n2, int n3) {

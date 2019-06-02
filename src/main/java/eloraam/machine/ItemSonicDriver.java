@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Entity
  *  net.minecraft.server.EntityHuman
@@ -13,16 +13,11 @@ package eloraam.machine;
 
 import eloraam.base.ItemScrewdriver;
 import eloraam.core.IChargeable;
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.Item;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.World;
+import net.minecraft.server.*;
 
 public class ItemSonicDriver
-extends ItemScrewdriver
-implements IChargeable {
+        extends ItemScrewdriver
+        implements IChargeable {
     public ItemSonicDriver(int n) {
         super(n);
         this.setMaxDurability(400);

@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Container
  *  net.minecraft.server.EntityHuman
@@ -14,20 +14,13 @@ package eloraam.machine;
 
 import eloraam.core.IHandleGuiEvent;
 import eloraam.core.Packet212GuiEvent;
-import eloraam.machine.TileRegulator;
+import net.minecraft.server.*;
+
 import java.io.IOException;
-import java.util.List;
-import net.minecraft.server.Container;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.ICrafting;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.Slot;
 
 public class ContainerRegulator
-extends Container
-implements IHandleGuiEvent {
+        extends Container
+        implements IHandleGuiEvent {
     private TileRegulator tileRegulator;
     public int color = 0;
     public int mode = 0;
@@ -39,7 +32,7 @@ implements IHandleGuiEvent {
         for (n2 = 0; n2 < 3; ++n2) {
             for (n = 0; n < 3; ++n) {
                 for (int i = 0; i < 3; ++i) {
-                    this.a(new Slot((IInventory)tileRegulator, i + n * 3 + n2 * 9, 8 + i * 18 + n2 * 72, 18 + n * 18));
+                    this.a(new Slot((IInventory) tileRegulator, i + n * 3 + n2 * 9, 8 + i * 18 + n2 * 72, 18 + n * 18));
                 }
             }
         }
@@ -51,7 +44,7 @@ implements IHandleGuiEvent {
         for (n2 = 0; n2 < 9; ++n2) {
             this.a(new Slot(iInventory, n2, 26 + n2 * 18, 144));
         }
-        this.setPlayer(((PlayerInventory)iInventory).player);
+        this.setPlayer(((PlayerInventory) iInventory).player);
     }
 
     public IInventory getInventory() {
@@ -64,7 +57,7 @@ implements IHandleGuiEvent {
 
     public ItemStack a(int n) {
         ItemStack itemStack = null;
-        Slot slot = (Slot)this.e.get(n);
+        Slot slot = (Slot) this.e.get(n);
         if (slot != null && slot.c()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.cloneItemStack();
@@ -88,12 +81,12 @@ implements IHandleGuiEvent {
     public void a() {
         super.a();
         for (int i = 0; i < this.listeners.size(); ++i) {
-            ICrafting iCrafting = (ICrafting)this.listeners.get(i);
+            ICrafting iCrafting = (ICrafting) this.listeners.get(i);
             if (this.color != this.tileRegulator.color) {
-                iCrafting.setContainerData((Container)this, 0, this.tileRegulator.color);
+                iCrafting.setContainerData((Container) this, 0, this.tileRegulator.color);
             }
             if (this.mode == this.tileRegulator.mode) continue;
-            iCrafting.setContainerData((Container)this, 1, (int)this.tileRegulator.mode);
+            iCrafting.setContainerData((Container) this, 1, (int) this.tileRegulator.mode);
         }
         this.color = this.tileRegulator.color;
         this.mode = this.tileRegulator.mode;
@@ -102,11 +95,11 @@ implements IHandleGuiEvent {
     public void updateProgressBar(int n, int n2) {
         switch (n) {
             case 0: {
-                this.tileRegulator.color = (byte)n2;
+                this.tileRegulator.color = (byte) n2;
                 break;
             }
             case 1: {
-                this.tileRegulator.mode = (byte)n2;
+                this.tileRegulator.mode = (byte) n2;
             }
         }
     }
@@ -116,12 +109,12 @@ implements IHandleGuiEvent {
         try {
             switch (packet212GuiEvent.eventId) {
                 case 1: {
-                    this.tileRegulator.color = (byte)packet212GuiEvent.getByte();
+                    this.tileRegulator.color = (byte) packet212GuiEvent.getByte();
                     this.tileRegulator.dirtyBlock();
                     break;
                 }
                 case 2: {
-                    this.tileRegulator.mode = (byte)packet212GuiEvent.getByte();
+                    this.tileRegulator.mode = (byte) packet212GuiEvent.getByte();
                     this.tileRegulator.dirtyBlock();
                     break;
                 }
@@ -129,8 +122,7 @@ implements IHandleGuiEvent {
                     return;
                 }
             }
-        }
-        catch (IOException iOException) {
+        } catch (IOException iOException) {
             // empty catch block
         }
     }

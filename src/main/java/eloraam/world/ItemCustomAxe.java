@@ -8,10 +8,10 @@ import net.minecraft.server.ItemAxe;
 public class ItemCustomAxe extends ItemAxe implements ITextureProvider {
 
     public ItemCustomAxe(int n) {
-	super(n, EnumToolMaterial.DIAMOND);
+        super(n, EnumToolMaterial.DIAMOND);
     }
 
     public String getTextureFile() {
-	return "/eloraam/world/worlditems1.png";
+        return "/eloraam/world/worlditems1.png";
     }
 }

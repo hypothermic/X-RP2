@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.EntityHuman
  *  net.minecraft.server.IBlockAccess
@@ -13,17 +13,15 @@ package eloraam.logic;
 import eloraam.core.IRedPowerWiring;
 import eloraam.core.Packet211TileDesc;
 import eloraam.core.RedPowerLib;
-import eloraam.logic.TileLogic;
-import java.io.IOException;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
+
+import java.io.IOException;
 
 public class TileLogicAdv
-extends TileLogic
-implements IRedPowerWiring {
+        extends TileLogic
+        implements IRedPowerWiring {
     LogicAdvModule storage = null;
 
     @Override
@@ -81,7 +79,7 @@ implements IRedPowerWiring {
         if (this.world.getTileEntity(this.x, this.y, this.z) != this) {
             return false;
         }
-        return entityHuman.e((double)this.x + 0.5, (double)this.y + 0.5, (double)this.z + 0.5) <= 64.0;
+        return entityHuman.e((double) this.x + 0.5, (double) this.y + 0.5, (double) this.z + 0.5) <= 64.0;
     }
 
     @Override
@@ -215,7 +213,7 @@ implements IRedPowerWiring {
     }
 
     public class LogicAdvXcvr
-    extends LogicAdvModule {
+            extends LogicAdvModule {
         public int State1;
         public int State2;
         public int State1N;
@@ -223,7 +221,7 @@ implements IRedPowerWiring {
 
         @Override
         public void updatePowerState() {
-            int n = RedPowerLib.getRotPowerState((IBlockAccess)TileLogicAdv.this.world, TileLogicAdv.this.x, TileLogicAdv.this.y, TileLogicAdv.this.z, 5, TileLogicAdv.this.Rotation, 0);
+            int n = RedPowerLib.getRotPowerState((IBlockAccess) TileLogicAdv.this.world, TileLogicAdv.this.x, TileLogicAdv.this.y, TileLogicAdv.this.z, 5, TileLogicAdv.this.Rotation, 0);
             if (n != TileLogicAdv.this.PowerState) {
                 TileLogicAdv.this.PowerState = n;
                 TileLogicAdv.this.updateBlock();
@@ -291,8 +289,8 @@ implements IRedPowerWiring {
             this.State1N = this.State2;
             this.State2N = this.State1;
             for (int i = 0; i < 16; ++i) {
-                short s = (short)RedPowerLib.updateBlockCurrentStrength(TileLogicAdv.this.world, TileLogicAdv.this, TileLogicAdv.this.x, TileLogicAdv.this.y, TileLogicAdv.this.z, RedPowerLib.mapRotToCon(2, TileLogicAdv.this.Rotation), 2 << i);
-                short s2 = (short)RedPowerLib.updateBlockCurrentStrength(TileLogicAdv.this.world, TileLogicAdv.this, TileLogicAdv.this.x, TileLogicAdv.this.y, TileLogicAdv.this.z, RedPowerLib.mapRotToCon(8, TileLogicAdv.this.Rotation), 2 << i);
+                short s = (short) RedPowerLib.updateBlockCurrentStrength(TileLogicAdv.this.world, TileLogicAdv.this, TileLogicAdv.this.x, TileLogicAdv.this.y, TileLogicAdv.this.z, RedPowerLib.mapRotToCon(2, TileLogicAdv.this.Rotation), 2 << i);
+                short s2 = (short) RedPowerLib.updateBlockCurrentStrength(TileLogicAdv.this.world, TileLogicAdv.this, TileLogicAdv.this.x, TileLogicAdv.this.y, TileLogicAdv.this.z, RedPowerLib.mapRotToCon(8, TileLogicAdv.this.Rotation), 2 << i);
                 if (s > 0) {
                     this.State1N |= 1 << i;
                 }
@@ -323,8 +321,8 @@ implements IRedPowerWiring {
 
         @Override
         public void readFromPacket(Packet211TileDesc packet211TileDesc) throws IOException {
-            this.State1 = (int)packet211TileDesc.getUVLC();
-            this.State2 = (int)packet211TileDesc.getUVLC();
+            this.State1 = (int) packet211TileDesc.getUVLC();
+            this.State2 = (int) packet211TileDesc.getUVLC();
         }
 
         @Override

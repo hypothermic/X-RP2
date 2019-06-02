@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Block
  *  net.minecraft.server.EntityHuman
@@ -10,21 +10,16 @@
  */
 package eloraam.machine;
 
-import eloraam.core.CoreLib;
-import eloraam.core.CoverLib;
-import eloraam.core.IMicroPlacement;
-import eloraam.core.RedPowerLib;
-import eloraam.core.TileCovered;
-import eloraam.core.WorldCoord;
-import java.util.ArrayList;
-import net.minecraft.server.Block;
+import eloraam.core.*;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.World;
 
+import java.util.ArrayList;
+
 public class MicroPlacementTube
-implements IMicroPlacement {
+        implements IMicroPlacement {
     private void blockUsed(World world, WorldCoord worldCoord, ItemStack itemStack) {
         --itemStack.count;
         CoreLib.placeNoise(world, worldCoord.x, worldCoord.y, worldCoord.z, itemStack.id);
@@ -52,7 +47,7 @@ implements IMicroPlacement {
         if (n2 != itemStack.id) {
             return this.initialPlace(itemStack, entityHuman, world, worldCoord, n);
         }
-        TileCovered tileCovered = (TileCovered)CoreLib.getTileEntity((IBlockAccess)world, worldCoord, TileCovered.class);
+        TileCovered tileCovered = (TileCovered) CoreLib.getTileEntity((IBlockAccess) world, worldCoord, TileCovered.class);
         if (tileCovered == null) {
             return false;
         }

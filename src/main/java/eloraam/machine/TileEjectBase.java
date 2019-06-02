@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  forge.ISidedInventory
  *  net.minecraft.server.BaseMod
@@ -17,33 +17,20 @@
  */
 package eloraam.machine;
 
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.ITubeConnectable;
-import eloraam.core.TubeBuffer;
-import eloraam.core.TubeItem;
-import eloraam.machine.TileMachine;
+import eloraam.core.*;
 import forge.ISidedInventory;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.server.BaseMod;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
-import net.minecraft.server.mod_RedPowerMachine;
+import net.minecraft.server.*;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TileEjectBase
-extends TileMachine
-implements IInventory,
-ISidedInventory,
-ITubeConnectable {
+        extends TileMachine
+        implements IInventory,
+        ISidedInventory,
+        ITubeConnectable {
     TubeBuffer buffer;
     protected ItemStack[] contents;
     public List<HumanEntity> transaction = new ArrayList<HumanEntity>();
@@ -54,11 +41,11 @@ ITubeConnectable {
     }
 
     public void onOpen(CraftHumanEntity craftHumanEntity) {
-        this.transaction.add((HumanEntity)craftHumanEntity);
+        this.transaction.add((HumanEntity) craftHumanEntity);
     }
 
     public void onClose(CraftHumanEntity craftHumanEntity) {
-        this.transaction.remove((Object)craftHumanEntity);
+        this.transaction.remove((Object) craftHumanEntity);
     }
 
     public List<HumanEntity> getViewers() {
@@ -124,7 +111,7 @@ ITubeConnectable {
         if (CoreProxy.isClient(this.world)) {
             return true;
         }
-        entityHuman.openGui((BaseMod)mod_RedPowerMachine.instance, 12, this.world, this.x, this.y, this.z);
+        entityHuman.openGui((BaseMod) mod_RedPowerMachine.instance, 12, this.world, this.x, this.y, this.z);
         return true;
     }
 
@@ -226,7 +213,7 @@ ITubeConnectable {
         if (this.world.getTileEntity(this.x, this.y, this.z) != this) {
             return false;
         }
-        return entityHuman.e((double)this.x + 0.5, (double)this.y + 0.5, (double)this.z + 0.5) <= 64.0;
+        return entityHuman.e((double) this.x + 0.5, (double) this.y + 0.5, (double) this.z + 0.5) <= 64.0;
     }
 
     public void g() {
@@ -249,10 +236,10 @@ ITubeConnectable {
         NBTTagList nBTTagList = nBTTagCompound.getList("Items");
         this.contents = new ItemStack[this.getSize()];
         for (int i = 0; i < nBTTagList.size(); ++i) {
-            NBTTagCompound nBTTagCompound2 = (NBTTagCompound)nBTTagList.get(i);
+            NBTTagCompound nBTTagCompound2 = (NBTTagCompound) nBTTagList.get(i);
             int n = nBTTagCompound2.getByte("Slot") & 255;
             if (n < 0 || n >= this.contents.length) continue;
-            this.contents[n] = ItemStack.a((NBTTagCompound)nBTTagCompound2);
+            this.contents[n] = ItemStack.a((NBTTagCompound) nBTTagCompound2);
         }
         this.buffer.readFromNBT(nBTTagCompound);
     }
@@ -264,11 +251,11 @@ ITubeConnectable {
         for (int i = 0; i < this.contents.length; ++i) {
             if (this.contents[i] == null) continue;
             NBTTagCompound nBTTagCompound2 = new NBTTagCompound();
-            nBTTagCompound2.setByte("Slot", (byte)i);
+            nBTTagCompound2.setByte("Slot", (byte) i);
             this.contents[i].save(nBTTagCompound2);
-            nBTTagList.add((NBTBase)nBTTagCompound2);
+            nBTTagList.add((NBTBase) nBTTagCompound2);
         }
-        nBTTagCompound.set("Items", (NBTBase)nBTTagList);
+        nBTTagCompound.set("Items", (NBTBase) nBTTagList);
         this.buffer.writeToNBT(nBTTagCompound);
     }
 }

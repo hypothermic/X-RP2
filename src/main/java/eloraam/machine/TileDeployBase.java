@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.AxisAlignedBB
  *  net.minecraft.server.Entity
@@ -21,28 +21,14 @@ import eloraam.core.IConnectable;
 import eloraam.core.IFrameLink;
 import eloraam.core.RedPowerLib;
 import eloraam.core.WorldCoord;
-import eloraam.machine.BlockMachine;
-import eloraam.machine.FakePlayer;
-import eloraam.machine.TileMachine;
+import net.minecraft.server.*;
+
 import java.util.List;
-import net.minecraft.server.AxisAlignedBB;
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.Item;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.MovingObjectPosition;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.RedPowerMachine;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.Vec3D;
-import net.minecraft.server.World;
 
 public abstract class TileDeployBase
-extends TileMachine
-implements IFrameLink,
-IConnectable {
+        extends TileMachine
+        implements IFrameLink,
+        IConnectable {
     protected static EntityHuman fakePlayer = null;
 
     @Override
@@ -91,9 +77,9 @@ IConnectable {
         if (fakePlayer == null) {
             fakePlayer = FakePlayer.get(this.world);
         }
-        double d = (double)this.x + 0.5;
-        double d2 = (double)this.y - 1.1;
-        double d3 = (double)this.z + 0.5;
+        double d = (double) this.x + 0.5;
+        double d2 = (double) this.y - 1.1;
+        double d3 = (double) this.z + 0.5;
         switch (this.Rotation) {
             case 0: {
                 f = -90.0f;
@@ -136,17 +122,17 @@ IConnectable {
     }
 
     protected static Entity traceEntities(World world, Entity entity, Vec3D vec3D, Vec3D vec3D2) {
-        AxisAlignedBB axisAlignedBB = AxisAlignedBB.b((double)vec3D.a, (double)vec3D.b, (double)vec3D.c, (double)vec3D.a, (double)vec3D.b, (double)vec3D.c);
+        AxisAlignedBB axisAlignedBB = AxisAlignedBB.b((double) vec3D.a, (double) vec3D.b, (double) vec3D.c, (double) vec3D.a, (double) vec3D.b, (double) vec3D.c);
         List list = world.getEntities(entity, axisAlignedBB.a(vec3D2.a, vec3D2.b, vec3D2.c).grow(1.0, 1.0, 1.0));
         Vec3D vec3D3 = vec3D.add(vec3D2.a, vec3D2.b, vec3D2.c);
         Entity entity2 = null;
         double d = 0.0;
         for (int i = 0; i < list.size(); ++i) {
             double d2;
-            Entity entity3 = (Entity)list.get(i);
+            Entity entity3 = (Entity) list.get(i);
             if (!entity3.o_()) continue;
             float f = entity3.j_();
-            AxisAlignedBB axisAlignedBB2 = entity3.boundingBox.grow((double)f, (double)f, (double)f);
+            AxisAlignedBB axisAlignedBB2 = entity3.boundingBox.grow((double) f, (double) f, (double) f);
             if (axisAlignedBB2.a(vec3D)) {
                 entity2 = entity3;
                 d = 0.0;
@@ -167,7 +153,7 @@ IConnectable {
         ItemStack itemStack = fakePlayer.U();
         if (itemStack != null && entity instanceof EntityLiving) {
             int n = itemStack.count;
-            itemStack.a((EntityLiving)entity);
+            itemStack.a((EntityLiving) entity);
             if (itemStack.count != n) {
                 return true;
             }
@@ -200,8 +186,8 @@ IConnectable {
         vec3D.a *= 2.5;
         vec3D.b *= 2.5;
         vec3D.c *= 2.5;
-        Vec3D vec3D2 = Vec3D.create((double)((double)this.x + 0.5), (double)((double)this.y + 0.5), (double)((double)this.z + 0.5));
-        Entity entity = TileDeployBase.traceEntities(this.world, (Entity)fakePlayer, vec3D2, vec3D);
+        Vec3D vec3D2 = Vec3D.create((double) ((double) this.x + 0.5), (double) ((double) this.y + 0.5), (double) ((double) this.z + 0.5));
+        Entity entity = TileDeployBase.traceEntities(this.world, (Entity) fakePlayer, vec3D2, vec3D);
         return entity != null && this.useOnEntity(entity);
     }
 
@@ -210,7 +196,7 @@ IConnectable {
     @Override
     public void onBlockNeighborChange(int n) {
         int n2 = this.getConnectableMask();
-        if (!RedPowerLib.isPowered((IBlockAccess)this.world, this.x, this.y, this.z, n2, n2 >> 24)) {
+        if (!RedPowerLib.isPowered((IBlockAccess) this.world, this.x, this.y, this.z, n2, n2 >> 24)) {
             if (!this.Active) {
                 return;
             }

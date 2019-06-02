@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Entity
  *  net.minecraft.server.EntityPlayer
@@ -15,19 +15,10 @@
  */
 package eloraam.machine;
 
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.Item;
-import net.minecraft.server.ItemInWorldManager;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.ModLoader;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.Statistic;
-import net.minecraft.server.World;
+import net.minecraft.server.*;
 
 public class EntityPlayerFake
-extends EntityPlayer {
+        extends EntityPlayer {
     public EntityPlayerFake(String string, World world) {
         super(ModLoader.getMinecraftServerInstance(), world, string, new ItemInWorldManager(world));
         for (int i = 9; i < 36; ++i) {

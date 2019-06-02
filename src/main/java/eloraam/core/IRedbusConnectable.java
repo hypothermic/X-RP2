@@ -1,8 +1,6 @@
 /* X-RP - decompiled with CFR */
 package eloraam.core;
 
-import eloraam.core.IConnectable;
-
 public interface IRedbusConnectable extends IConnectable {
 
     public int rbGetAddr();

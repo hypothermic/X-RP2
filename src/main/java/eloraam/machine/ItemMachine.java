@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Item
  *  net.minecraft.server.ItemBlock
@@ -8,13 +8,14 @@
  */
 package eloraam.machine;
 
-import java.util.ArrayList;
 import net.minecraft.server.Item;
 import net.minecraft.server.ItemBlock;
 import net.minecraft.server.ItemStack;
 
+import java.util.ArrayList;
+
 public class ItemMachine
-extends ItemBlock {
+        extends ItemBlock {
     public ItemMachine(int n) {
         super(n);
         this.setMaxDurability(0);
@@ -83,7 +84,7 @@ extends ItemBlock {
     public void addCreativeItems(ArrayList arrayList) {
         for (int i = 0; i <= 15; ++i) {
             if (i == 9) continue;
-            arrayList.add(new ItemStack((Item)this, 1, i));
+            arrayList.add(new ItemStack((Item) this, 1, i));
         }
     }
 }

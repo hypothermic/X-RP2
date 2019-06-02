@@ -1,8 +1,9 @@
 /* X-RP - decompiled with CFR */
 package eloraam.core;
 
-import java.io.IOException;
 import net.minecraft.server.IBlockAccess;
+
+import java.io.IOException;
 
 public interface IFrameSupport {
 

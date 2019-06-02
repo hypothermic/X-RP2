@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.IBlockAccess
  *  net.minecraft.server.ItemStack
@@ -10,14 +10,12 @@
 package eloraam.machine;
 
 import eloraam.core.RedPowerLib;
-import eloraam.machine.TileEjectBase;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.World;
 
 public class TileEject
-extends TileEjectBase {
+        extends TileEjectBase {
     @Override
     public int getExtendedID() {
         return 14;
@@ -25,7 +23,7 @@ extends TileEjectBase {
 
     @Override
     public void onBlockNeighborChange(int n) {
-        if (RedPowerLib.isPowered((IBlockAccess)this.world, this.x, this.y, this.z, 16777215, 63)) {
+        if (RedPowerLib.isPowered((IBlockAccess) this.world, this.x, this.y, this.z, 16777215, 63)) {
             if (this.Powered) {
                 return;
             }

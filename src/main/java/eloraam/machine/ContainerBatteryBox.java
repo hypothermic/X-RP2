@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.Container
  *  net.minecraft.server.EntityHuman
@@ -12,18 +12,10 @@
  */
 package eloraam.machine;
 
-import eloraam.machine.TileBatteryBox;
-import java.util.List;
-import net.minecraft.server.Container;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.ICrafting;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.Slot;
+import net.minecraft.server.*;
 
 public class ContainerBatteryBox
-extends Container {
+        extends Container {
     private TileBatteryBox tileBB;
     public int charge;
     public int storage;
@@ -31,8 +23,8 @@ extends Container {
     public ContainerBatteryBox(IInventory iInventory, TileBatteryBox tileBatteryBox) {
         int n;
         this.tileBB = tileBatteryBox;
-        this.a(new Slot((IInventory)tileBatteryBox, 0, 120, 27));
-        this.a(new Slot((IInventory)tileBatteryBox, 1, 120, 55));
+        this.a(new Slot((IInventory) tileBatteryBox, 0, 120, 27));
+        this.a(new Slot((IInventory) tileBatteryBox, 1, 120, 55));
         for (n = 0; n < 3; ++n) {
             for (int i = 0; i < 9; ++i) {
                 this.a(new Slot(iInventory, i + n * 9 + 9, 8 + i * 18, 88 + n * 18));
@@ -41,7 +33,7 @@ extends Container {
         for (n = 0; n < 9; ++n) {
             this.a(new Slot(iInventory, n, 8 + n * 18, 146));
         }
-        this.setPlayer(((PlayerInventory)iInventory).player);
+        this.setPlayer(((PlayerInventory) iInventory).player);
     }
 
     public IInventory getInventory() {
@@ -54,7 +46,7 @@ extends Container {
 
     public ItemStack a(int n) {
         ItemStack itemStack = null;
-        Slot slot = (Slot)this.e.get(n);
+        Slot slot = (Slot) this.e.get(n);
         if (slot != null && slot.c()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.cloneItemStack();
@@ -63,7 +55,7 @@ extends Container {
                     return null;
                 }
             } else {
-                Slot slot2 = (Slot)this.e.get(0);
+                Slot slot2 = (Slot) this.e.get(0);
                 ItemStack itemStack3 = slot2.getItem();
                 if (itemStack3 != null && itemStack3.count != 0) {
                     return null;
@@ -87,12 +79,12 @@ extends Container {
     public void a() {
         super.a();
         for (int i = 0; i < this.listeners.size(); ++i) {
-            ICrafting iCrafting = (ICrafting)this.listeners.get(i);
+            ICrafting iCrafting = (ICrafting) this.listeners.get(i);
             if (this.charge != this.tileBB.Charge) {
-                iCrafting.setContainerData((Container)this, 0, this.tileBB.Charge);
+                iCrafting.setContainerData((Container) this, 0, this.tileBB.Charge);
             }
             if (this.storage == this.tileBB.Storage) continue;
-            iCrafting.setContainerData((Container)this, 1, this.tileBB.Storage);
+            iCrafting.setContainerData((Container) this, 1, this.tileBB.Storage);
         }
         this.charge = this.tileBB.Charge;
         this.storage = this.tileBB.Storage;

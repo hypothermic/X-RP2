@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0_123.
- * 
+ *
  * Could not load the following classes:
  *  net.minecraft.server.EntityLiving
  *  net.minecraft.server.IBlockAccess
@@ -10,33 +10,26 @@
  */
 package eloraam.machine;
 
-import eloraam.core.CoreLib;
-import eloraam.core.CoreProxy;
-import eloraam.core.FluidBuffer;
-import eloraam.core.FluidClass;
-import eloraam.core.IPipeConnectable;
-import eloraam.core.PipeLib;
-import eloraam.core.WorldCoord;
-import eloraam.machine.TileMachinePanel;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import eloraam.core.*;
 import net.minecraft.server.EntityLiving;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
-import net.minecraft.server.World;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.PriorityQueue;
 
 public class TileGrate
-extends TileMachinePanel
-implements IPipeConnectable {
+        extends TileMachinePanel
+        implements IPipeConnectable {
     FluidBuffer gratebuf;
     GratePathfinder searchPath;
     int searchState;
 
     public TileGrate() {
-        this.gratebuf = new FluidBuffer(){
+        this.gratebuf = new FluidBuffer() {
 
             @Override
             public TileEntity getParent() {
@@ -124,7 +117,7 @@ implements IPipeConnectable {
         }
         WorldCoord worldCoord = new WorldCoord(this);
         worldCoord.step(this.Rotation);
-        IPipeConnectable iPipeConnectable = (IPipeConnectable)CoreLib.getTileEntity((IBlockAccess)this.world, worldCoord, IPipeConnectable.class);
+        IPipeConnectable iPipeConnectable = (IPipeConnectable) CoreLib.getTileEntity((IBlockAccess) this.world, worldCoord, IPipeConnectable.class);
         if (iPipeConnectable == null) {
             return;
         }
@@ -195,23 +188,23 @@ implements IPipeConnectable {
     }
 
     public static class SimpleComparator
-    implements Comparator {
+            implements Comparator {
         int dir;
 
         public int compare(Object object, Object object2) {
-            FluidCoord fluidCoord = (FluidCoord)object;
-            FluidCoord fluidCoord2 = (FluidCoord)object2;
+            FluidCoord fluidCoord = (FluidCoord) object;
+            FluidCoord fluidCoord2 = (FluidCoord) object2;
             return fluidCoord.dist - fluidCoord2.dist;
         }
     }
 
     public static class FluidCoord
-    implements Comparable {
+            implements Comparable {
         public WorldCoord wc;
         public int dist;
 
         public int compareTo(Object object) {
-            FluidCoord fluidCoord = (FluidCoord)object;
+            FluidCoord fluidCoord = (FluidCoord) object;
             if (this.wc.y == fluidCoord.wc.y) {
                 return this.dist - fluidCoord.dist;
             }
@@ -268,7 +261,7 @@ implements IPipeConnectable {
                 return true;
             }
             do {
-                if ((worldCoord = (WorldCoord)this.backlink.get(worldCoord)) == null) {
+                if ((worldCoord = (WorldCoord) this.backlink.get(worldCoord)) == null) {
                     return false;
                 }
                 if (worldCoord.compareTo(this.startPos) != 0) continue;
@@ -289,7 +282,8 @@ implements IPipeConnectable {
         public void stepMap(FluidCoord fluidCoord) {
             for (int i = 0; i < 6; ++i) {
                 WorldCoord worldCoord = fluidCoord.wc.coordStep(i);
-                if (this.fluidClass.getFluidId(TileGrate.this.world, worldCoord) != this.fluidID || this.backlink.containsKey(worldCoord)) continue;
+                if (this.fluidClass.getFluidId(TileGrate.this.world, worldCoord) != this.fluidID || this.backlink.containsKey(worldCoord))
+                    continue;
                 this.backlink.put(worldCoord, fluidCoord.wc);
                 this.workset.add(new FluidCoord(worldCoord, fluidCoord.dist + 1));
             }
@@ -298,7 +292,7 @@ implements IPipeConnectable {
         public int tryDumpFluid(int n, int n2) {
             for (int i = 0; i < n2; ++i) {
                 int n3;
-                FluidCoord fluidCoord = (FluidCoord)this.workset.poll();
+                FluidCoord fluidCoord = (FluidCoord) this.workset.poll();
                 if (fluidCoord == null) {
                     TileGrate.this.restartPath();
                     return n;
@@ -315,7 +309,8 @@ implements IPipeConnectable {
                 if (this.fluidClass.getFluidId(TileGrate.this.world, fluidCoord.wc) != this.fluidID) continue;
                 this.stepAdd(fluidCoord);
                 int n4 = this.fluidClass.getFluidLevel(TileGrate.this.world, fluidCoord.wc);
-                if (n4 == 16 || !this.fluidClass.setFluidLevel(TileGrate.this.world, fluidCoord.wc, n3 = Math.min(n4 + n, 16)) || (n -= n3 - n4) != 0) continue;
+                if (n4 == 16 || !this.fluidClass.setFluidLevel(TileGrate.this.world, fluidCoord.wc, n3 = Math.min(n4 + n, 16)) || (n -= n3 - n4) != 0)
+                    continue;
                 return 0;
             }
             return n;
@@ -326,7 +321,7 @@ implements IPipeConnectable {
                 return true;
             }
             for (int i = 0; i < n; ++i) {
-                FluidCoord fluidCoord = (FluidCoord)this.workset.poll();
+                FluidCoord fluidCoord = (FluidCoord) this.workset.poll();
                 if (fluidCoord == null) {
                     return true;
                 }
@@ -342,7 +337,7 @@ implements IPipeConnectable {
         public int trySuckFluid(int n) {
             int n2 = 0;
             while (!this.allset.isEmpty()) {
-                FluidCoord fluidCoord = (FluidCoord)this.allset.peek();
+                FluidCoord fluidCoord = (FluidCoord) this.allset.peek();
                 if (!this.isConnected(fluidCoord.wc)) {
                     TileGrate.this.restartPath();
                     return n2;
