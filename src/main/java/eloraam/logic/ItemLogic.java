@@ -60,9 +60,12 @@ public class ItemLogic
     protected boolean tryPlace(ItemStack itemStack, EntityHuman entityHuman, World world, int n, int n2, int n3, int n4, int n5, int n6) {
         int n7 = itemStack.id;
         int n8 = itemStack.getData();
+        System.err.println("TRY PLACE");
         if (!world.setRawTypeIdAndData(n, n2, n3, n7, n8 >> 8)) {
+            System.err.println("FAIL");
             return false;
         }
+        System.err.println("SUCC");
         TileLogic tileLogic = (TileLogic) CoreLib.getTileEntity((IBlockAccess) world, n, n2, n3, TileLogic.class);
         if (tileLogic == null) {
             return false;
@@ -72,7 +75,7 @@ public class ItemLogic
         return true;
     }
 
-    protected boolean itemUseShared(ItemStack itemStack, EntityHuman entityHuman, World world, int n, int n2, int n3, int n4) {
+    /*protected boolean itemUseShared(ItemStack itemStack, EntityHuman entityHuman, World world, int n, int n2, int n3, int n4) {
         int n5;
         int n6 = n--;
         int n7 = n2--;
@@ -155,6 +158,84 @@ public class ItemLogic
         --itemStack.count;
         world.notify(n, n2, n3);
         RedPowerLib.updateIndirectNeighbors(world, n, n2, n3, n9);
+        return true;
+    }*/
+
+    protected boolean itemUseShared(ItemStack paramItemStack, EntityHuman paramEntityHuman, World paramWorld, int paramInt1, int paramInt2, int paramInt3, int paramInt4)
+    {
+        int i = paramInt1;int j = paramInt2;int k = paramInt3;
+        switch (paramInt4)
+        {
+            case 0:
+                paramInt2--;
+                break;
+            case 1:
+                paramInt2++;
+                break;
+            case 2:
+                paramInt3--;
+                break;
+            case 3:
+                paramInt3++;
+                break;
+            case 4:
+                paramInt1--;
+                break;
+            case 5:
+                paramInt1++;
+        }
+        int m = paramItemStack.id;
+        if (!paramWorld.mayPlace(m, paramInt1, paramInt2, paramInt3, false, paramInt4)) {
+            return false;
+        }
+        if (!RedPowerLib.isSideNormal(paramWorld, paramInt1, paramInt2, paramInt3, paramInt4 ^ 0x1)) {
+            return false;
+        }
+        int n = (int)Math.floor(paramEntityHuman.yaw / 90.0F + 0.5F);
+        int i1 = (int)Math.floor(paramEntityHuman.pitch / 90.0F + 0.5F);
+        n = n + 1 & 0x3;
+        int i2 = paramInt4 ^ 0x1;
+        int i3;
+        switch (i2)
+        {
+            case 0:
+                i3 = n;
+                break;
+            case 1:
+                i3 = n ^ (n & 0x1) << 1;
+                break;
+            case 2:
+                i3 = i1 <= 0 ? 0 : (n & 0x1) <= 0 ? 1 - n & 0x3 : 2;
+                break;
+            case 3:
+                i3 = i1 <= 0 ? 0 : (n & 0x1) <= 0 ? n - 1 & 0x3 : 2;
+                break;
+            case 4:
+                i3 = i1 <= 0 ? 0 : (n & 0x1) != 0 ? n - 2 & 0x3 : 2;
+                break;
+            case 5:
+                i3 = i1 <= 0 ? 0 : (n & 0x1) != 0 ? 2 - n & 0x3 : 2;
+                break;
+            default:
+                i3 = 0;
+        }
+        CraftBlockState localCraftBlockState = CraftBlockState.getBlockState(paramWorld, paramInt1, paramInt2, paramInt3);
+
+        paramWorld.suppressPhysics = true;
+        paramWorld.setTypeIdAndData(paramInt1, paramInt2, paramInt3, m, filterData(paramItemStack.getData()));
+        BlockPlaceEvent localBlockPlaceEvent = CraftEventFactory.callBlockPlaceEvent(paramWorld, paramEntityHuman, localCraftBlockState, i, j, k);
+        localCraftBlockState.update(true);
+        paramWorld.suppressPhysics = false;
+        if ((localBlockPlaceEvent.isCancelled()) || (!localBlockPlaceEvent.canBuild())) {
+            return true;
+        }
+        if (!tryPlace(paramItemStack, paramEntityHuman, paramWorld, paramInt1, paramInt2, paramInt3, paramInt4, i2, i3)) {
+            return true;
+        }
+        placeNoise(paramWorld, paramInt1, paramInt2, paramInt3, m);
+        paramItemStack.count -= 1;
+        paramWorld.notify(paramInt1, paramInt2, paramInt3);
+        RedPowerLib.updateIndirectNeighbors(paramWorld, paramInt1, paramInt2, paramInt3, m);
         return true;
     }
 }
