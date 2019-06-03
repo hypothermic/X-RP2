@@ -9,6 +9,7 @@ import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -185,50 +186,47 @@ public class TileDiskDrive extends TileExtended implements IRedbusConnectable, I
         return nBTTagCompound;
     }
 
-    /*
-     * Exception decompiling
-     */
     private File startDisk() {
-        // This method has failed to decompile. When submitting a bug report, please
-        // provide this stack trace, and (if you hold appropriate legal rights) the
-        // relevant class file.
-        // org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks
-        // [2[DOLOOP]], but top level block is 0[TRYBLOCK]
-        // org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:419)
-        // org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:471)
-        // org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:2880)
-        // org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:837)
-        // org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:217)
-        // org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:162)
-        // org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:95)
-        // org.benf.cfr.reader.entities.Method.analyse(Method.java:357)
-        // org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:769)
-        // org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:701)
-        // org.benf.cfr.reader.Main.doJar(Main.java:134)
-        // org.benf.cfr.reader.Main.main(Main.java:189)
-        throw new IllegalStateException("Decompilation failed");
+        if (this.contents[0].getData() > 0) {
+            return null;
+        }
+        final NBTTagCompound diskTags = this.getDiskTags();
+        final File saveDir = DiskLib.getSaveDir(this.world);
+        if (diskTags.hasKey("serno")) {
+            return DiskLib.getDiskFile(saveDir, diskTags.getString("serno"));
+        }
+        while (true) {
+            final String generateSerialNumber = DiskLib.generateSerialNumber(this.world);
+            final File diskFile = DiskLib.getDiskFile(saveDir, generateSerialNumber);
+            try {
+                if (diskFile.createNewFile()) {
+                    diskTags.setString("serno", generateSerialNumber);
+                    return diskFile;
+                }
+                continue;
+            }
+            catch (IOException ex) {
+                ex.printStackTrace();
+                return null;
+            }
+        }
     }
 
-    // X-RP: wonky method.
     private void runCmd1() {
-        Object arrby;
-        Arrays.fill(this.databuf, (byte) 0);
-        String string = "";
+        Arrays.fill(this.databuf, (byte)0);
+        String string;
         if (this.contents[0].getData() > 0) {
             string = "System Disk";
-        } else {
-            arrby = this.contents[0].tag;
-            if (arrby == null) {
+        }
+        else {
+            final NBTTagCompound tag = this.contents[0].tag;
+            if (tag == null) {
                 return;
             }
-            string = ((NBTTagCompound) arrby).getString("label");
+            string = tag.getString("label");
         }
-        try {
-            arrby = string.getBytes("US-ASCII");
-            System.arraycopy(arrby, 0, this.databuf, 0, Math.min(((byte[]) arrby).length, 128)); // X-RP: known point of failure. Original: arrby.length
-        } catch (UnsupportedEncodingException unsupportedEncodingException) {
-            // empty catch block
-        }
+        final byte[] bytes = string.getBytes(StandardCharsets.US_ASCII);
+        System.arraycopy(bytes, 0, this.databuf, 0, Math.min(bytes.length, 128));
     }
 
     private void runCmd2() {
@@ -240,137 +238,134 @@ public class TileDiskDrive extends TileExtended implements IRedbusConnectable, I
             for (n = 0; this.databuf[n] != 0 && n < 64; ++n) {
             }
             this.cmdreg = 0;
-            try {
-                String string = new String(this.databuf, 0, n, "US-ASCII");
-                nBTTagCompound.setString("label", string);
-            } catch (UnsupportedEncodingException unsupportedEncodingException) {
-                // empty catch block
-            }
+            String string = new String(this.databuf, 0, n, StandardCharsets.US_ASCII);
+            nBTTagCompound.setString("label", string);
         }
     }
 
-    // X-RP: wonky method.
     private void runCmd3() {
-        Object arrby;
-        Arrays.fill(this.databuf, (byte) 0);
-        String string = "";
+        Arrays.fill(this.databuf, (byte)0);
+        String s;
         if (this.contents[0].getData() > 0) {
-            string = String.format("%016d", this.contents[0].getData());
-        } else {
-            arrby = this.getDiskTags();
+            s = String.format("%016d", this.contents[0].getData());
+        }
+        else {
+            final NBTTagCompound diskTags = this.getDiskTags();
             this.startDisk();
-            if (arrby == null) {
+            if (diskTags == null) {
                 return;
             }
-            string = ((NBTTagCompound) arrby).getString("serno");
+            s = diskTags.getString("serno");
         }
-        try {
-            arrby = string.getBytes("US-ASCII");
-            System.arraycopy(arrby, 0, this.databuf, 0, Math.min(((byte[]) arrby).length, 128)); // X-RP: known point of failure. Original: arrby.length
-        } catch (UnsupportedEncodingException unsupportedEncodingException) {
-            // empty catch block
-        }
+        final byte[] bytes = s.getBytes(StandardCharsets.US_ASCII);
+        System.arraycopy(bytes, 0, this.databuf, 0, Math.min(bytes.length, 128));
     }
 
-    /*
-     * WARNING - Removed try catching itself - possible behaviour change.
-     */
     private void runCmd4() {
         if (this.sector > 2048) {
             this.cmdreg = -1;
-        } else {
-            long l = this.sector * 128;
-            Object var3_2 = null;
+        }
+        else {
+            final long n = this.sector * 128;
             if (this.contents[0].getData() > 0) {
-                InputStream inputStream = null;
+                InputStream resourceAsStream = null;
                 switch (this.contents[0].getData()) {
                     case 1: {
-                        inputStream = RedPowerControl.class.getResourceAsStream("/eloraam/control/redforth.img");
+                        resourceAsStream = RedPowerControl.class.getResourceAsStream("/eloraam/control/redforth.img");
+                        break;
                     }
                 }
                 try {
-                    if (inputStream.skip(l) == l) {
-                        if (inputStream.read(this.databuf) != 128) {
+                    if (resourceAsStream.skip(n) == n) {
+                        if (resourceAsStream.read(this.databuf) != 128) {
                             this.cmdreg = -1;
                             return;
                         }
                         this.cmdreg = 0;
-                        return;
                     }
-                    this.cmdreg = -1;
-                } catch (IOException iOException) {
-                    iOException.printStackTrace();
-                    this.cmdreg = -1;
-                    return;
-                } finally {
-                    try {
-                        if (inputStream != null) {
-                            inputStream.close();
-                        }
-                    } catch (IOException iOException) {
+                    else {
+                        this.cmdreg = -1;
                     }
                 }
-            }
-            File file = this.startDisk();
-            if (file == null) {
-                this.cmdreg = -1;
-            } else {
-                RandomAccessFile randomAccessFile = null;
-                try {
-                    randomAccessFile = new RandomAccessFile(file, "r");
-                    randomAccessFile.seek(l);
-                    if (randomAccessFile.read(this.databuf) == 128) {
-                        this.cmdreg = 0;
-                        return;
-                    }
+                catch (IOException ex) {
+                    ex.printStackTrace();
                     this.cmdreg = -1;
-                } catch (IOException iOException) {
-                    iOException.printStackTrace();
-                    this.cmdreg = -1;
-                    return;
-                } finally {
+                }
+                finally {
                     try {
-                        if (randomAccessFile != null) {
-                            randomAccessFile.close();
+                        if (resourceAsStream != null) {
+                            resourceAsStream.close();
                         }
-                    } catch (IOException iOException) {
+                    }
+                    catch (IOException ex3) {}
+                }
+            }
+            else {
+                final File startDisk = this.startDisk();
+                if (startDisk == null) {
+                    this.cmdreg = -1;
+                }
+                else {
+                    RandomAccessFile randomAccessFile = null;
+                    try {
+                        randomAccessFile = new RandomAccessFile(startDisk, "r");
+                        randomAccessFile.seek(n);
+                        if (randomAccessFile.read(this.databuf) == 128) {
+                            this.cmdreg = 0;
+                            return;
+                        }
+                        this.cmdreg = -1;
+                    }
+                    catch (IOException ex2) {
+                        ex2.printStackTrace();
+                        this.cmdreg = -1;
+                    }
+                    finally {
+                        try {
+                            if (randomAccessFile != null) {
+                                randomAccessFile.close();
+                            }
+                        }
+                        catch (IOException ex4) {}
                     }
                 }
             }
         }
     }
 
-    /*
-     * WARNING - Removed try catching itself - possible behaviour change.
-     */
     private void runCmd5() {
         if (this.contents[0].getData() > 0) {
             this.cmdreg = -1;
-        } else if (this.sector > 2048) {
+        }
+        else if (this.sector > 2048) {
             this.cmdreg = -1;
-        } else {
-            long l = this.sector * 128;
-            File file = this.startDisk();
-            if (file == null) {
+        }
+        else {
+            final long n = this.sector * 128;
+            final File startDisk = this.startDisk();
+            if (startDisk == null) {
                 this.cmdreg = -1;
-            } else {
+            }
+            else {
                 RandomAccessFile randomAccessFile = null;
                 try {
-                    randomAccessFile = new RandomAccessFile(file, "rw");
-                    randomAccessFile.seek(l);
+                    randomAccessFile = new RandomAccessFile(startDisk, "rw");
+                    randomAccessFile.seek(n);
                     randomAccessFile.write(this.databuf);
                     randomAccessFile.close();
                     randomAccessFile = null;
                     this.cmdreg = 0;
-                } catch (IOException iOException) {
+                }
+                catch (IOException ex) {
                     this.cmdreg = -1;
-                } finally {
+                }
+                finally {
                     try {
                         if (randomAccessFile != null) {
                             randomAccessFile.close();
                         }
-                    } catch (IOException iOException) {
                     }
+                    catch (IOException ex2) {}
                 }
             }
         }
