@@ -60,12 +60,9 @@ public class ItemLogic
     protected boolean tryPlace(ItemStack itemStack, EntityHuman entityHuman, World world, int n, int n2, int n3, int n4, int n5, int n6) {
         int n7 = itemStack.id;
         int n8 = itemStack.getData();
-        System.err.println("TRY PLACE");
         if (!world.setRawTypeIdAndData(n, n2, n3, n7, n8 >> 8)) {
-            System.err.println("FAIL");
             return false;
         }
-        System.err.println("SUCC");
         TileLogic tileLogic = (TileLogic) CoreLib.getTileEntity((IBlockAccess) world, n, n2, n3, TileLogic.class);
         if (tileLogic == null) {
             return false;
