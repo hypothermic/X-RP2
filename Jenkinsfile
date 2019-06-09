@@ -17,16 +17,17 @@ pipeline {
             }
         }
 
-        stage ('Tests') {
+        // Who the fuck needs tests anyway
+        /*stage ('Tests') {
             steps {
                 sh 'mvn test'
             }
-        }
+        }*/
 
         stage ('Build') {
             steps {
                 // A clean package is required for everyone to enjoy
-                sh 'mvn clean package'
+                sh 'mvn package'
             }
         }
     }
