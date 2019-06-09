@@ -14,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TileTube extends TileCovered implements ITubeFlow, IPaintable {
 
     TubeFlow flow;
-    public static volatile byte lastDir; // X-RP2: static volatile
+    public byte lastDir;
     public byte paintColor;
     private boolean hasChanged;
     final TileTube ThIs;
