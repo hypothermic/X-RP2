@@ -13,12 +13,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class TileTube extends TileCovered implements ITubeFlow, IPaintable {
 
-    TubeFlow flow;
-    public byte lastDir;
-    public byte paintColor;
+    public TubeFlow flow;
+    private byte lastDir;
+    byte paintColor;
     private boolean hasChanged;
-    final TileTube ThIs;
-    public static LinkedBlockingQueue<TileTube> tileTubeQueue = new LinkedBlockingQueue();
+    private static LinkedBlockingQueue<TileTube> tileTubeQueue = new LinkedBlockingQueue<>();
 
     static {
         new Thread() {
@@ -32,13 +31,12 @@ public class TileTube extends TileCovered implements ITubeFlow, IPaintable {
                             if (!TileTube.tileTubeQueue.isEmpty()) {
                                 TileTube tube = TileTube.tileTubeQueue.poll();
                                 tube.processUpdate();
-                                continue;
+                            } else {
+                                Thread.sleep(50);
                             }
-                            Thread.sleep(50);
                         } while (true);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        continue;
                     }
                 } while (true);
             }
@@ -140,37 +138,38 @@ public class TileTube extends TileCovered implements ITubeFlow, IPaintable {
         this.lastDir = 0;
         this.paintColor = 0;
         this.hasChanged = false;
-        this.ThIs = this;
+    }
+
+    // load from NBT
+    @Override
+    public void a(NBTTagCompound tag) {
+        super.a(tag);
+        this.flow.readFromNBT(tag);
+        this.lastDir = tag.getByte("lDir");
+        this.paintColor = tag.getByte("pCol");
     }
 
     @Override
-    public void a(NBTTagCompound arg0) {
-        super.a(arg0);
-        this.flow.readFromNBT(arg0);
-        this.lastDir = arg0.getByte("lDir");
-        this.paintColor = arg0.getByte("pCol");
+    public void addHarvestContents(ArrayList harvestList) {
+        super.addHarvestContents(harvestList);
+        harvestList.add(new ItemStack(RedPowerBase.blockMicro.id, 1, this.getExtendedID() << 8));
     }
 
     @Override
-    public void addHarvestContents(ArrayList arg0) {
-        super.addHarvestContents(arg0);
-        arg0.add(new ItemStack(RedPowerBase.blockMicro.id, 1, this.getExtendedID() << 8));
-    }
-
-    @Override
-    public void addTubeItem(TubeItem arg0) {
-        arg0.side = (byte) (arg0.side ^ 1);
-        this.flow.add(arg0);
+    public void addTubeItem(TubeItem item) {
+        item.side = (byte) (item.side ^ 1);
+        this.flow.add(item);
         this.hasChanged = true;
         this.dirtyBlock();
     }
 
+    // save to NBT
     @Override
-    public void b(NBTTagCompound arg0) {
-        super.b(arg0);
-        this.flow.writeToNBT(arg0);
-        arg0.setByte("lDir", this.lastDir);
-        arg0.setByte("pCol", this.paintColor);
+    public void b(NBTTagCompound tag) {
+        super.b(tag);
+        this.flow.writeToNBT(tag);
+        tag.setByte("lDir", this.lastDir);
+        tag.setByte("pCol", this.paintColor);
     }
 
     @Override
@@ -203,10 +202,11 @@ public class TileTube extends TileCovered implements ITubeFlow, IPaintable {
         return this.CoverSides | 536870912;
     }
 
+    // get player strength vs this tube
     @Override
-    public float getPartStrength(EntityHuman arg0, int arg1) {
+    public float getPartStrength(EntityHuman attacker, int toolStrength) {
         BlockMachine arg2 = RedPowerMachine.blockMachine;
-        return arg1 == 29 ? arg0.getCurrentPlayerStrVsBlock((Block) arg2, 0) / (arg2.m() * 30.0f) : super.getPartStrength(arg0, arg1);
+        return toolStrength == 29 ? attacker.getCurrentPlayerStrVsBlock((Block) arg2, 0) / (arg2.m() * 30.0f) : super.getPartStrength(attacker, toolStrength);
     }
 
     @Override
@@ -285,63 +285,63 @@ public class TileTube extends TileCovered implements ITubeFlow, IPaintable {
     }
 
     @Override
-    protected void readFromPacket(Packet211TileDesc arg0) throws IOException {
-        if (arg0.subId == 10) {
+    protected void readFromPacket(Packet211TileDesc packet) throws IOException {
+        if (packet.subId == 10) {
             this.flow.contents.clear();
-            int arg1 = (int) arg0.getUVLC();
+            int arg1 = (int) packet.getUVLC();
             int arg2 = 0;
             while (arg2 < arg1) {
-                this.flow.contents.add(TubeItem.newFromPacket(arg0));
+                this.flow.contents.add(TubeItem.newFromPacket(packet));
                 ++arg2;
             }
         } else {
-            super.readFromPacket(arg0);
-            this.paintColor = (byte) arg0.getByte();
+            super.readFromPacket(packet);
+            this.paintColor = (byte) packet.getByte();
         }
     }
 
     protected void sendItemUpdate() {
-        Packet211TileDesc arg0 = new Packet211TileDesc();
-        arg0.subId = 10;
-        arg0.xCoord = this.x;
-        arg0.yCoord = this.y;
-        arg0.zCoord = this.z;
+        Packet211TileDesc packet = new Packet211TileDesc();
+        packet.subId = 10;
+        packet.xCoord = this.x;
+        packet.yCoord = this.y;
+        packet.zCoord = this.z;
         int arg1 = this.flow.contents.size();
         if (arg1 > 6) {
             arg1 = 6;
         }
-        arg0.addUVLC(arg1);
+        packet.addUVLC(arg1);
         try {
             int maxmin = Math.min(5, this.flow.contents.size());
             int arg3 = 0;
             while (arg3 < maxmin) {
                 TubeItem arg4 = (TubeItem) this.flow.contents.get(arg3);
-                arg4.writeToPacket(arg0);
+                arg4.writeToPacket(packet);
                 ++arg3;
             }
-            arg0.encode();
-            CoreProxy.sendPacketToPosition(arg0, this.x, this.z);
+            packet.encode();
+            CoreProxy.sendPacketToPosition(packet, this.x, this.z);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void setPartBounds(BlockMultipart arg0, int arg1) {
+    public void setPartBounds(BlockMultipart blockMultipart, int arg1) {
         if (arg1 == 29) {
-            arg0.a(0.25f, 0.25f, 0.25f, 0.75f, 0.75f, 0.75f);
+            blockMultipart.a(0.25f, 0.25f, 0.25f, 0.75f, 0.75f, 0.75f);
         } else {
-            super.setPartBounds(arg0, arg1);
+            super.setPartBounds(blockMultipart, arg1);
         }
     }
 
     @Override
-    public boolean tryPaint(int arg0, int arg1, int arg2) {
-        if (arg0 == 29) {
-            if (this.paintColor == arg2) {
+    public boolean tryPaint(int subHit, int unused, int paintColor) {
+        if (subHit == 29) {
+            if (this.paintColor == paintColor) {
                 return false;
             }
-            this.paintColor = (byte) arg2;
+            this.paintColor = (byte) paintColor;
             this.updateBlockChange();
             return true;
         }
@@ -350,7 +350,7 @@ public class TileTube extends TileCovered implements ITubeFlow, IPaintable {
 
     @Override
     public boolean tubeItemCanEnter(int arg0, int arg1, TubeItem arg2) {
-        return arg2.color != 0 && this.paintColor != 0 && arg2.color != this.paintColor ? false : arg1 == 0;
+        return (arg2.color == 0 || this.paintColor == 0 || arg2.color == this.paintColor) && arg1 == 0;
     }
 
     @Override
@@ -374,9 +374,9 @@ public class TileTube extends TileCovered implements ITubeFlow, IPaintable {
     }
 
     @Override
-    protected void writeToPacket(Packet211TileDesc arg0) {
-        super.writeToPacket(arg0);
-        arg0.addByte(this.paintColor);
+    protected void writeToPacket(Packet211TileDesc packet) {
+        super.writeToPacket(packet);
+        packet.addByte(this.paintColor);
     }
 
 }

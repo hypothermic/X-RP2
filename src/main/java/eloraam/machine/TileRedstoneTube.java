@@ -17,22 +17,23 @@ import net.minecraft.server.NBTTagCompound;
 
 import java.io.IOException;
 
-public class TileRedstoneTube
-        extends TileTube
-        implements IRedPowerWiring {
+public class TileRedstoneTube extends TileTube implements IRedPowerWiring {
+
     public short PowerState = 0;
     public int ConMask = -1;
 
+    // load from NBT
     @Override
-    public void a(NBTTagCompound arg0) {
-        super.a(arg0);
-        this.PowerState = (short) (arg0.getByte("pwr") & 255);
+    public void a(NBTTagCompound tag) {
+        super.a(tag);
+        this.PowerState = (short) (tag.getByte("pwr") & 255);
     }
 
+    // save to NBT
     @Override
-    public void b(NBTTagCompound arg0) {
-        super.b(arg0);
-        arg0.setByte("pwr", (byte) this.PowerState);
+    public void b(NBTTagCompound tag) {
+        super.b(tag);
+        tag.setByte("pwr", (byte) this.PowerState);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class TileRedstoneTube
         if (this.ConMask >= 0) {
             return this.ConMask;
         }
-        this.ConMask = RedPowerLib.getConnections((IBlockAccess) this.world, this, this.x, this.y, this.z);
+        this.ConMask = RedPowerLib.getConnections(this.world, this, this.x, this.y, this.z);
         return this.ConMask;
     }
 
@@ -89,7 +90,7 @@ public class TileRedstoneTube
 
     @Override
     public boolean isBlockWeakPoweringTo(int arg0) {
-        return RedPowerLib.isSearching() ? false : ((this.getConnectionMask() & 16777216 << (arg0 ^ 1)) == 0 ? false : (RedPowerLib.isBlockRedstone((IBlockAccess) this.world, this.x, this.y, this.z, arg0 ^ 1) ? this.PowerState > 15 : this.PowerState > 0));
+        return !RedPowerLib.isSearching() && ((this.getConnectionMask() & 16777216 << (arg0 ^ 1)) != 0 && (RedPowerLib.isBlockRedstone(this.world, this.x, this.y, this.z, arg0 ^ 1) ? this.PowerState > 15 : this.PowerState > 0));
     }
 
     @Override
@@ -103,44 +104,44 @@ public class TileRedstoneTube
     }
 
     @Override
-    public void onFrameRefresh(IBlockAccess arg0) {
+    public void onFrameRefresh(IBlockAccess frame) {
         if (this.ConMask < 0) {
-            this.ConMask = RedPowerLib.getConnections(arg0, this, this.x, this.y, this.z);
+            this.ConMask = RedPowerLib.getConnections(frame, this, this.x, this.y, this.z);
         }
     }
 
     @Override
-    protected void readFromPacket(Packet211TileDesc arg0) throws IOException {
-        super.readFromPacket(arg0);
-        this.PowerState = (short) arg0.getByte();
+    protected void readFromPacket(Packet211TileDesc packet) throws IOException {
+        super.readFromPacket(packet);
+        this.PowerState = (short) packet.getByte();
         this.ConMask = -1;
     }
 
     @Override
     public int scanPoweringStrength(int arg0, int arg1) {
-        return arg1 != 0 ? 0 : (!RedPowerLib.isPowered((IBlockAccess) this.world, this.x, this.y, this.z, arg0, this.getConnectionMask()) ? 0 : 255);
+        return arg1 != 0 ? 0 : (!RedPowerLib.isPowered(this.world, this.x, this.y, this.z, arg0, this.getConnectionMask()) ? 0 : 255);
     }
 
     @Override
-    public boolean tryAddCover(int arg0, int arg1) {
-        if (!this.canAddCover(arg0, arg1)) {
+    public boolean tryAddCover(int coverSide, int cover) {
+        if (!this.canAddCover(coverSide, cover)) {
             return false;
         }
-        this.CoverSides |= 1 << arg0;
-        this.Covers[arg0] = (short) arg1;
+        this.CoverSides |= 1 << coverSide;
+        this.Covers[coverSide] = (short) cover;
         this.ConMask = -1;
         this.updateBlockChange();
         return true;
     }
 
     @Override
-    public int tryRemoveCover(int arg0) {
-        if ((this.CoverSides & 1 << arg0) == 0) {
+    public int tryRemoveCover(int coverSide) {
+        if ((this.CoverSides & 1 << coverSide) == 0) {
             return -1;
         }
-        this.CoverSides &= ~(1 << arg0);
-        short arg1 = this.Covers[arg0];
-        this.Covers[arg0] = 0;
+        this.CoverSides &= ~(1 << coverSide);
+        short arg1 = this.Covers[coverSide];
+        this.Covers[coverSide] = 0;
         this.ConMask = -1;
         this.updateBlockChange();
         return arg1;
@@ -153,9 +154,9 @@ public class TileRedstoneTube
     }
 
     @Override
-    protected void writeToPacket(Packet211TileDesc arg0) {
-        super.writeToPacket(arg0);
-        arg0.addByte(this.PowerState);
+    protected void writeToPacket(Packet211TileDesc packet) {
+        super.writeToPacket(packet);
+        packet.addByte(this.PowerState);
     }
 }
 
